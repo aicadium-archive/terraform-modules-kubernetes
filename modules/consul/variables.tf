@@ -235,7 +235,7 @@ variable "ui_service_type" {
 
 variable "ui_annotations" {
   description = "UI service annotations"
-  default = ""
+  default = {}
 }
 
 variable "ui_additional_spec" {

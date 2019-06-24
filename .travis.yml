@@ -16,6 +16,8 @@ script:
     find . \
       -not -path '*/\.*' \
       -not -path './vendor/*' \
+      # Pending Kubernetes Provider
+      -not -path './modules/dashboard/*' \
       -type f -iname '*.tf' \
       -printf '%h\n' | sort | uniq | xargs -I{} bash -c "echo {} && docker run --rm ${LINT_IMAGE} {}"
 branches:
