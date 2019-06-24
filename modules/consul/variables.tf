@@ -72,24 +72,17 @@ variable "server_storage_class" {
   default     = ""
 }
 
-variable "server_cpu_request" {
-  description = "CPU request for server pods"
-  default     = "2000m"
-}
+variable "server_resources" {
+  description = "Resources for server"
+  default = {
+    requests = {
+      cpu = "500m"
+    }
 
-variable "server_memory_request" {
-  description = "Memory request for server pods"
-  default     = ""
-}
-
-variable "server_cpu_limit" {
-  description = "CPU limit for server pods"
-  default     = ""
-}
-
-variable "server_memory_limit" {
-  description = "Memory limit for server pods"
-  default     = "4Gi"
+    limits = {
+      memory = "1Gi"
+    }
+  }
 }
 
 variable "server_extra_config" {
@@ -138,24 +131,18 @@ variable "client_enabled" {
   default = "true"
 }
 
-variable "client_cpu_request" {
-  description = "CPU request for client agent pods"
-  default = "250m"
-}
+variable "client_resources" {
+  description = "Resources for clients"
+  default = {
+    requests = {
+      cpu = "250m"
+    }
 
-variable "client_memory_request" {
-  description = "Memory request for client agent pods"
-  default = ""
-}
-
-variable "client_cpu_limit" {
-  description = "CPU limit for client agent pods"
-  default = ""
-}
-
-variable "client_memory_limit" {
-  description = "Memory limit for client agent pods"
-  default = "500Mi"
+    limits = {
+      cpu = "250m"
+      memory = "50Mi"
+    }
+  }
 }
 
 variable "client_extra_config" {
@@ -235,7 +222,7 @@ variable "ui_service_type" {
 
 variable "ui_annotations" {
   description = "UI service annotations"
-  default = {}
+  default = ""
 }
 
 variable "ui_additional_spec" {

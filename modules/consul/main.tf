@@ -24,10 +24,7 @@ data "template_file" "values" {
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
     server_storage_class  = var.server_storage_class
-    server_cpu_request    = var.server_cpu_request
-    server_memory_request = var.server_memory_request
-    server_cpu_limit      = var.server_cpu_limit
-    server_memory_limit   = var.server_memory_limit
+    server_resources      = jsonencode(jsonencode(var.server_resources))
     server_extra_config   = jsonencode(var.server_extra_config)
     server_extra_volumes  = jsonencode(var.server_extra_volumes)
     server_affinity       = jsonencode(var.server_affinity)
@@ -36,10 +33,7 @@ data "template_file" "values" {
     server_annotations    = jsonencode(var.server_annotations)
 
     client_enabled        = var.client_enabled
-    client_cpu_request    = var.client_cpu_request
-    client_memory_request = var.client_memory_request
-    client_cpu_limit      = var.client_cpu_limit
-    client_memory_limit   = var.client_memory_limit
+    client_resources      = jsonencode(jsonencode(var.client_resources))
     client_extra_config   = jsonencode(var.client_extra_config)
     client_extra_volumes  = jsonencode(var.client_extra_volumes)
     client_tolerations    = jsonencode(var.client_tolerations)
