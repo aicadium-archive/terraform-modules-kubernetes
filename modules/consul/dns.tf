@@ -2,10 +2,8 @@
 # https://www.consul.io/docs/platform/k8s/dns.html
 
 data "kubernetes_service" "consul_dns" {
-  depends_on = [helm_release.consul]
-
   metadata {
-    name      = "consul-dns"
+    name      = "${helm_release.consul.name}-dns"
     namespace = var.chart_namespace
   }
 }
