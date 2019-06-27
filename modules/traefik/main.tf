@@ -104,7 +104,7 @@ locals {
     prometheus_restrict_access = var.prometheus_restrict_access
     prometheus_buckets         = jsonencode(var.prometheus_buckets)
 
-    env               = jsonencode(local.env)
+    env               = jsonencode(var.env)
     startup_arguments = jsonencode(var.startup_arguments)
 
     traefik_log_format  = var.traefik_log_format

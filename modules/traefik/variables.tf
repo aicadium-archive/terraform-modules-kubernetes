@@ -273,6 +273,11 @@ variable "acme_key_type" {
   default     = "RSA4096"
 }
 
+variable "env" {
+  description = "Environment variables for Traefik"
+  default     = []
+}
+
 variable "startup_arguments" {
   description = "List of additional startup arguments for the Traefik pods"
   default     = []
