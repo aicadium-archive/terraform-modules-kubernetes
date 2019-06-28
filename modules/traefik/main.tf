@@ -38,7 +38,7 @@ locals {
     whitelist_source_range  = jsonencode(var.whitelist_source_range)
     node_port_http          = var.node_port_http
     node_port_https         = var.node_port_https
-    static_ip               = jsonencode(var.static_ip)
+    static_ip               = var.static_ip != null ? jsonencode(var.static_ip) : "null"
 
     service_annotations = jsonencode(var.service_annotations)
     service_labels      = jsonencode(var.service_labels)

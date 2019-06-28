@@ -74,7 +74,7 @@ ssl:
 
 kvprovider:
   storeAcme: ${kv_store_acme}
-  ${indent(kv_provider, 2)}
+  ${indent(2, kv_provider)}
 
 acme:
   enabled: ${acme_enabled}

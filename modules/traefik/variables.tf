@@ -45,7 +45,7 @@ variable "static_ip" {
 }
 
 variable "lb_source_range" {
-  description = "List of CIDR allowed to access the Load balancer."
+  description = "List of CIDR allowed to access the Load balancer. This setting is enforced by your provider's load balancer"
   default     = []
 }
 
@@ -71,17 +71,17 @@ variable "cpu_request" {
 
 variable "memory_request" {
   description = "Initial share of memory requested per Traefik pod"
-  default     = null
+  default     = "100Mi"
 }
 
 variable "cpu_limit" {
   description = "CPU limit per Traefik pod"
-  default     = null
+  default     = "1000m"
 }
 
 variable "memory_limit" {
   description = "Memory limit per Traefik pod"
-  default     = "30Mi"
+  default     = "100Mi"
 }
 
 variable "node_selector" {
