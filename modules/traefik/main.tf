@@ -28,6 +28,8 @@ locals {
   rendered_values = templatefile("${path.module}/templates/values.yaml", local.values)
 
   values = {
+    fullname_override = var.fullname_override != null ? jsonencode(var.fullname_override) : "null"
+
     image     = var.traefik_image_name
     image_tag = var.traefik_image_tag
     replicas  = var.replicas
