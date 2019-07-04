@@ -1,4 +1,6 @@
 resource "helm_release" "traefik" {
+  count = var.create ? 1 : 0
+
   name       = var.release_name
   chart      = var.chart_name
   repository = var.chart_repository

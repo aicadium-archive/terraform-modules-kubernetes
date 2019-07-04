@@ -1,3 +1,8 @@
+variable "create" {
+  description = "Conditionally create the Helm Release, or not"
+  default     = true
+}
+
 variable "release_name" {
   description = "Helm release name for Traefik"
   default     = "traefik"
