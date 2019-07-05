@@ -3,6 +3,12 @@ variable "create" {
   default     = true
 }
 
+variable "fullname_override" {
+  description = "Fullname override for resources"
+  default     = null
+  type        = string
+}
+
 variable "release_name" {
   description = "Helm release name for Traefik"
   default     = "traefik"
