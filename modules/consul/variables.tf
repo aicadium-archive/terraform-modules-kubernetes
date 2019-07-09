@@ -342,6 +342,11 @@ variable "esm_resources" {
   }
 }
 
+variable "esm_affinity" {
+  description = "Affinity for ESM"
+  default     = {}
+}
+
 variable "esm_log_level" {
   description = "Log level for ESM"
   default     = "INFO"
