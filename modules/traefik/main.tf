@@ -50,7 +50,7 @@ locals {
     pod_annotations       = jsonencode(local.pod_annotations)
     pod_labels            = jsonencode(var.pod_labels)
     pod_disruption_budget = jsonencode(var.pod_disruption_budget)
-    pod_priority_class    = jsonencode(var.pod_priority_class)
+    pod_priority_class    = var.pod_priority_class != null ? jsonencode(var.pod_priority_class): "null"
 
     deployment_strategy         = jsonencode(var.deployment_strategy)
     http_host_port_binding      = var.http_host_port_binding
