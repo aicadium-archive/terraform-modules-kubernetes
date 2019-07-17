@@ -19,7 +19,7 @@ ${var.core_dns_base}
 consul {
   errors
   cache 30
-  proxy . ${data.kubernetes_service.consul_dns.spec[0].cluster_ip}
+  forward . ${data.kubernetes_service.consul_dns.spec[0].cluster_ip}
 }
 EOF
 }
