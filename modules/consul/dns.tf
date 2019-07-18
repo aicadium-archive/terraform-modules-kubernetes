@@ -12,16 +12,14 @@ locals {
   kube_dns = {
     consul = [data.kubernetes_service.consul_dns.spec[0].cluster_ip]
   }
-
-  core_dns = <<EOF
-${var.core_dns_base}
-
-consul {
-  errors
-  cache 30
-  forward . ${data.kubernetes_service.consul_dns.spec[0].cluster_ip}
 }
-EOF
+
+data "template_file" "consul_core_dns" {
+  template = var.core_dns_template
+
+  vars = {
+    consul_dns_address = data.kubernetes_service.consul_dns.spec[0].cluster_ip
+  }
 }
 
 resource "kubernetes_config_map" "consul_kube_dns" {
@@ -32,7 +30,7 @@ resource "kubernetes_config_map" "consul_kube_dns" {
       "addonmanager.kubernetes.io/mode" = "EnsureExists"
     }
 
-    name = "kube-dns"
+    name      = "kube-dns"
     namespace = "kube-system"
   }
 
@@ -47,11 +45,11 @@ resource "kubernetes_config_map" "consul_core_dns" {
   metadata {
     labels = var.core_dns_labels
 
-    name = "coredns"
+    name      = "coredns"
     namespace = "kube-system"
   }
 
   data = {
-    "Corefile" = local.core_dns
+    "Corefile" = data.template_file.consul_core_dns.rendered
   }
 }
