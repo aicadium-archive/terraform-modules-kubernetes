@@ -255,8 +255,9 @@ variable "configure_core_dns" {
   default = false
 }
 
-variable "core_dns_base" {
-  description = "CoreDNS Base configuration"
+variable "core_dns_template" {
+  description = "Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example"
+
   default = <<EOF
 .:53 {
   errors
@@ -272,6 +273,12 @@ variable "core_dns_base" {
   loop
   reload
   loadbalance
+}
+
+consul {
+  errors
+  cache 30
+  forward . $${consul_dns_address}
 }
 EOF
 }
