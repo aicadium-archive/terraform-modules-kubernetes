@@ -204,6 +204,11 @@ variable "debug" {
   default     = "false"
 }
 
+variable "log_level" {
+  description = "Traefik Log Level. One of 'debug', 'info', 'warn', 'error', 'fatal', 'panic'"
+  default     = "info"
+}
+
 variable "ssl_enabled" {
   description = "Enable SSL endpoin. You will either need to use the Let's Encrypt ACME certificates or provide your own. Otherwise, Traefik will serve an expired self-signed certificatre"
   default     = "true"
