@@ -57,8 +57,9 @@ locals {
     https_host_port_binding     = var.https_host_port_binding
     dashboard_host_port_binding = var.dashboard_host_port_binding
 
-    root_ca = jsonencode(var.root_ca)
-    debug   = var.debug
+    root_ca   = jsonencode(var.root_ca)
+    debug     = var.debug
+    log_level = var.log_level
 
     cpu_request    = jsonencode(var.cpu_request)
     memory_request = jsonencode(var.memory_request)
@@ -82,6 +83,7 @@ locals {
     ssl_ciphersuites       = jsonencode(var.ssl_ciphersuites)
 
     acme_enabled         = var.acme_enabled
+    acme_key_type        = var.acme_key_type
     acme_email           = var.acme_email
     acme_on_host_rule    = var.acme_on_host_rule
     acme_staging         = var.acme_staging

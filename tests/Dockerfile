@@ -1,6 +1,6 @@
-FROM wata727/tflint:0.9.1
+FROM wata727/tflint:0.9.2
 
-ARG TERRAFORM_VERSION=0.12.4
+ARG TERRAFORM_VERSION=0.12.5
 
 RUN apk add --no-cache curl git \
   && curl -L https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip > terraform.zip \

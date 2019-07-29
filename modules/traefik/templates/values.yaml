@@ -30,6 +30,8 @@ memoryLimit: ${memory_limit}
 debug:
   enabled: ${debug}
 
+logLevel: ${log_level}
+
 deploymentStrategy: ${deployment_strategy}
   # rollingUpdate:
   #   maxSurge: 1
@@ -80,6 +82,7 @@ kvprovider:
 
 acme:
   enabled: ${acme_enabled}
+  keyType: ${acme_key_type}
   email: ${acme_email}
   onHostRule: ${acme_on_host_rule}
   staging: ${acme_staging}
