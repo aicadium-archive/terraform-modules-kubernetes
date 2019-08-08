@@ -1,0 +1,30 @@
+locals {
+  jaeger_enabled           = var.jaeger_enabled ? 1 : 0
+  jaeger_namespace         = var.jaeger_namespace
+}
+
+resource "helm_release" "jaeger" {
+  count = local.jaeger_enabled
+
+  name       = var.jaeger_release_name
+  chart      = var.jaeger_chart_name
+  repository = var.jaeger_chart_repository
+  version    = var.jaeger_chart_version
+  namespace  = local.jaeger_namespace
+
+  values = [
+    data.template_file.jaeger[0].rendered,
+  ]
+}
+
+data "template_file" "jaeger" {
+  count = local.jaeger_enabled
+
+  template = file("${path.module}/templates/jaeger.yaml")
+
+  vars = {
+    image_tag           = var.jaeger_image_tag
+    ingress_hosts       = jsonencode(var.jaeger_ui_ingress_hosts)
+    ingress_annotations = jsonencode(var.jaeger_ui_ingress_annotations)
+  }
+}
