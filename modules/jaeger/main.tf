@@ -1,6 +1,6 @@
 locals {
-  jaeger_enabled           = var.jaeger_enabled ? 1 : 0
-  jaeger_namespace         = var.jaeger_namespace
+  jaeger_enabled   = var.jaeger_enabled ? 1 : 0
+  jaeger_namespace = var.jaeger_namespace
 }
 
 resource "helm_release" "jaeger" {
