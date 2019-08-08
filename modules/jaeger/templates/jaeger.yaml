@@ -52,7 +52,7 @@ agent:
       memory: "512Mi"
     requests:
       cpu: "256m"
-  useHostNetwork: true
+  # useHostNetwork: true
 
 collector:
   enabled: true
