@@ -1,5 +1,5 @@
 variable "jaeger_enabled" {
-  description = "Enable/disable cleaning up of old resources"
+  description = "Enable/disable Jaeger"
   default     = false
 }
 
@@ -34,11 +34,11 @@ variable "jaeger_namespace" {
 }
 
 variable "jaeger_ui_ingress_hosts" {
-  descriptions = "Ingress hosts for the Jaeger Query service"
-  default      = {}
+  description = "Ingress hosts for the Jaeger Query service"
+  default     = {}
 }
 
 variable "jaeger_ui_ingress_annotations" {
-  descriptions = "Ingress annotations for the Jaeger Query service"
-  default      = {}
+  description = "Ingress annotations for the Jaeger Query service"
+  default     = {}
 }
