@@ -127,6 +127,7 @@ locals {
 
     tracing_enabled      = var.tracing_enabled
     tracing_service_name = var.tracing_service_name
+    tracing_backend      = var.tracing_backend
     tracing_settings     = var.tracing_enabled == "true" ? "${var.tracing_backend}: ${jsonencode(var.tracing_settings)}" : ""
 
     secret_files = jsonencode(var.secret_files)

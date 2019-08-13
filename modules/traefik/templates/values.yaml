@@ -193,8 +193,8 @@ deployment:
 tracing:
   enabled: ${tracing_enabled}
   serviceName: ${tracing_service_name}
+  backend: ${tracing_backend}
   ${tracing_settings}
-  # backend: choices are jaeger, zipkin, datadog
   # jaeger:
   #   localAgentHostPort: "127.0.0.1:6831"
   #   samplingServerURL: http://localhost:5778/sampling
