@@ -23,8 +23,16 @@ data "template_file" "jaeger" {
   template = file("${path.module}/templates/jaeger.yaml")
 
   vars = {
-    image_tag           = var.jaeger_image_tag
-    ingress_hosts       = jsonencode(var.jaeger_ui_ingress_hosts)
-    ingress_annotations = jsonencode(var.jaeger_ui_ingress_annotations)
+    image_tag                     = var.jaeger_image_tag
+    ingress_hosts                 = jsonencode(var.jaeger_ui_ingress_hosts)
+    ingress_annotations           = jsonencode(var.jaeger_ui_ingress_annotations)
+    es_client_resources           = jsonencode(var.jaeger_es_client_resources)
+    es_master_resources           = jsonencode(var.jaeger_es_master_resources)
+    es_data_replicas              = var.jaeger_es_data_replicas
+    es_data_resources             = jsonencode(var.jaeger_es_data_resources)
+    es_data_persistence_disk_size = var.jaeger_es_data_persistence_disk_size
+    agent_resources               = jsonencode(var.jaeger_agent_resources)
+    collector_resources           = jsonencode(var.jaeger_collector_resources)
+    query_resources               = jsonencode(var.jaeger_query_resources)
   }
 }

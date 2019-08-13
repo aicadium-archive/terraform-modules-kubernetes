@@ -14,55 +14,28 @@ storage:
 # Begin: Override values on the Elasticsearch subchart to customize for Jaeger
 elasticsearch:
   cluster:
+    replicas: 2
     name: "tracing"
   client:
-    resources:
-      limits:
-        cpu: "1"
-        memory: "1024Mi"
-      requests:
-        cpu: "25m"
-        memory: "512Mi"
+    resources: ${es_client_resources}
   master:
     replicas: 3
-    resources:
-      limits:
-        cpu: "1"
-        memory: "1024Mi"
-      requests:
-        cpu: "25m"
-        memory: "512Mi"
+    resources: ${es_master_resources}
   data:
-    resources:
-      limits:
-        cpu: "1"
-        memory: "2048Mi"
-      requests:
-        cpu: "25m"
-        memory: "1536Mi"
+    replicas: ${es_data_replicas}
+    resources: ${es_data_resources}
     persistence:
       enabled: true
+      size: ${es_data_persistence_disk_size}
 # End: Override values on the Elasticsearch subchart to customize for Jaeger
 
 agent:
   enabled: true
-  resources:
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
-    requests:
-      cpu: "256m"
-  # useHostNetwork: true
+  resources: ${agent_resources}
 
 collector:
   enabled: true
-  resources:
-    limits:
-      cpu: "1"
-      memory: "1Gi"
-    requests:
-      cpu: "500m"
-      memory: "512Mi"
+  resources: ${collector_resources}
 
 query:
   enabled: true
@@ -76,13 +49,7 @@ query:
     enabled: true
     hosts: ${ingress_hosts}
     annotations: ${ingress_annotations}
-  resources:
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
-    requests:
-       cpu: "256m"
-       memory: "128Mi"
+  resources: ${query_resources}
 
 spark:
   enabled: false
