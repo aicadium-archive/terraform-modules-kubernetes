@@ -45,13 +45,13 @@ variable "jaeger_ui_ingress_annotations" {
 
 variable "jaeger_es_client_resources" {
   description = "Kubernetes resources for Elasticsearch client node"
-  default     = {
+  default = {
     limits = {
       cpu    = "1"
       memory = "1536Mi"
     }
     requests = {
-      cpu = "25m"
+      cpu    = "25m"
       memory = "512Mi"
     }
   }
@@ -59,13 +59,13 @@ variable "jaeger_es_client_resources" {
 
 variable "jaeger_es_master_resources" {
   description = "Kubernetes resources for Elasticsearch master node"
-  default     = {
+  default = {
     limits = {
       cpu    = "1"
       memory = "1536Mi"
     }
     requests = {
-      cpu = "25m"
+      cpu    = "25m"
       memory = "512Mi"
     }
   }
@@ -73,13 +73,13 @@ variable "jaeger_es_master_resources" {
 
 variable "jaeger_es_data_resources" {
   description = "Kubernetes resources for Elasticsearch data node"
-  default     = {
+  default = {
     limits = {
       cpu    = "1"
       memory = "2560Mi"
     }
     requests = {
-      cpu = "25m"
+      cpu    = "25m"
       memory = "1536Mi"
     }
   }
@@ -97,13 +97,13 @@ variable "jaeger_es_data_persistence_disk_size" {
 
 variable "jaeger_query_resources" {
   description = "Kubernetes resources for Jaeger Query service"
-  default     = {
+  default = {
     limits = {
       cpu    = "200m"
       memory = "128Mi"
     }
     requests = {
-      cpu = "25m"
+      cpu    = "25m"
       memory = "32Mi"
     }
   }
@@ -111,13 +111,13 @@ variable "jaeger_query_resources" {
 
 variable "jaeger_collector_resources" {
   description = "Kubernetes resources for Jaeger Collector service"
-  default     = {
+  default = {
     limits = {
       cpu    = "512m"
       memory = "256Mi"
     }
     requests = {
-      cpu = "50m"
+      cpu    = "50m"
       memory = "64Mi"
     }
   }
@@ -125,13 +125,13 @@ variable "jaeger_collector_resources" {
 
 variable "jaeger_agent_resources" {
   description = "Kubernetes resources for Jaeger Agent service"
-  default     = {
+  default = {
     limits = {
       cpu    = "100m"
       memory = "128Mi"
     }
     requests = {
-      cpu = "25m"
+      cpu    = "25m"
       memory = "16Mi"
     }
   }
