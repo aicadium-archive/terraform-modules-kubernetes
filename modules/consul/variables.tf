@@ -113,22 +113,22 @@ EOF
 
 variable "server_tolerations" {
   description = "A YAML string that can be templated via helm specifying the tolerations for server pods"
-  default = ""
+  default     = ""
 }
 
 variable "server_priority_class" {
   description = "Priority class for servers"
-  default = ""
+  default     = ""
 }
 
 variable "server_annotations" {
   description = "A YAML string for server pods"
-  default = ""
+  default     = ""
 }
 
 variable "client_enabled" {
   description = "Enable running Consul client agents on every Kubernetes node"
-  default = "true"
+  default     = "true"
 }
 
 variable "client_resources" {
@@ -139,7 +139,7 @@ variable "client_resources" {
     }
 
     limits = {
-      cpu = "250m"
+      cpu    = "250m"
       memory = "50Mi"
     }
   }
@@ -147,112 +147,112 @@ variable "client_resources" {
 
 variable "client_extra_config" {
   description = "Raw string of additional configuration to include for client agents in JSON/HCL"
-  default = "{}"
+  default     = "{}"
 }
 
 variable "client_extra_volumes" {
   description = "List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys"
-  default = []
+  default     = []
 }
 
 variable "client_tolerations" {
   description = "A YAML string that can be templated via helm specifying the tolerations for client pods"
-  default = ""
+  default     = ""
 }
 
 variable "client_annotations" {
   description = "A YAML string for client pods"
-  default = ""
+  default     = ""
 }
 
 variable "client_priority_class" {
   description = "Priority class for clients"
-  default = ""
+  default     = ""
 }
 
 variable "enable_sync_catalog" {
   description = "Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html"
-  default = "true"
+  default     = "true"
 }
 
 variable "sync_by_default" {
   description = "If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default."
-  default = "true"
+  default     = "true"
 }
 
 variable "sync_to_consul" {
   description = "If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync."
-  default = "true"
+  default     = "true"
 }
 
 variable "sync_to_k8s" {
   description = " If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync."
-  default = "true"
+  default     = "true"
 }
 
 variable "sync_k8s_prefix" {
   description = " A prefix to prepend to all services registered in Kubernetes from Consul. This defaults to '' where no prefix is prepended; Consul services are synced with the same name to Kubernetes. (Consul -> Kubernetes sync only)"
-  default = ""
+  default     = ""
 }
 
 variable "sync_k8s_tag" {
   description = "An optional tag that is applied to all of the Kubernetes services that are synced into Consul. If nothing is set, this defaults to 'k8s'. (Kubernetes -> Consul sync only)"
-  default = "k8s"
+  default     = "k8s"
 }
 
 variable "sync_cluster_ip_services" {
   description = "If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services."
-  default = "true"
+  default     = "true"
 }
 
 variable "sync_node_port_type" {
   description = "Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead."
-  default = ""
+  default     = ""
 }
 
 variable "enable_ui" {
   description = "Enable Consul UI"
-  default = "false"
+  default     = "false"
 }
 
 variable "ui_service_type" {
   description = "Type of service for Consul UI"
-  default = "ClusterIP"
+  default     = "ClusterIP"
 }
 
 variable "ui_annotations" {
   description = "UI service annotations"
-  default = ""
+  default     = ""
 }
 
 variable "ui_additional_spec" {
   description = "Additional Spec for the UI service"
-  default = ""
+  default     = ""
 }
 
 variable "enable_connect_inject" {
   description = "Enable Connect Injector process"
-  default = "false"
+  default     = "false"
 }
 
 variable "connect_inject_by_default" {
   description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
-  default = "false"
+  default     = "false"
 }
 
 variable "connect_inject_namespace_selector" {
   description = "A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
-  default = ""
+  default     = ""
 }
 
 variable "configure_kube_dns" {
   description = "Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS"
-  default = false
+  default     = false
 }
 
 variable "configure_core_dns" {
   description = "Configure core-dns and OVERWRITE it to resolve .consul domains with Consul DNS"
-  default = false
+  default     = false
 }
 
 variable "core_dns_template" {

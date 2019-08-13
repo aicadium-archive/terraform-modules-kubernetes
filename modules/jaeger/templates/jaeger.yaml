@@ -1,0 +1,58 @@
+provisionDataStore:
+  cassandra: false
+  elasticsearch: true
+
+tag: ${image_tag}
+
+serviceAccounts:
+  spark:
+    create: false
+
+storage:
+  type: elasticsearch
+
+# Begin: Override values on the Elasticsearch subchart to customize for Jaeger
+elasticsearch:
+  cluster:
+    replicas: 2
+    name: "tracing"
+  client:
+    resources: ${es_client_resources}
+  master:
+    replicas: 3
+    resources: ${es_master_resources}
+  data:
+    replicas: ${es_data_replicas}
+    resources: ${es_data_resources}
+    persistence:
+      enabled: true
+      size: ${es_data_persistence_disk_size}
+# End: Override values on the Elasticsearch subchart to customize for Jaeger
+
+agent:
+  enabled: true
+  resources: ${agent_resources}
+
+collector:
+  enabled: true
+  resources: ${collector_resources}
+
+query:
+  enabled: true
+  service:
+    annotations: {}
+    type: ClusterIP
+    # List of IP ranges that are allowed to access the load balancer (if supported)
+    loadBalancerSourceRanges: []
+    port: 80
+  ingress:
+    enabled: true
+    hosts: ${ingress_hosts}
+    annotations: ${ingress_annotations}
+  resources: ${query_resources}
+
+spark:
+  enabled: false
+
+hotrod:
+  enabled: false
