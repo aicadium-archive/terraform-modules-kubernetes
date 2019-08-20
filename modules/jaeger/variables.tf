@@ -186,25 +186,25 @@ variable "curator_cron_schedule" {
 
 variable "curator_actions" {
   description = "Curator actions"
-  default     = {
+  default = {
     actions = {
       1 = {
-        action = "delete_indices"
+        action      = "delete_indices"
         description = "Clean up ES by deleting old indices"
         options = {
-          timeout_override = 300
+          timeout_override      = 300
           continue_if_exception = false
-          disable_action = false
-          ignore_empty_list = true
+          disable_action        = false
+          ignore_empty_list     = true
         }
         filters = [
           {
             filtertype = "age"
-            source = "creation_date"
-            direction = "older"
-            unit = "days"
+            source     = "creation_date"
+            direction  = "older"
+            unit       = "days"
             unit_count = 28
-            exclude = false
+            exclude    = false
           }
         ]
       }
