@@ -15,8 +15,9 @@ storage:
 elasticsearch:
   cluster:
     replicas: 2
-    name: "tracing"
+    name: tracing
   client:
+    name: client
     resources: ${es_client_resources}
   master:
     replicas: 3
