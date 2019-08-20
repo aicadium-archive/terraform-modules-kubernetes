@@ -188,3 +188,8 @@ variable "curator_es_client_name_prefix" {
   description = "Name prefix for Curator to locate the ES client"
   default     = "es"
 }
+
+variable "curator_es_client_port" {
+  description = ""
+  default     = 9200
+}

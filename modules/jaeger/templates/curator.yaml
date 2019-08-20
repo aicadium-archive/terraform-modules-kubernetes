@@ -28,5 +28,5 @@ configMaps:
     client:
       hosts:
         - ${es_client_name_prefix}-elasticsearch-client
-      port: 9200
+      port: ${es_client_port}
       use_ssl: False
