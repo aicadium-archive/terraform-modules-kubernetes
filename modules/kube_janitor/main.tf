@@ -24,10 +24,13 @@ data "template_file" "kube_janitor" {
   template = file("${path.module}/templates/kube_janitor.yaml")
 
   vars = {
-    schedule       = var.kube_janitor_schedule
-    rules          = jsonencode(var.kube_janitor_rules)
-    resources      = jsonencode(var.kube_janitor_resources)
-    serviceAccount = kubernetes_service_account.kube_janitor[0].metadata[0].name
+    schedule  = var.kube_janitor_schedule
+    rules     = jsonencode(var.kube_janitor_rules)
+    resources = jsonencode(var.kube_janitor_resources)
+
+    service_account = kubernetes_service_account.kube_janitor[0].metadata[0].name
+
+    dry_run = jsonencode(var.kube_janitor_dry_run)
   }
 }
 

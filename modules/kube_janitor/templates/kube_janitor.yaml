@@ -2,7 +2,8 @@ schedule: "${schedule}"
 
 janitor:
   resources: ${resources}
+  dryRun: ${dry_run}
 
 rules: ${rules}
 
-serviceAccount: "${serviceAccount}"
+serviceAccount: "${service_account}"
