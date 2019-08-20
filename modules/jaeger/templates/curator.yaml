@@ -4,7 +4,8 @@ image:
 cronjob:
   schedule: "${cron_schedule}"
 configMaps:
-  action_file_yml: ${actions}
+  action_file_yml: |-
+    ${actions}
   config_yml: |-
     ---
     client:
