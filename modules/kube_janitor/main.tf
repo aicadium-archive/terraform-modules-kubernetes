@@ -27,7 +27,10 @@ data "template_file" "kube_janitor" {
     schedule       = var.kube_janitor_schedule
     rules          = jsonencode(var.kube_janitor_rules)
     resources      = jsonencode(var.kube_janitor_resources)
-    serviceAccount = kubernetes_service_account.kube_janitor[0].metadata[0].name
+
+    service_account = kubernetes_service_account.kube_janitor[0].metadata[0].name
+
+    dry_run = jsonencode(var.kube_janitor_dry_run)
   }
 }
 

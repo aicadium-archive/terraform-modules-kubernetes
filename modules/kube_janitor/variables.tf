@@ -56,3 +56,8 @@ variable "kube_janitor_service_account" {
 variable "kube_janitor_working_namespaces" {
   description = "Namespaces where Kube Janitor will clean resources"
 }
+
+variable "kube_janitor_dry_run" {
+  description = "Run Kube Janitor in dry-run mode"
+  default     = false
+}
