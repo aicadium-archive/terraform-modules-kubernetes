@@ -61,6 +61,7 @@ data "template_file" "curator" {
   vars = {
     image_tag             = var.curator_image_tag
     cron_schedule         = var.curator_cron_schedule
+    actions               = jsonencode(var.curator_actions)
     es_client_name_prefix = var.curator_es_client_name_prefix
     es_client_port        = var.curator_es_client_port
   }

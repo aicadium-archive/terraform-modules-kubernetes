@@ -4,24 +4,25 @@ image:
 cronjob:
   schedule: ${cron_schedule}
 configMaps:
-  action_file_yml: |-
-    ---
-    actions:
-      1:
-        action: delete_indices
-        description: "Clean up ES by deleting old indices"
-        options:
-          timeout_override:
-          continue_if_exception: False
-          disable_action: False
-          ignore_empty_list: True
-        filters:
-        - filtertype: age
-          source: creation_date
-          direction: older
-          unit: days
-          unit_count: 28
-          exclude: False
+  action_file_yml: ${actions}
+  # action_file_yml: |-
+  #   ---
+  #   actions:
+  #     1:
+  #       action: delete_indices
+  #       description: "Clean up ES by deleting old indices"
+  #       options:
+  #         timeout_override: 300
+  #         continue_if_exception: False
+  #         disable_action: False
+  #         ignore_empty_list: True
+  #       filters:
+  #       - filtertype: age
+  #         source: creation_date
+  #         direction: older
+  #         unit: days
+  #         unit_count: 28
+  #         exclude: False
   # Having config_yaml WILL override the other config
   config_yml: |-
     ---
