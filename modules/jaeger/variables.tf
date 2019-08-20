@@ -1,3 +1,7 @@
+###########################
+# Jaeger with ES
+###########################
+
 variable "jaeger_enabled" {
   description = "Enable/disable Jaeger"
   default     = false
@@ -135,4 +139,52 @@ variable "jaeger_agent_resources" {
       memory = "16Mi"
     }
   }
+}
+
+###########################
+# Elasticsearch Curator
+###########################
+variable "curator_enabled" {
+  description = "Enable/disable Curator"
+  default     = false
+}
+
+variable "curator_release_name" {
+  description = "Helm release name for Curator"
+  default     = "elasticsearch-curator"
+}
+
+variable "curator_chart_name" {
+  description = "Chart name for Curator"
+  default     = "elasticsearch-curator"
+}
+
+variable "curator_chart_repository" {
+  description = "Chart repository for Curator"
+  default     = "stable"
+}
+
+variable "curator_chart_version" {
+  description = "Chart version for Curator"
+  default     = "2.0.0"
+}
+
+variable "curator_image_tag" {
+  description = "Curator's docker image tag"
+  default     = "5.7.6"
+}
+
+variable "curator_namespace" {
+  description = "Kubernetes namespace to which Curator is deployed"
+  default     = "core"
+}
+
+variable "curator_cron_schedule" {
+  description = "Crontab which Curator will run"
+  default     = "0 16 * * *"
+}
+
+variable "curator_es_client_name_prefix" {
+  description = "Name prefix for Curator to locate the ES client"
+  default     = "es"
 }
