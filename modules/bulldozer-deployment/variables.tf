@@ -43,6 +43,11 @@ variable "bulldozer_ingress_annotations" {
   default     = {}
 }
 
+variable "bulldozer_service_annotations" {
+  description = "Annotation for service object"
+  default     = {}
+}
+
 variable "bulldozer_ingress_host" {
   description = "Ingress host name"
 }
