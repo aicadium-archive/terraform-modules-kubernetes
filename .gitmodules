@@ -1,0 +1,4 @@
+[submodule "modules/bulldozer-deployment"]
+	path = modules/bulldozer-deployment
+	url = https://github.com/basisai/bulldozer-deployment
+	branch = master
