@@ -1,0 +1,63 @@
+# Default values for bulldozer-bot.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: ${replicas}
+
+image:
+  repository: ${bulldozer_image_name}
+  tag: ${bulldozer_image_tag}
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ${name_override}
+fullnameOverride: ${fullname_override}
+
+config:
+  secret_name: ""
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: ${ingress_enabled}
+  annotations: ${ingress_annotations}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ${ingress_host}
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+rbac:
+  create: false
+
+serviceAccount:
+  create: false
+  name: ""
+
+github_app_integration_id: ${github_integration_id}
+github_app_webhook_secret: ${github_webhook_secret}
+github_app_private_key_pem: ${github_private_key_pem}
