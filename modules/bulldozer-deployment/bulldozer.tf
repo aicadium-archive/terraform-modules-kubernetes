@@ -30,5 +30,6 @@ locals {
     ingress_host    = var.bulldozer_ingress_host
 
     ingress_annotations = jsonencode(var.bulldozer_ingress_annotations)
+    service_annotations = jsonencode(var.bulldozer_service_annotations)
   }
 }
