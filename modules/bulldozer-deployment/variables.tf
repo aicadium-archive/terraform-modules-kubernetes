@@ -20,7 +20,7 @@ variable "bulldozer_chart_name" {
 
 variable "bulldozer_chart_version" {
   description = "Version of the chart"
-  default     = "0.1.11"
+  default     = "0.1.12"
 }
 
 variable "bulldozer_chart_repository" {
