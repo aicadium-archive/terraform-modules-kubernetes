@@ -1,8 +1,9 @@
 resource "helm_release" "prometheus" {
   name       = var.release_name
-  chart      = var.chart_name
-  repository = var.chart_repository
-  version    = var.chart_version
+  # chart      = var.chart_name
+  chart      = "/home/ubuntu/Desktop/prometheus"
+  # repository = var.chart_repository
+  # version    = var.chart_version
   namespace  = var.chart_namespace
 
   values = [
