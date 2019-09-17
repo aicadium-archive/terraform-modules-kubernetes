@@ -213,4 +213,4 @@ alertmanager:
     type: ${service_type}
 
 alertmanagerFiles:
-${alertmanager_files}
+  ${alertmanager_files}
