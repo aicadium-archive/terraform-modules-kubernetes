@@ -1,0 +1,131 @@
+# Default values for docker-registry.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: ${replica}
+
+updateStrategy: ${update_strategy}
+  # type: RollingUpdate
+  # rollingUpdate:
+  #   maxSurge: 1
+  #   maxUnavailable: 0
+
+podAnnotations: ${pod_annotations}
+podLabels: ${pod_labels}
+
+image:
+  repository: ${image}
+  tag: ${image_tag}
+  pullPolicy: ${image_pull_policy}
+# imagePullSecrets:
+    # - name: docker
+service:
+  name: registry
+  type: ClusterIP
+  # clusterIP:
+  port: 5000
+  # nodePort:
+  annotations: {}
+  # foo.io/bar: "true"
+ingress:
+  enabled: ${ingress_enabled}
+  path: ${ingress_path}
+  # Used to create an Ingress record.
+  hosts: ${ingress_hosts}
+  annotations: ${ingress_annotations}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  labels: ${ingress_labels}
+  tls: ${ingress_tls}
+    # Secrets must be manually created in the namespace.
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+resources: ${resources}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+persistence:
+  enabled: ${pv_enabled}
+  accessMode: ${pv_access_mode}
+  size: ${pv_size}
+  storageClass: "${pv_storage_class}"
+
+# set the type of filesystem to use: filesystem, s3
+storage: ${storage}
+
+# Set this to name of secret for tls certs
+# tlsSecretName: registry.docker.example.com
+secrets:
+  haSharedSecret: ""
+  htpasswd: ""
+  azure: ${azure_secrets}
+# Secrets for Azure
+#   azure:
+#     accountName: ""
+#     accountKey: ""
+#     container: ""
+  s3: ${s3_secrets}
+# Secrets for S3 access and secret keys
+#   s3:
+#     accessKey: ""
+#     secretKey: ""
+  swift: ${swift_secrets}
+# Secrets for Swift username and password
+#   swift:
+#     username: ""
+#     password: ""
+
+s3: ${s3}
+# Options for s3 storage type:
+# s3:
+#  region: us-east-1
+#  regionEndpoint: s3.us-east-1.amazonaws.com
+#  bucket: my-bucket
+#  encrypt: false
+#  secure: true
+
+swift: ${swift}
+# Options for swift storage type:
+# swift:
+#  authurl: http://swift.example.com/
+#  container: my-container
+
+configData: ${configuration}
+  # version: 0.1
+  # log:
+  #   fields:
+  #     service: registry
+  # storage:
+  #   cache:
+  #     blobdescriptor: inmemory
+  # http:
+  #   addr: :5000
+  #   headers:
+  #     X-Content-Type-Options: [nosniff]
+  # health:
+  #   storagedriver:
+  #     enabled: true
+  #     interval: 10s
+  #     threshold: 3
+
+securityContext:
+  enabled: ${security_context_enabled}
+  runAsUser: ${run_as_user}
+  fsGroup: ${fs_group}
+
+priorityClassName: ${priority_class_name}
+
+podDisruptionBudget: ${pod_disruption_budget}
+  # maxUnavailable: 1
+  # minAvailable: 2
+
+nodeSelector: ${node_selector}
+
+tolerations: ${tolerations}
