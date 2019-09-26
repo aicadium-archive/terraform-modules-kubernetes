@@ -138,6 +138,16 @@ variable "storage" {
   default     = "filesystem"
 }
 
+variable "s3" {
+  description = "Parameters for S3 storage"
+  default     = {}
+}
+
+variable "swift" {
+  description = "Parameters for Swift storage"
+  default     = {}
+}
+
 variable "azure_secrets" {
   description = "Secrets for Azure storage"
   default     = {}
@@ -174,7 +184,7 @@ variable "configuration" {
     http = {
       addr = ":5000"
       headers = {
-        "X-Content-Type-Options" = "[nosniff]"
+        "X-Content-Type-Options" = ["nosniff"]
       }
     }
 

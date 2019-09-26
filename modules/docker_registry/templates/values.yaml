@@ -55,7 +55,7 @@ persistence:
   enabled: ${pv_enabled}
   accessMode: ${pv_access_mode}
   size: ${pv_size}
-  storageClass: ${pv_storage_class}
+  storageClass: "${pv_storage_class}"
 
 # set the type of filesystem to use: filesystem, s3
 storage: ${storage}
@@ -82,6 +82,7 @@ secrets:
 #     username: ""
 #     password: ""
 
+s3: ${s3}
 # Options for s3 storage type:
 # s3:
 #  region: us-east-1
@@ -90,6 +91,7 @@ secrets:
 #  encrypt: false
 #  secure: true
 
+swift: ${swift}
 # Options for swift storage type:
 # swift:
 #  authurl: http://swift.example.com/

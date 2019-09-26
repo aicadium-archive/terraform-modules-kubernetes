@@ -27,6 +27,9 @@ locals {
 
     storage = var.storage
 
+    s3    = jsonencode(var.s3)
+    swift = jsonencode(var.swift)
+
     azure_secrets = jsonencode(var.azure_secrets)
     s3_secrets    = jsonencode(var.s3_secrets)
     swift_secrets = jsonencode(var.swift_secrets)
