@@ -18,6 +18,11 @@ variable "chart_version" {
   default     = ""
 }
 
+variable "chart_repository" {
+  description = "Chart repository"
+  default     = ""
+}
+
 variable "namespace" {
   description = "Namespace to deploy resources to"
   default     = "default"
