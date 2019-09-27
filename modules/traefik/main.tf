@@ -132,6 +132,7 @@ locals {
 
     secret_files = jsonencode(var.secret_files)
 
-    kv_store_acme = var.kv_store_acme
+    kv_store_acme            = var.kv_store_acme
+    kv_acme_storage_location = var.kv_acme_storage_location
   }
 }

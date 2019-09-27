@@ -26,7 +26,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = ""
+  default     = "1.78.2"
 }
 
 variable "chart_namespace" {
@@ -186,6 +186,11 @@ variable "ingress_class" {
 variable "kv_store_acme" {
   description = "Use the chart to configure Traefik to Store ACME certificates on KV"
   default     = "false"
+}
+
+variable "kv_acme_storage_location" {
+  description = "Path in KV store to store ACME certificates"
+  default     = "traefik/acme/account"
 }
 
 variable "kv_provider" {
