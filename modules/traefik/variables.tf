@@ -26,7 +26,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = ""
+  default     = "1.78.2"
 }
 
 variable "chart_namespace" {
