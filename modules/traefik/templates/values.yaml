@@ -78,6 +78,7 @@ ssl:
 
 kvprovider:
   storeAcme: ${kv_store_acme}
+  acmeStorageLocation: ${kv_acme_storage_location}
   ${indent(2, kv_provider)}
 
 acme:

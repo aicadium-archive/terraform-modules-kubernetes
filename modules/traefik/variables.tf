@@ -188,6 +188,11 @@ variable "kv_store_acme" {
   default     = "false"
 }
 
+variable "kv_acme_storage_location" {
+  description = "Path in KV store to store ACME certificates"
+  default     = "traefik/acme/account"
+}
+
 variable "kv_provider" {
   description = "KV Provider Configuration. See https://github.com/helm/charts/blob/62b33b47d8ffd8c9fa2c727a2a962f1754a0eb5d/stable/traefik/values.yaml#L119 for the keys"
   default     = {}
