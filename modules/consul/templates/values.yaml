@@ -7,6 +7,20 @@ global:
   imageK8S: ${image_k8s}
   datacenter: ${datacenter}
 
+  # Gossip encryption key. To enable gossip encryption, provide the name of
+  # a Kubernetes secret that contains a gossip key. You can create a gossip
+  # key with the "consul keygen" command.
+  # See https://www.consul.io/docs/commands/keygen.html
+  gossipEncryption:
+    secretName: ${gossip_secret}
+    secretKey: ${gossip_key}
+
+  # bootstrapACLs will automatically create and assign ACL tokens within
+  # the Consul cluster. This currently requires enabling both servers and
+  # clients within Kubernetes. Additionally requires Consul v1.4+ and
+  # consul-k8s v0.8.0+.
+  bootstrapACLs: false
+
 server:
   replicas: ${server_replicas}
   bootstrapExpect: ${server_replicas}
