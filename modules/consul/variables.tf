@@ -292,6 +292,23 @@ variable "core_dns_labels" {
   }
 }
 
+###########################
+# Consul Security
+###########################
+variable "gossip_encryption_key" {
+  description = "32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable"
+  default     = null
+}
+
+variable "secret_name" {
+  description = "Name of the secret for Consul"
+  default     = "consul"
+}
+
+variable "secret_annotation" {
+  description = "Annotations for the Consul Secret"
+  default     = {}
+}
 
 ###########################
 # Consul ESM

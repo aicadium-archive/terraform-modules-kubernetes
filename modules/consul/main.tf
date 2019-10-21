@@ -20,6 +20,9 @@ data "template_file" "values" {
 
     datacenter = var.server_datacenter
 
+    gossip_secret = var.gossip_encryption_key != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    gossip_key    = var.gossip_encryption_key != null ? "gossip" : "null"
+
     consul_domain         = var.consul_domain
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
@@ -57,5 +60,21 @@ data "template_file" "values" {
     enable_connect_inject             = var.enable_connect_inject
     connect_inject_by_default         = var.connect_inject_by_default
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
+  }
+}
+
+resource "kubernetes_secret" "secrets" {
+  count = var.gossip_encryption_key != null ? 1 : 0
+
+  metadata {
+    name        = var.secret_name
+    annotations = var.secret_annotation
+    namespace   = var.chart_namespace
+  }
+
+  type = "Opaque"
+
+  data = {
+    gossip = var.gossip_encryption_key
   }
 }
