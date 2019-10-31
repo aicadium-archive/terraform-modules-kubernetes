@@ -1,6 +1,7 @@
 # Deploy Consul Exporter for Prometheus
 resource "helm_release" "consul_exporter" {
   count      = var.enable_exporter ? 1 : 0
+  depends_on = [helm_release.consul]
 
   name       = var.exporter_release_name
   chart      = var.exporter_chart_name
