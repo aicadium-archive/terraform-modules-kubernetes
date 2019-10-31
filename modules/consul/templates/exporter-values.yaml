@@ -22,4 +22,4 @@ consulServer: ${consul_server_and_port}
 
 service:
   annotations:
-    prometheus.io/scrape: "true"
+    ${service_annotations}

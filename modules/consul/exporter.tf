@@ -28,5 +28,7 @@ data "template_file" "exporter_values" {
     affinity  = jsonencode(var.exporter_affinity)
 
     consul_server_and_port = "consul-server.${var.chart_namespace}.svc.cluster.local:8500"
+
+    service_annotations = indent(4, var.exporter_service_annotations)
   }
 }

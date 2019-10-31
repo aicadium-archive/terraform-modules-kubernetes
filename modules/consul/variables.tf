@@ -503,3 +503,8 @@ variable "exporter_affinity" {
   description = "Affinity for Consul Exporter"
   default     = {}
 }
+
+variable "exporter_service_annotations" {
+  description = "A YAML string for describing Consul Exporter service's annotations"
+  default     = ""
+}
