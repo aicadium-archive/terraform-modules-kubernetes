@@ -473,7 +473,7 @@ variable "exporter_chart_version" {
 
 variable "exporter_replica" {
   description = "Number of Consul Exporter replicas"
-  default     = 3
+  default     = 1
 }
 
 variable "exporter_image" {

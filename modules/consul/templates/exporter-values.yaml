@@ -19,3 +19,7 @@ resources: ${resources}
 affinity: ${affinity}
 
 consulServer: ${consul_server_and_port}
+
+service:
+  annotations:
+    prometheus.io/scrape: "true"
