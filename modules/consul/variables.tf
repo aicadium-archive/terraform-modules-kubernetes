@@ -442,3 +442,64 @@ variable "esm_init_container_set_sysctl" {
   description = "Enable setting sysctl settings via a privileged container to allow pings"
   default     = false
 }
+
+#################################
+# Consul Exporter for Prometheus
+#################################
+variable "enable_exporter" {
+  description = "Enable Consul Exporter deployment"
+  default     = false
+}
+
+variable "exporter_release_name" {
+  description = "Name of the Consul Exporter Chart Release"
+  default     = "consul-exporter"
+}
+
+variable "exporter_chart_name" {
+  description = "Name of the Consul Exporter Chart name"
+  default     = "prometheus-consul-exporter"
+}
+
+variable "exporter_chart_repository" {
+  description = "Consul Exporter Chart repository"
+  default     = "stable"
+}
+
+variable "exporter_chart_version" {
+  description = "Consul Exporter Chart version"
+  default     = "0.1.4"
+}
+
+variable "exporter_replica" {
+  description = "Number of Consul Exporter replicas"
+  default     = 3
+}
+
+variable "exporter_image" {
+  description = "Docker image for Consul Exporter"
+  default     = "prom/consul-exporter"
+}
+
+variable "exporter_tag" {
+  description = "Docker Image tag for Consul Exporter"
+  default     = "v0.4.0"
+}
+
+variable "exporter_resources" {
+  description = "Resources for Consul Exporter"
+
+  default = {
+    requests = {
+      cpu = "200m"
+    }
+    limits = {
+      memory = "256Mi"
+    }
+  }
+}
+
+variable "exporter_affinity" {
+  description = "Affinity for Consul Exporter"
+  default     = {}
+}
