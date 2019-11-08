@@ -36,6 +36,7 @@ data "template_file" "values" {
     server_annotations    = jsonencode(var.server_annotations)
 
     client_enabled        = var.client_enabled
+    client_grpc           = var.client_grpc
     client_resources      = jsonencode(jsonencode(var.client_resources))
     client_extra_config   = jsonencode(var.client_extra_config)
     client_extra_volumes  = jsonencode(var.client_extra_volumes)
@@ -57,6 +58,7 @@ data "template_file" "values" {
     ui_annotations     = jsonencode(var.ui_annotations)
     ui_additional_spec = jsonencode(var.ui_additional_spec)
 
+    connect_enable                    = var.connect_enable
     enable_connect_inject             = var.enable_connect_inject
     connect_inject_by_default         = var.connect_inject_by_default
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
