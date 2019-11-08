@@ -131,6 +131,11 @@ variable "client_enabled" {
   default     = "true"
 }
 
+variable "client_grpc" {
+  description = "Enable GRPC port for clients. Required for Connect Inject"
+  default     = false
+}
+
 variable "client_resources" {
   description = "Resources for clients"
   default = {
@@ -228,6 +233,11 @@ variable "ui_annotations" {
 variable "ui_additional_spec" {
   description = "Additional Spec for the UI service"
   default     = ""
+}
+
+variable "connect_enable" {
+  description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
+  default     = false
 }
 
 variable "enable_connect_inject" {

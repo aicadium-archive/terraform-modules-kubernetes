@@ -31,7 +31,7 @@ server:
     enabled: true
   extraConfig: ${server_extra_config}
   extraVolumes: ${server_extra_volumes}
-  connect: false
+  connect: ${connect_enable}
   affinity: ${server_affinity}
   tolerations: ${server_tolerations}
   priorityClassName: ${server_priority_class}
@@ -39,7 +39,7 @@ server:
 
 client:
   enabled: ${client_enabled}
-  grpc: false # Required for connect
+  grpc: ${client_grpc} # Required for connect
   resources: ${client_resources}
   extraConfig: ${client_extra_config}
   extraVolumes: ${client_extra_volumes}
