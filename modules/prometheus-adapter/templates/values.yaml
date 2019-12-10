@@ -1,5 +1,5 @@
 # Default values for k8s-prometheus-adapter..
-affinity: {}
+affinity: ${affinity}
 
 image:
   repository: ${image}
