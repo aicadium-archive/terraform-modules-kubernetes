@@ -86,6 +86,10 @@ nodeExporter:
   pod:
     labels: ${labels}
 
+  podDisruptionBudget:
+    enabled: ${pdb_enable}
+    maxUnavailable: ${pdb_max_unavailable}
+
   ## node-exporter resource limits & requests
   ## Ref: https://kubernetes.io/docs/user-guide/compute-resources/
   ##

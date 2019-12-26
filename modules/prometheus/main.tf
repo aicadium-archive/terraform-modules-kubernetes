@@ -110,6 +110,9 @@ data "template_file" "alertmanager" {
 
     pod_security_policy_annotations = jsonencode(var.alertmanager_pod_security_policy_annotations)
 
+    pdb_enable          = jsonencode(var.alertmanager_pdb_enable)
+    pdb_max_unavailable = jsonencode(var.alertmanager_pdb_max_unavailable)
+
     alertmanager_files = indent(2, var.alertmanager_files)
   }
 }
@@ -148,6 +151,9 @@ data "template_file" "kube_state_metrics" {
     service_lb_source_ranges = jsonencode(var.kube_state_metrics_service_lb_source_ranges)
     service_port             = var.kube_state_metrics_service_port
     service_type             = var.kube_state_metrics_service_type
+
+    pdb_enable          = jsonencode(var.kube_state_metrics_pdb_enable)
+    pdb_max_unavailable = jsonencode(var.kube_state_metrics_pdb_max_unavailable)
 
     pod_security_policy_annotations = jsonencode(var.kube_state_metrics_pod_security_policy_annotations)
   }
@@ -197,6 +203,9 @@ data "template_file" "node_exporter" {
     service_type             = var.node_exporter_service_type
 
     pod_security_policy_annotations = jsonencode(var.node_exporter_pod_security_policy_annotations)
+
+    pdb_enable          = jsonencode(var.node_exporter_pdb_enable)
+    pdb_max_unavailable = jsonencode(var.node_exporter_pdb_max_unavailable)
   }
 }
 
@@ -246,6 +255,11 @@ data "template_file" "pushgateway" {
     pv_annotations    = jsonencode(var.pushgateway_pv_annotations)
     pv_existing_claim = var.pushgateway_pv_existing_claim
     pv_size           = var.pushgateway_pv_size
+
+    pod_security_policy_annotations = jsonencode(var.pushgateway_pod_security_policy_annotations)
+
+    pdb_enable          = jsonencode(var.pushgateway_pdb_enable)
+    pdb_max_unavailable = jsonencode(var.pushgateway_pdb_max_unavailable)
   }
 }
 
@@ -324,5 +338,8 @@ data "template_file" "server" {
     server_config = indent(2, var.server_config)
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
+
+    pdb_enable          = jsonencode(var.server_pdb_enable)
+    pdb_max_unavailable = jsonencode(var.server_pdb_max_unavailable)
   }
 }

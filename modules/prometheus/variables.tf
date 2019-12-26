@@ -362,6 +362,16 @@ variable "alertmanager_pod_security_policy_annotations" {
   }
 }
 
+variable "alertmanager_pdb_enable" {
+  description = "Enable PDB"
+  default     = true
+}
+
+variable "alertmanager_pdb_max_unavailable" {
+  description = "Max unavailable pods for Alertmanager"
+  default     = 1
+}
+
 variable "alertmanager_files" {
   description = "Additional ConfigMap entries for Alertmanager in YAML string"
 
@@ -523,6 +533,16 @@ variable "kube_state_metrics_pod_security_policy_annotations" {
   }
 }
 
+variable "kube_state_metrics_pdb_enable" {
+  description = "Enable PDB"
+  default     = true
+}
+
+variable "kube_state_metrics_pdb_max_unavailable" {
+  description = "Max unavailable pods for Kube State Metrics"
+  default     = 1
+}
+
 ################################
 # Node Exporter
 ################################
@@ -679,6 +699,16 @@ variable "node_exporter_pod_security_policy_annotations" {
     "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
     "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
   }
+}
+
+variable "node_exporter_pdb_enable" {
+  description = "Enable PDB"
+  default     = true
+}
+
+variable "node_exporter_pdb_max_unavailable" {
+  description = "Max unavailable pods"
+  default     = 1
 }
 
 ################################
@@ -855,6 +885,26 @@ variable "pushgateway_service_port" {
 variable "pushgateway_service_type" {
   description = "Type of service for Pushgateway"
   default     = "ClusterIP"
+}
+
+variable "pushgateway_pod_security_policy_annotations" {
+  description = "PodSecurityPolicy annotations for Pushgateway"
+  default = {
+    "seccomp.security.alpha.kubernetes.io/allowedProfileNames" = "docker/default,runtime/default"
+    "apparmor.security.beta.kubernetes.io/allowedProfileNames" = "runtime/default"
+    "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
+    "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
+  }
+}
+
+variable "pushgateway_pdb_enable" {
+  description = "Enable PDB"
+  default     = true
+}
+
+variable "pushgateway_pdb_max_unavailable" {
+  description = "Max unavailable pods"
+  default     = 1
 }
 
 ################################
@@ -1131,6 +1181,16 @@ variable "server_headless_annotations" {
 variable "server_headless_labels" {
   description = "Labels for server StatefulSet headless service"
   default     = {}
+}
+
+variable "server_pdb_enable" {
+  description = "Enable PDB"
+  default     = true
+}
+
+variable "server_pdb_max_unavailable" {
+  description = "Max unavailable pods"
+  default     = 1
 }
 
 variable "server_alerts" {
