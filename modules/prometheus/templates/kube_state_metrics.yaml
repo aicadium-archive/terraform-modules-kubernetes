@@ -45,6 +45,10 @@ kubeStateMetrics:
 
   replicaCount: ${replica}
 
+  podDisruptionBudget:
+    enabled: ${pdb_enable}
+    maxUnavailable: ${pdb_max_unavailable}
+
   ## kube-state-metrics resource requests and limits
   ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
   ##

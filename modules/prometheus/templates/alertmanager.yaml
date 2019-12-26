@@ -105,6 +105,13 @@ alertmanager:
   ##
   affinity: ${affinity}
 
+  ## PodDisruptionBudget settings
+  ## ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+  ##
+  podDisruptionBudget:
+    enabled: ${pdb_enable}
+    maxUnavailable: ${pdb_max_unavailable}
+
   ## Use an alternate scheduler, e.g. "stork".
   ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
   ##
