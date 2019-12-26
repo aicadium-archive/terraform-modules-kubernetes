@@ -23,6 +23,11 @@ variable "chart_namespace" {
   default     = "default"
 }
 
+variable "pod_security_policy_enable" {
+  description = "Create PodSecurityPolicy Resources"
+  default     = true
+}
+
 variable "image_pull_secrets" {
   description = "Image pull secrets, if any"
   default     = {}
@@ -347,6 +352,16 @@ variable "alertmanager_service_type" {
   default     = "ClusterIP"
 }
 
+variable "alertmanager_pod_security_policy_annotations" {
+  description = "PodSecurityPolicy annotations for alertmanager"
+  default = {
+    "seccomp.security.alpha.kubernetes.io/allowedProfileNames" = "docker/default,runtime/default"
+    "apparmor.security.beta.kubernetes.io/allowedProfileNames" = "runtime/default"
+    "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
+    "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
+  }
+}
+
 variable "alertmanager_files" {
   description = "Additional ConfigMap entries for Alertmanager in YAML string"
 
@@ -498,6 +513,16 @@ variable "kube_state_metrics_service_type" {
   default     = "ClusterIP"
 }
 
+variable "kube_state_metrics_pod_security_policy_annotations" {
+  description = "PodSecurityPolicy annotations for Kube State Metrics"
+  default = {
+    "seccomp.security.alpha.kubernetes.io/allowedProfileNames" = "docker/default,runtime/default"
+    "apparmor.security.beta.kubernetes.io/allowedProfileNames" = "runtime/default"
+    "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
+    "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
+  }
+}
+
 ################################
 # Node Exporter
 ################################
@@ -534,11 +559,6 @@ variable "node_exporter_pull_policy" {
 variable "node_exporter_enable_pod_security_policy" {
   description = "Create PodSecurityPolicy for Node Exporter"
   default     = "false"
-}
-
-variable "node_exporter_pod_security_policy_annotations" {
-  description = "Annotations for the PodSecurityPolicy for Node Exporter"
-  default     = {}
 }
 
 variable "node_exporter_priority_class_name" {
@@ -649,6 +669,16 @@ variable "node_exporter_host_path_mounts" {
 variable "node_exporter_config_map_mounts" {
   description = "ConfigMap Mounts for Node Exporter"
   default     = []
+}
+
+variable "node_exporter_pod_security_policy_annotations" {
+  description = "PodSecurityPolicy annotations for Node exporter"
+  default = {
+    "seccomp.security.alpha.kubernetes.io/allowedProfileNames" = "docker/default,runtime/default"
+    "apparmor.security.beta.kubernetes.io/allowedProfileNames" = "runtime/default"
+    "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
+    "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
+  }
 }
 
 ################################
@@ -963,6 +993,16 @@ EOF
 variable "server_security_context_json" {
   description = "JSON string for security context for server pods"
   default     = ""
+}
+
+variable "server_pod_security_policy_annotations" {
+  description = "PodSecurityPolicy annotations for server"
+  default = {
+    "seccomp.security.alpha.kubernetes.io/allowedProfileNames" = "docker/default,runtime/default"
+    "apparmor.security.beta.kubernetes.io/allowedProfileNames" = "runtime/default"
+    "seccomp.security.alpha.kubernetes.io/defaultProfileName"  = "runtime/default"
+    "apparmor.security.beta.kubernetes.io/defaultProfileName"  = "runtime/default"
+  }
 }
 
 variable "server_service_annotations" {

@@ -19,6 +19,8 @@ data "template_file" "general" {
   template = file("${path.module}/templates/general.yaml")
 
   vars = {
+    pod_security_policy_enable = jsonencode(var.pod_security_policy_enable)
+
     image_pull_secrets = jsonencode(var.image_pull_secrets)
 
     configmap_name              = var.configmap_name
@@ -106,6 +108,8 @@ data "template_file" "alertmanager" {
     pv_existing_claim = var.alertmanager_pv_existing_claim
     pv_size           = var.alertmanager_pv_size
 
+    pod_security_policy_annotations = jsonencode(var.alertmanager_pod_security_policy_annotations)
+
     alertmanager_files = indent(2, var.alertmanager_files)
   }
 }
@@ -144,6 +148,8 @@ data "template_file" "kube_state_metrics" {
     service_lb_source_ranges = jsonencode(var.kube_state_metrics_service_lb_source_ranges)
     service_port             = var.kube_state_metrics_service_port
     service_type             = var.kube_state_metrics_service_type
+
+    pod_security_policy_annotations = jsonencode(var.kube_state_metrics_pod_security_policy_annotations)
   }
 }
 
@@ -160,7 +166,6 @@ data "template_file" "node_exporter" {
     tag         = var.node_exporter_tag
     pull_policy = var.node_exporter_pull_policy
 
-    enable_pod_security_policy      = var.node_exporter_enable_pod_security_policy
     pod_security_policy_annotations = jsonencode(var.node_exporter_pod_security_policy_annotations)
 
     replica   = var.node_exporter_replica
@@ -190,6 +195,8 @@ data "template_file" "node_exporter" {
     service_lb_source_ranges = jsonencode(var.node_exporter_service_lb_source_ranges)
     service_port             = var.node_exporter_service_port
     service_type             = var.node_exporter_service_type
+
+    pod_security_policy_annotations = jsonencode(var.node_exporter_pod_security_policy_annotations)
   }
 }
 
@@ -315,5 +322,7 @@ data "template_file" "server" {
     alerts        = indent(2, var.server_alerts)
     rules         = indent(2, var.server_rules)
     server_config = indent(2, var.server_config)
+
+    pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
   }
 }
