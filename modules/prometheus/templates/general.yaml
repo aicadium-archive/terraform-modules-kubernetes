@@ -1,3 +1,6 @@
+podSecurityPolicy:
+  enabled: ${pod_security_policy_enable}
+
 imagePullSecrets: ${image_pull_secrets}
 
 ## Define serviceAccount names for components. Defaults to component's fully qualified name.
