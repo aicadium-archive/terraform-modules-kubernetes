@@ -3,10 +3,6 @@ minimumMasterNodes : 2
 
 esMajorVersion: 6
 
-extraEnvs:
-  - name: discovery.zen.ping.unicast.hosts
-    value: jaeger-elasticsearch-discovery
-
 clusterName: tracing
 nodeGroup: master
 
