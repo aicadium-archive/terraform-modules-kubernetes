@@ -1,0 +1,37 @@
+replicas: 6
+
+esMajorVersion: 6
+
+extraEnvs:
+  - name: discovery.zen.ping.unicast.hosts
+    value: "jaeger-elasticsearch-discovery"
+
+clusterName: "jaeger"
+nodeGroup: "data"
+
+roles:
+  master: "false"
+  ingest: "false"
+  data: "true"
+
+
+
+
+image: docker.elastic.co/elasticsearch/elasticsearch-oss
+imageTag: 6.8.2
+
+persistence:
+  enabled: true
+
+volumeClaimTemplate:
+  resources:
+    requests:
+      storage: 100Gi
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 3Gi
+  requests:
+    cpu: 25m
+    memory: 3Gi
