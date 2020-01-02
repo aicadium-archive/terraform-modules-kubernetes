@@ -7,10 +7,10 @@ extraEnvs:
     value: "jaeger-elasticsearch-discovery"
 
 clusterName: "tracing"
-nodeGroup: "data"
+nodeGroup: "master"
 
 roles:
-  master: "false"
+  master: "true"
   ingest: "false"
   data: "true"
 
@@ -29,6 +29,8 @@ persistence:
   enabled: true
 
 volumeClaimTemplate:
+  accessModes:
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi
