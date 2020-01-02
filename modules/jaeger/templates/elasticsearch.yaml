@@ -16,6 +16,9 @@ roles:
 
 
 
+rbac:
+  create: true
+
 podSecurityPolicy:
   create: true
 
