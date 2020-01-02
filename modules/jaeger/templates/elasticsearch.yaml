@@ -7,10 +7,10 @@ extraEnvs:
     value: "jaeger-elasticsearch-discovery"
 
 clusterName: "tracing"
-nodeGroup: "master"
+nodeGroup: "data"
 
 roles:
-  master: "true"
+  master: "false"
   ingest: "false"
   data: "true"
 
