@@ -142,3 +142,8 @@ variable "env" {
   description = "Environment variables for the proxy container"
   default     = []
 }
+
+variable "service_account_annotations" {
+  description = "Annotations for Service account"
+  default     = {}
+}

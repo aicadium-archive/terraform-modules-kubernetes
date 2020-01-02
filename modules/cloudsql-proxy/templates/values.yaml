@@ -26,6 +26,7 @@ serviceAccount:
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
+  annotations: ${service_account_annotations}
 
 podSecurityContext: ${pod_security_context}
   # fsGroup: 2000

@@ -49,5 +49,7 @@ data "template_file" "values" {
     affinity      = jsonencode(var.affinity)
 
     env = jsonencode(var.env)
+
+    service_account_annotations = jsonencode(var.service_account_annotations)
   }
 }
