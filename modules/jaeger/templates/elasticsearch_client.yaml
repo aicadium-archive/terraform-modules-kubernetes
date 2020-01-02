@@ -1,0 +1,40 @@
+replicas: 2
+
+clusterName: tracing
+nodeGroup: client
+
+esMajorVersion: 6
+
+roles:
+  master: "false"
+  ingest: "false"
+  data: "false"
+
+volumeClaimTemplate:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi # Currently needed till pvcs are made optional
+
+persistence:
+  enabled: false
+
+
+
+rbac:
+  create: true
+
+podSecurityPolicy:
+  create: true
+
+image: docker.elastic.co/elasticsearch/elasticsearch-oss
+imageTag: 6.8.2
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 1536Mi
+  requests:
+    cpu: 25m
+    memory: 512Mi
