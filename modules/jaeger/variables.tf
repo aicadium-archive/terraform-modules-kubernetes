@@ -142,6 +142,39 @@ variable "jaeger_agent_resources" {
 }
 
 ###########################
+# Elasticsearch cluster
+###########################
+variable "elasticsearch_enabled" {
+  description = "Enable/disable Elasticsearch"
+  default     = false
+}
+
+variable "elasticsearch_release_name" {
+  description = "Helm release name for Elasticsearch"
+  default     = "jaeger-elasticsearch"
+}
+
+variable "elasticsearch_chart_name" {
+  description = "Chart name for Elasticsearch"
+  default     = "elasticsearch"
+}
+
+variable "elasticsearch_chart_repository" {
+  description = "Chart repository for Elasticsearch"
+  default     = "elastic"
+}
+
+variable "elasticsearch_chart_version" {
+  description = "Chart version for Elasticsearch"
+  default     = "7.5.1"
+}
+
+variable "elasticsearch_namespace" {
+  description = "Kubernetes namespace to which Elasticsearch is deployed"
+  default     = "core"
+}
+
+###########################
 # Elasticsearch Curator
 ###########################
 variable "curator_enabled" {

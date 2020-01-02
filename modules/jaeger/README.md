@@ -8,3 +8,8 @@ Helm chart that is used resides in Jaeger OSS project's official repository. To 
 ```bash
 helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
 ```
+
+Also add the Elastic Helm repo for the official Elasticsearch chart:
+```bash
+helm repo add elastic https://helm.elastic.co
+```
