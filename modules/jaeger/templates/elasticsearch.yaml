@@ -6,7 +6,7 @@ extraEnvs:
   - name: discovery.zen.ping.unicast.hosts
     value: "jaeger-elasticsearch-discovery"
 
-clusterName: "jaeger"
+clusterName: "tracing"
 nodeGroup: "data"
 
 roles:
