@@ -16,6 +16,8 @@ roles:
 
 
 
+podSecurityPolicy:
+  create: true
 
 image: docker.elastic.co/elasticsearch/elasticsearch-oss
 imageTag: 6.8.2
