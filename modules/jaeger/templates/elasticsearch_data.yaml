@@ -1,5 +1,4 @@
-replicas: 3
-minimumMasterNodes : 2
+replicas: 4
 
 esMajorVersion: 6
 
@@ -8,19 +7,12 @@ extraEnvs:
     value: jaeger-elasticsearch-discovery
 
 clusterName: tracing
-nodeGroup: master
+nodeGroup: data
 
 roles:
-  master: "true"
-  ingest: "true"
-  data: "false"
-
-volumeClaimTemplate:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
+  master: "false"
+  ingest: "false"
+  data: "true"
 
 
 
@@ -33,10 +25,20 @@ podSecurityPolicy:
 image: docker.elastic.co/elasticsearch/elasticsearch-oss
 imageTag: 6.8.2
 
+persistence:
+  enabled: true
+
+volumeClaimTemplate:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+
 resources:
   limits:
     cpu: "1"
-    memory: 1536Mi
+    memory: 3Gi
   requests:
     cpu: 25m
-    memory: 512Mi
+    memory: 3Gi
