@@ -18,6 +18,8 @@ data "template_file" "values" {
     image             = "${var.consul_image_name}:${var.consul_image_tag}"
     image_k8s         = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
 
+    pod_security_policy_enable = var.pod_security_policy_enable
+
     datacenter = var.server_datacenter
 
     gossip_secret = var.gossip_encryption_key != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
