@@ -19,17 +19,17 @@ variable "jaeger_chart_name" {
 
 variable "jaeger_chart_repository" {
   description = "Chart repository for Jaeger"
-  default     = "incubator"
+  default     = "jaegertracing"
 }
 
 variable "jaeger_chart_version" {
   description = "Chart version for Jaeger"
-  default     = "0.13.0"
+  default     = "0.18.2"
 }
 
 variable "jaeger_image_tag" {
   description = "Jaeger's docker image tag"
-  default     = "1.13.1"
+  default     = "1.16.0"
 }
 
 variable "jaeger_namespace" {
