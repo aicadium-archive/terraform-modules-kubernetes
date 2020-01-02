@@ -6,6 +6,7 @@ global:
   image: ${image}
   imageK8S: ${image_k8s}
   datacenter: ${datacenter}
+  enablePodSecurityPolicies: ${pod_security_policy_enable}
 
   # Gossip encryption key. To enable gossip encryption, provide the name of
   # a Kubernetes secret that contains a gossip key. You can create a gossip

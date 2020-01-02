@@ -53,6 +53,11 @@ variable "consul_domain" {
   default     = "consul"
 }
 
+variable "pod_security_policy_enable" {
+  description = "Create PodSecurityPolicy Resources"
+  default     = true
+}
+
 variable "server_replicas" {
   description = "Number of server replicas to run"
   default     = 5
