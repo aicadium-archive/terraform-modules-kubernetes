@@ -116,6 +116,7 @@ locals {
     prometheus_service_name        = var.prometheus_service_name
     prometheus_service_annotations = jsonencode(var.prometheus_service_annotations)
     prometheus_service_port        = var.prometheus_service_port
+    prometheus_service_type        = var.prometheus_service_type
 
     env               = jsonencode(var.env)
     startup_arguments = jsonencode(var.startup_arguments)
