@@ -2,7 +2,7 @@ locals {
   jaeger_enabled   = var.jaeger_enabled ? 1 : 0
   jaeger_namespace = var.jaeger_namespace
 
-  elasticsearch_enabled   = var.elasticsearch_enabled ? 1 : 0
+  elasticsearch_enabled   = var.jaeger_enabled ? 1 : 0
   elasticsearch_namespace = var.elasticsearch_namespace
 
   curator_enabled   = var.curator_enabled ? 1 : 0

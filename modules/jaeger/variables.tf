@@ -1,5 +1,5 @@
 ###########################
-# Jaeger with ES
+# Jaeger
 ###########################
 
 variable "jaeger_enabled" {
@@ -47,108 +47,6 @@ variable "jaeger_ui_ingress_annotations" {
   default     = {}
 }
 
-variable "jaeger_es_image" {
-  description = "Elasticsearch image"
-  default     = "docker.elastic.co/elasticsearch/elasticsearch-oss"
-}
-
-variable "jaeger_es_image_tag" {
-  description = "Elasticsearch imagetag"
-  default     = "6.8.2"
-}
-
-variable "jaeger_es_major_version" {
-  description = "Used to set major version specific configuration. If you are using a custom image and not running the default Elasticsearch version you will need to set this to the version you are running"
-  default     = 6
-}
-
-variable "jaeger_es_psp_enable" {
-  description = "Create PodSecurityPolicy for ES resources"
-  default     = true
-}
-
-variable "jaeger_es_rbac_enable" {
-  description = "Create RBAC for ES resources"
-  default     = true
-}
-
-variable "jaeger_es_client_resources" {
-  description = "Kubernetes resources for Elasticsearch client node"
-  default = {
-    limits = {
-      cpu    = "1"
-      memory = "1536Mi"
-    }
-    requests = {
-      cpu    = "25m"
-      memory = "512Mi"
-    }
-  }
-}
-
-variable "jaeger_es_client_replicas" {
-  description = "Num of replicas of Elasticsearch client node"
-  default     = 2
-}
-
-variable "jaeger_es_client_persistence_disk_size" {
-  description = "Persistence disk size in each Elasticsearch client node"
-  default     = "1Gi"
-}
-
-variable "jaeger_es_master_resources" {
-  description = "Kubernetes resources for Elasticsearch master node"
-  default = {
-    limits = {
-      cpu    = "1"
-      memory = "1536Mi"
-    }
-    requests = {
-      cpu    = "25m"
-      memory = "512Mi"
-    }
-  }
-}
-
-variable "jaeger_es_master_minimum_replicas" {
-  description = "The value for discovery.zen.minimum_master_nodes. Should be set to (master_eligible_nodes / 2) + 1. Ignored in Elasticsearch versions >= 7."
-  default     = 2
-}
-
-variable "jaeger_es_master_replicas" {
-  description = "Num of replicas of Elasticsearch master node"
-  default     = 3
-}
-
-variable "jaeger_es_master_persistence_disk_size" {
-  description = "Persistence disk size in each Elasticsearch master node"
-  default     = "4Gi"
-}
-
-variable "jaeger_es_data_resources" {
-  description = "Kubernetes resources for Elasticsearch data node"
-  default = {
-    limits = {
-      cpu    = "1"
-      memory = "2560Mi"
-    }
-    requests = {
-      cpu    = "25m"
-      memory = "1536Mi"
-    }
-  }
-}
-
-variable "jaeger_es_data_replicas" {
-  description = "Num of replicas of Elasticsearch data node"
-  default     = 2
-}
-
-variable "jaeger_es_data_persistence_disk_size" {
-  description = "Persistence disk size in each Elasticsearch data node"
-  default     = "30Gi"
-}
-
 variable "jaeger_query_resources" {
   description = "Kubernetes resources for Jaeger Query service"
   default = {
@@ -194,11 +92,6 @@ variable "jaeger_agent_resources" {
 ###########################
 # Elasticsearch cluster
 ###########################
-variable "elasticsearch_enabled" {
-  description = "Enable/disable Elasticsearch"
-  default     = false
-}
-
 variable "elasticsearch_release_name" {
   description = "Helm release name for Elasticsearch"
   default     = "jaeger-elasticsearch"
@@ -222,6 +115,108 @@ variable "elasticsearch_chart_version" {
 variable "elasticsearch_namespace" {
   description = "Kubernetes namespace to which Elasticsearch is deployed"
   default     = "core"
+}
+
+variable "elasticsearch_image" {
+  description = "Elasticsearch image"
+  default     = "docker.elastic.co/elasticsearch/elasticsearch-oss"
+}
+
+variable "elasticsearch_image_tag" {
+  description = "Elasticsearch imagetag"
+  default     = "6.8.2"
+}
+
+variable "elasticsearch_major_version" {
+  description = "Used to set major version specific configuration. If you are using a custom image and not running the default Elasticsearch version you will need to set this to the version you are running"
+  default     = 6
+}
+
+variable "elasticsearch_psp_enable" {
+  description = "Create PodSecurityPolicy for ES resources"
+  default     = true
+}
+
+variable "elasticsearch_rbac_enable" {
+  description = "Create RBAC for ES resources"
+  default     = true
+}
+
+variable "elasticsearch_client_resources" {
+  description = "Kubernetes resources for Elasticsearch client node"
+  default = {
+    limits = {
+      cpu    = "1"
+      memory = "1536Mi"
+    }
+    requests = {
+      cpu    = "25m"
+      memory = "512Mi"
+    }
+  }
+}
+
+variable "elasticsearch_client_replicas" {
+  description = "Num of replicas of Elasticsearch client node"
+  default     = 2
+}
+
+variable "elasticsearch_client_persistence_disk_size" {
+  description = "Persistence disk size in each Elasticsearch client node"
+  default     = "1Gi"
+}
+
+variable "elasticsearch_master_resources" {
+  description = "Kubernetes resources for Elasticsearch master node"
+  default = {
+    limits = {
+      cpu    = "1"
+      memory = "1536Mi"
+    }
+    requests = {
+      cpu    = "25m"
+      memory = "512Mi"
+    }
+  }
+}
+
+variable "elasticsearch_master_minimum_replicas" {
+  description = "The value for discovery.zen.minimum_master_nodes. Should be set to (master_eligible_nodes / 2) + 1. Ignored in Elasticsearch versions >= 7."
+  default     = 2
+}
+
+variable "elasticsearch_master_replicas" {
+  description = "Num of replicas of Elasticsearch master node"
+  default     = 3
+}
+
+variable "elasticsearch_master_persistence_disk_size" {
+  description = "Persistence disk size in each Elasticsearch master node"
+  default     = "4Gi"
+}
+
+variable "elasticsearch_data_resources" {
+  description = "Kubernetes resources for Elasticsearch data node"
+  default = {
+    limits = {
+      cpu    = "1"
+      memory = "2560Mi"
+    }
+    requests = {
+      cpu    = "25m"
+      memory = "1536Mi"
+    }
+  }
+}
+
+variable "elasticsearch_data_replicas" {
+  description = "Num of replicas of Elasticsearch data node"
+  default     = 2
+}
+
+variable "elasticsearch_data_persistence_disk_size" {
+  description = "Persistence disk size in each Elasticsearch data node"
+  default     = "30Gi"
 }
 
 ###########################
