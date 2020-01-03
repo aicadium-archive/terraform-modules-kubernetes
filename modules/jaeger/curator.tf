@@ -21,8 +21,8 @@ data "template_file" "curator" {
     es_client_host = "${var.elasticsearch_cluster_name}-client"
     es_client_port = 9200
 
-    image_tag             = var.curator_image_tag
-    cron_schedule         = var.curator_cron_schedule
-    actions               = jsonencode(var.curator_actions)
+    image_tag     = var.curator_image_tag
+    cron_schedule = var.curator_cron_schedule
+    actions       = jsonencode(var.curator_actions)
   }
 }
