@@ -75,24 +75,9 @@ variable "replicas" {
   default     = 1
 }
 
-variable "cpu_request" {
-  description = "Initial share of CPU requested per Traefik pod"
-  default     = "100m"
-}
-
-variable "memory_request" {
-  description = "Initial share of memory requested per Traefik pod"
-  default     = "100Mi"
-}
-
-variable "cpu_limit" {
-  description = "CPU limit per Traefik pod"
-  default     = "1000m"
-}
-
-variable "memory_limit" {
-  description = "Memory limit per Traefik pod"
-  default     = "100Mi"
+variable "resources" {
+  description = "Resources for the Traefik Container"
+  default     = {}
 }
 
 variable "node_selector" {
@@ -214,6 +199,11 @@ variable "log_level" {
   default     = "info"
 }
 
+variable "max_idle_conns_per_host" {
+  description = "Controls the maximum idle (keep-alive) connections to keep per-host."
+  default     = 200
+}
+
 variable "ssl_enabled" {
   description = "Enable SSL endpoin. You will either need to use the Let's Encrypt ACME certificates or provide your own. Otherwise, Traefik will serve an expired self-signed certificatre"
   default     = "true"
@@ -299,6 +289,11 @@ variable "env" {
   default     = []
 }
 
+variable "security_context" {
+  description = "Pod security context"
+  default     = {}
+}
+
 variable "startup_arguments" {
   description = "List of additional startup arguments for the Traefik pods"
   default     = []
@@ -379,11 +374,6 @@ variable "prometheus_enabled" {
   default     = "false"
 }
 
-variable "prometheus_restrict_access" {
-  description = "Whether to limit access to the metrics port (8080) to the dashboard service. When false, it is accessible on the main Traefik service as well."
-  default     = "true"
-}
-
 variable "prometheus_buckets" {
   description = "A list of response times (in seconds) - for each list element, Traefik will report all response times less than the element."
   default     = [0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0]
@@ -444,3 +434,57 @@ variable "secret_files" {
   default     = {}
 }
 
+variable "config_files" {
+  description = "Add arbitrary ConfigMaps to deployment"
+  default     = {}
+}
+
+variable "autoscaling_enable" {
+  description = "Enable Horizontal Pod Autoscaler"
+  default     = false
+}
+
+variable "autoscaling_min_replicas" {
+  description = "Minimum number of replicas for autoscaling"
+  default     = 2
+}
+
+variable "autoscaling_max_replicas" {
+  description = "Maximum number of replicas for autoscaling"
+  default     = 5
+}
+
+variable "autoscaling_metrics" {
+  description = "Metrics for autoscaling"
+  default = [
+    {
+      type = "Resource"
+      resource = {
+        name                     = "cpu"
+        targetAverageUtilization = 80
+      }
+    },
+    {
+      type = "Resource"
+      resource = {
+        name                     = "memory"
+        targetAverageUtilization = 80
+      }
+    }
+  ]
+}
+
+variable "extra_volumes" {
+  description = "Extra volumes for the pod"
+  default     = []
+}
+
+variable "extra_volume_mounts" {
+  description = "Extra volume mounts for the container"
+  default     = []
+}
+
+variable "use_non_priviledged_ports" {
+  description = "Use non privileged ports for the container"
+  default     = false
+}

@@ -27,6 +27,12 @@ locals {
 locals {
   rendered_values = templatefile("${path.module}/templates/values.yaml", local.values)
 
+  autoscaling = {
+    minReplicas = var.autoscaling_min_replicas
+    maxReplicas = var.autoscaling_max_replicas
+    metrics     = var.autoscaling_metrics
+  }
+
   values = {
     fullname_override = var.fullname_override != null ? jsonencode(var.fullname_override) : "null"
 
@@ -35,6 +41,8 @@ locals {
     replicas  = var.replicas
 
     rbac_enabled = var.rbac_enabled
+
+    max_idle_conns_per_host = var.max_idle_conns_per_host
 
     service_type            = var.service_type
     lb_source_range         = jsonencode(var.lb_source_range)
@@ -61,10 +69,7 @@ locals {
     debug     = var.debug
     log_level = var.log_level
 
-    cpu_request    = jsonencode(var.cpu_request)
-    memory_request = jsonencode(var.memory_request)
-    cpu_limit      = jsonencode(var.cpu_limit)
-    memory_limit   = jsonencode(var.memory_limit)
+    resources = jsonencode(var.resources)
 
     node_selector = jsonencode(var.node_selector)
     affinity      = jsonencode(var.affinity)
@@ -106,12 +111,14 @@ locals {
     dashboard_auth                = jsonencode(var.dashboard_auth)
     dashboard_recent_errors       = var.dashboard_recent_errors
 
-    prometheus_enabled         = var.prometheus_enabled
-    prometheus_restrict_access = var.prometheus_restrict_access
-    prometheus_buckets         = jsonencode(var.prometheus_buckets)
+    prometheus_enabled = var.prometheus_enabled
+    prometheus_buckets = jsonencode(var.prometheus_buckets)
 
     env               = jsonencode(var.env)
     startup_arguments = jsonencode(var.startup_arguments)
+    security_context  = jsonencode(var.security_context)
+
+    use_non_priviledged_ports = var.use_non_priviledged_ports
 
     traefik_log_format  = var.traefik_log_format
     access_logs_enabled = var.access_logs_enabled
@@ -131,8 +138,14 @@ locals {
     tracing_settings     = var.tracing_enabled == "true" ? "${var.tracing_backend}: ${jsonencode(var.tracing_settings)}" : ""
 
     secret_files = jsonencode(var.secret_files)
+    config_files = jsonencode(var.config_files)
 
     kv_store_acme            = var.kv_store_acme
     kv_acme_storage_location = var.kv_acme_storage_location
+
+    extra_volumes       = jsonencode(var.extra_volumes)
+    extra_volume_mounts = jsonencode(var.extra_volume_mounts)
+
+    autoscaling = var.autoscaling_enable ? jsonencode(local.autoscaling) : "null"
   }
 }
