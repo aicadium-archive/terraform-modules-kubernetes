@@ -29,6 +29,9 @@ data "template_file" "jaeger" {
   template = file("${path.module}/templates/jaeger.yaml")
 
   vars = {
+    es_client_host = "${var.elasticsearch_cluster_name}-client"
+    es_client_port = 9200
+
     image_tag           = var.jaeger_image_tag
     ingress_hosts       = jsonencode(var.jaeger_ui_ingress_hosts)
     ingress_annotations = jsonencode(var.jaeger_ui_ingress_annotations)

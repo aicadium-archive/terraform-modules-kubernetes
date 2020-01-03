@@ -11,7 +11,8 @@ serviceAccounts:
 storage:
   type: elasticsearch
   elasticsearch:
-    host: tracing-client
+    host: ${es_client_host}
+    port: ${es_client_port}
 
 agent:
   enabled: true

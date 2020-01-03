@@ -132,6 +132,11 @@ variable "elasticsearch_major_version" {
   default     = 6
 }
 
+variable "elasticsearch_cluster_name" {
+  description = "Name if the elasticsearch cluster"
+  default     = "tracing"
+}
+
 variable "elasticsearch_psp_enable" {
   description = "Create PodSecurityPolicy for ES resources"
   default     = true
@@ -244,7 +249,7 @@ variable "curator_chart_repository" {
 
 variable "curator_chart_version" {
   description = "Chart version for Curator"
-  default     = "2.0.0"
+  default     = "2.1.3"
 }
 
 variable "curator_image_tag" {
@@ -288,14 +293,4 @@ variable "curator_actions" {
       }
     }
   }
-}
-
-variable "curator_es_client_name_prefix" {
-  description = "Name prefix for Curator to locate the ES client"
-  default     = "es"
-}
-
-variable "curator_es_client_port" {
-  description = ""
-  default     = 9200
 }

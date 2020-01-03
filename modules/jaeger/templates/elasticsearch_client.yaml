@@ -2,7 +2,7 @@ replicas: ${es_client_replicas}
 
 esMajorVersion: ${es_major_version}
 
-clusterName: tracing
+clusterName: ${es_cluster_name}
 nodeGroup: client
 
 roles:

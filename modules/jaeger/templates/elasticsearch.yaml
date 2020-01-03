@@ -3,7 +3,7 @@ minimumMasterNodes : ${es_master_minimum_replicas}
 
 esMajorVersion: ${es_major_version}
 
-clusterName: tracing
+clusterName: ${es_cluster_name}
 nodeGroup: master
 
 roles:

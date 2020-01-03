@@ -18,10 +18,11 @@ data "template_file" "curator" {
   template = file("${path.module}/templates/curator.yaml")
 
   vars = {
+    es_client_host = "${var.elasticsearch_cluster_name}-client"
+    es_client_port = 9200
+
     image_tag             = var.curator_image_tag
     cron_schedule         = var.curator_cron_schedule
     actions               = jsonencode(var.curator_actions)
-    es_client_name_prefix = var.curator_es_client_name_prefix
-    es_client_port        = var.curator_es_client_port
   }
 }

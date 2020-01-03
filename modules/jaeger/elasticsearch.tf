@@ -49,6 +49,8 @@ data "template_file" "elasticsearch" {
   template = file("${path.module}/templates/elasticsearch.yaml")
 
   vars = {
+    es_cluster_name = var.elasticsearch_cluster_name
+
     es_image                        = var.elasticsearch_image
     es_image_tag                    = var.elasticsearch_image_tag
     es_major_version                = var.elasticsearch_major_version
@@ -67,6 +69,8 @@ data "template_file" "elasticsearch_data" {
   template = file("${path.module}/templates/elasticsearch_data.yaml")
 
   vars = {
+    es_cluster_name = var.elasticsearch_cluster_name
+
     es_image                      = var.elasticsearch_image
     es_image_tag                  = var.elasticsearch_image_tag
     es_major_version              = var.elasticsearch_major_version
@@ -84,6 +88,8 @@ data "template_file" "elasticsearch_client" {
   template = file("${path.module}/templates/elasticsearch_client.yaml")
 
   vars = {
+    es_cluster_name = var.elasticsearch_cluster_name
+
     es_image                        = var.elasticsearch_image
     es_image_tag                    = var.elasticsearch_image_tag
     es_major_version                = var.elasticsearch_major_version
