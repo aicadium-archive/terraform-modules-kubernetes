@@ -1,6 +1,6 @@
-replicas: 4
+replicas: ${es_data_replicas}
 
-esMajorVersion: 6
+esMajorVersion: ${es_major_version}
 
 clusterName: tracing
 nodeGroup: data
@@ -10,16 +10,14 @@ roles:
   ingest: "false"
   data: "true"
 
-
-
 rbac:
-  create: true
+  create: ${es_rbac_enable}
 
 podSecurityPolicy:
-  create: true
+  create: ${es_psp_enable}
 
-image: docker.elastic.co/elasticsearch/elasticsearch-oss
-imageTag: 6.8.2
+image: ${es_image}
+imageTag: ${es_image_tag}
 
 persistence:
   enabled: true
@@ -29,12 +27,6 @@ volumeClaimTemplate:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: ${es_data_persistence_disk_size}
 
-resources:
-  limits:
-    cpu: "1"
-    memory: 3Gi
-  requests:
-    cpu: 25m
-    memory: 3Gi
+resources: ${es_data_resources}

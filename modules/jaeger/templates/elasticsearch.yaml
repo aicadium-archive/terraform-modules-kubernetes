@@ -1,7 +1,7 @@
-replicas: 3
-minimumMasterNodes : 2
+replicas: ${es_master_replicas}
+minimumMasterNodes : ${es_master_minimum_replicas}
 
-esMajorVersion: 6
+esMajorVersion: ${es_major_version}
 
 clusterName: tracing
 nodeGroup: master
@@ -11,28 +11,23 @@ roles:
   ingest: "true"
   data: "false"
 
+rbac:
+  create: ${es_rbac_enable}
+
+podSecurityPolicy:
+  create: ${es_psp_enable}
+
+image: ${es_image}
+imageTag: ${es_image_tag}
+
+persistence:
+  enabled: true
+
 volumeClaimTemplate:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 4Gi
+      storage: ${es_master_persistence_disk_size}
 
-
-
-rbac:
-  create: true
-
-podSecurityPolicy:
-  create: true
-
-image: docker.elastic.co/elasticsearch/elasticsearch-oss
-imageTag: 6.8.2
-
-resources:
-  limits:
-    cpu: "1"
-    memory: 1536Mi
-  requests:
-    cpu: 25m
-    memory: 512Mi
+resources: ${es_master_resources}

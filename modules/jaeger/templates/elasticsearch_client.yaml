@@ -1,40 +1,32 @@
-replicas: 2
+replicas: ${es_client_replicas}
+
+esMajorVersion: ${es_major_version}
 
 clusterName: tracing
 nodeGroup: client
-
-esMajorVersion: 6
 
 roles:
   master: "false"
   ingest: "false"
   data: "false"
 
+rbac:
+  create: ${es_rbac_enable}
+
+podSecurityPolicy:
+  create: ${es_psp_enable}
+
+image: ${es_image}
+imageTag: ${es_image_tag}
+
+persistence:
+  enabled: false
+
 volumeClaimTemplate:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi # Currently needed till pvcs are made optional
+      storage: ${es_client_persistence_disk_size}
 
-persistence:
-  enabled: false
-
-
-
-rbac:
-  create: true
-
-podSecurityPolicy:
-  create: true
-
-image: docker.elastic.co/elasticsearch/elasticsearch-oss
-imageTag: 6.8.2
-
-resources:
-  limits:
-    cpu: "1"
-    memory: 1536Mi
-  requests:
-    cpu: 25m
-    memory: 512Mi
+resources: ${es_client_resources}

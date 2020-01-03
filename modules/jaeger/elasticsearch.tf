@@ -48,7 +48,17 @@ data "template_file" "elasticsearch" {
 
   template = file("${path.module}/templates/elasticsearch.yaml")
 
-  vars = {}
+  vars = {
+    es_image                        = var.jaeger_es_image
+    es_image_tag                    = var.jaeger_es_image_tag
+    es_major_version                = var.jaeger_es_major_version
+    es_rbac_enable                  = var.jaeger_es_rbac_enable || var.jaeger_es_psp_enable
+    es_psp_enable                   = var.jaeger_es_psp_enable
+    es_master_minimum_replicas      = var.jaeger_es_master_minimum_replicas
+    es_master_replicas              = var.jaeger_es_master_replicas
+    es_master_resources             = jsonencode(var.jaeger_es_master_resources)
+    es_master_persistence_disk_size = var.jaeger_es_master_persistence_disk_size
+  }
 }
 
 data "template_file" "elasticsearch_data" {
@@ -56,7 +66,16 @@ data "template_file" "elasticsearch_data" {
 
   template = file("${path.module}/templates/elasticsearch_data.yaml")
 
-  vars = {}
+  vars = {
+    es_image                      = var.jaeger_es_image
+    es_image_tag                  = var.jaeger_es_image_tag
+    es_major_version              = var.jaeger_es_major_version
+    es_rbac_enable                = var.jaeger_es_rbac_enable || var.jaeger_es_psp_enable
+    es_psp_enable                 = var.jaeger_es_psp_enable
+    es_data_replicas              = var.jaeger_es_data_replicas
+    es_data_resources             = jsonencode(var.jaeger_es_data_resources)
+    es_data_persistence_disk_size = var.jaeger_es_data_persistence_disk_size
+  }
 }
 
 data "template_file" "elasticsearch_client" {
@@ -64,5 +83,14 @@ data "template_file" "elasticsearch_client" {
 
   template = file("${path.module}/templates/elasticsearch_client.yaml")
 
-  vars = {}
+  vars = {
+    es_image                        = var.jaeger_es_image
+    es_image_tag                    = var.jaeger_es_image_tag
+    es_major_version                = var.jaeger_es_major_version
+    es_rbac_enable                  = var.jaeger_es_rbac_enable || var.jaeger_es_psp_enable
+    es_psp_enable                   = var.jaeger_es_psp_enable
+    es_client_replicas              = var.jaeger_es_client_replicas
+    es_client_resources             = jsonencode(var.jaeger_es_client_resources)
+    es_client_persistence_disk_size = var.jaeger_es_client_persistence_disk_size
+  }
 }

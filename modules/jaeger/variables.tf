@@ -47,6 +47,31 @@ variable "jaeger_ui_ingress_annotations" {
   default     = {}
 }
 
+variable "jaeger_es_image" {
+  description = "Elasticsearch image"
+  default     = "docker.elastic.co/elasticsearch/elasticsearch-oss"
+}
+
+variable "jaeger_es_image_tag" {
+  description = "Elasticsearch imagetag"
+  default     = "6.8.2"
+}
+
+variable "jaeger_es_major_version" {
+  description = "Used to set major version specific configuration. If you are using a custom image and not running the default Elasticsearch version you will need to set this to the version you are running"
+  default     = 6
+}
+
+variable "jaeger_es_psp_enable" {
+  description = "Create PodSecurityPolicy for ES resources"
+  default     = true
+}
+
+variable "jaeger_es_rbac_enable" {
+  description = "Create RBAC for ES resources"
+  default     = true
+}
+
 variable "jaeger_es_client_resources" {
   description = "Kubernetes resources for Elasticsearch client node"
   default = {
@@ -61,6 +86,16 @@ variable "jaeger_es_client_resources" {
   }
 }
 
+variable "jaeger_es_client_replicas" {
+  description = "Num of replicas of Elasticsearch client node"
+  default     = 2
+}
+
+variable "jaeger_es_client_persistence_disk_size" {
+  description = "Persistence disk size in each Elasticsearch client node"
+  default     = "1Gi"
+}
+
 variable "jaeger_es_master_resources" {
   description = "Kubernetes resources for Elasticsearch master node"
   default = {
@@ -73,6 +108,21 @@ variable "jaeger_es_master_resources" {
       memory = "512Mi"
     }
   }
+}
+
+variable "jaeger_es_master_minimum_replicas" {
+  description = "The value for discovery.zen.minimum_master_nodes. Should be set to (master_eligible_nodes / 2) + 1. Ignored in Elasticsearch versions >= 7."
+  default     = 2
+}
+
+variable "jaeger_es_master_replicas" {
+  description = "Num of replicas of Elasticsearch master node"
+  default     = 3
+}
+
+variable "jaeger_es_master_persistence_disk_size" {
+  description = "Persistence disk size in each Elasticsearch master node"
+  default     = "4Gi"
 }
 
 variable "jaeger_es_data_resources" {
