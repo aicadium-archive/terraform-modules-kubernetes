@@ -4,9 +4,11 @@ resource "helm_release" "elasticsearch" {
 
   name       = var.elasticsearch_release_name
   chart      = var.elasticsearch_chart_name
-  repository = var.elasticsearch_chart_repository
+  repository = data.helm_repository.elastic.metadata[0].name
   version    = var.elasticsearch_chart_version
   namespace  = local.elasticsearch_namespace
+
+  timeout = var.helm_release_timeout_seconds
 
   values = [
     data.template_file.elasticsearch[0].rendered,
@@ -19,9 +21,11 @@ resource "helm_release" "elasticsearch_data" {
 
   name       = "${var.elasticsearch_release_name}-data"
   chart      = var.elasticsearch_chart_name
-  repository = var.elasticsearch_chart_repository
+  repository = data.helm_repository.elastic.metadata[0].name
   version    = var.elasticsearch_chart_version
   namespace  = local.elasticsearch_namespace
+
+  timeout = var.helm_release_timeout_seconds
 
   values = [
     data.template_file.elasticsearch_data[0].rendered,
@@ -34,9 +38,11 @@ resource "helm_release" "elasticsearch_client" {
 
   name       = "${var.elasticsearch_release_name}-client"
   chart      = var.elasticsearch_chart_name
-  repository = var.elasticsearch_chart_repository
+  repository = data.helm_repository.elastic.metadata[0].name
   version    = var.elasticsearch_chart_version
   namespace  = local.elasticsearch_namespace
+
+  timeout = var.helm_release_timeout_seconds
 
   values = [
     data.template_file.elasticsearch_client[0].rendered,

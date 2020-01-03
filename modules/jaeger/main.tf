@@ -14,9 +14,11 @@ resource "helm_release" "jaeger" {
 
   name       = var.jaeger_release_name
   chart      = var.jaeger_chart_name
-  repository = var.jaeger_chart_repository
+  repository = data.helm_repository.jaeger.metadata[0].name
   version    = var.jaeger_chart_version
   namespace  = local.jaeger_namespace
+
+  timeout = var.helm_release_timeout_seconds
 
   values = [
     data.template_file.jaeger[0].rendered,

@@ -1,3 +1,8 @@
+variable "helm_release_timeout_seconds" {
+  description = "Time in seconds to wait for any individual kubernetes operation during a helm release."
+  default     = 900
+}
+
 ###########################
 # Jaeger
 ###########################
@@ -20,6 +25,11 @@ variable "jaeger_chart_name" {
 variable "jaeger_chart_repository" {
   description = "Chart repository for Jaeger"
   default     = "jaegertracing"
+}
+
+variable "jaeger_chart_repository_url" {
+  description = "Chart repository for Jaeger"
+  default     = "https://jaegertracing.github.io/helm-charts"
 }
 
 variable "jaeger_chart_version" {
@@ -105,6 +115,11 @@ variable "elasticsearch_chart_name" {
 variable "elasticsearch_chart_repository" {
   description = "Chart repository for Elasticsearch"
   default     = "elastic"
+}
+
+variable "elasticsearch_chart_repository_url" {
+  description = "Chart repository for Elasticsearch"
+  default     = "https://helm.elastic.co"
 }
 
 variable "elasticsearch_chart_version" {

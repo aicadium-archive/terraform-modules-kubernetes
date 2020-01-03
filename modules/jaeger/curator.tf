@@ -7,6 +7,8 @@ resource "helm_release" "curator" {
   version    = var.curator_chart_version
   namespace  = local.curator_namespace
 
+  timeout = var.helm_release_timeout_seconds
+
   values = [
     data.template_file.curator[0].rendered,
   ]
