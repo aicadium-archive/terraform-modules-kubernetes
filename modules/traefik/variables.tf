@@ -379,6 +379,28 @@ variable "prometheus_buckets" {
   default     = [0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 2.5, 5.0, 7.5, 10.0]
 }
 
+variable "prometheus_service_name" {
+  description = "Prometheus service name"
+  default     = ""
+}
+
+variable "prometheus_service_annotations" {
+  description = "Prometheus service annotations"
+  default = {
+    "prometheus.io/scrape" = "true"
+  }
+}
+
+variable "prometheus_service_port" {
+  description = "Port for the prometheus service"
+  default     = 9100
+}
+
+variable "prometheus_service_type" {
+  description = "Type of prometheus service"
+  default     = "ClusterIP"
+}
+
 variable "datadog_enabled" {
   description = "Enable pushing metrics to Datadog"
   default     = "false"

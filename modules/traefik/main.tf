@@ -111,8 +111,11 @@ locals {
     dashboard_auth                = jsonencode(var.dashboard_auth)
     dashboard_recent_errors       = var.dashboard_recent_errors
 
-    prometheus_enabled = var.prometheus_enabled
-    prometheus_buckets = jsonencode(var.prometheus_buckets)
+    prometheus_enabled             = var.prometheus_enabled
+    prometheus_buckets             = jsonencode(var.prometheus_buckets)
+    prometheus_service_name        = var.prometheus_service_name
+    prometheus_service_annotations = jsonencode(var.prometheus_service_annotations)
+    prometheus_service_port        = var.prometheus_service_port
 
     env               = jsonencode(var.env)
     startup_arguments = jsonencode(var.startup_arguments)

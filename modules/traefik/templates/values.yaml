@@ -191,11 +191,11 @@ metrics:
     buckets: ${prometheus_buckets}
     service:
       # Set a custom service name
-      name:
-      annotations:
-        prometheus.io/scrape: "true"
-      port: 9100
-      type: ClusterIP
+      name: ${prometheus_service_name}
+      annotations: ${prometheus_service_annotations}
+      # prometheus.io/scrape: "true"
+      port: ${prometheus_service_port}
+      type: ${prometheus_service_type}
       # loadBalancerIP: ""
       # loadBalancerSourceRanges: []
       # externalIP: []
