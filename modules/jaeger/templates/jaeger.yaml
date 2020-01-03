@@ -1,6 +1,6 @@
 provisionDataStore:
   cassandra: false
-  elasticsearch: true
+  elasticsearch: false
 
 tag: ${image_tag}
 
@@ -10,25 +10,9 @@ serviceAccounts:
 
 storage:
   type: elasticsearch
-
-# Begin: Override values on the Elasticsearch subchart to customize for Jaeger
-elasticsearch:
-  cluster:
-    replicas: 2
-    name: tracing
-  client:
-    name: client
-    resources: ${es_client_resources}
-  master:
-    replicas: 3
-    resources: ${es_master_resources}
-  data:
-    replicas: ${es_data_replicas}
-    resources: ${es_data_resources}
-    persistence:
-      enabled: true
-      size: ${es_data_persistence_disk_size}
-# End: Override values on the Elasticsearch subchart to customize for Jaeger
+  elasticsearch:
+    host: ${es_client_host}
+    port: ${es_client_port}
 
 agent:
   enabled: true
