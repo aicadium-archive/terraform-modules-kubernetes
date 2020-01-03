@@ -12,8 +12,6 @@ externalTrafficPolicy: ${external_traffic_policy}
 
 startupArguments: ${startup_arguments}
 
-env: ${env}
-
 podDisruptionBudget: ${pod_disruption_budget}
   # maxUnavailable: 1
   # minAvailable: 2
@@ -22,21 +20,24 @@ priorityClassName: ${pod_priority_class}
 
 rootCAs: ${root_ca}
 
-cpuRequest: ${cpu_request}
-memoryRequest: ${memory_request}
-cpuLimit: ${cpu_limit}
-memoryLimit: ${memory_limit}
+resources: ${resources}
 
 debug:
   enabled: ${debug}
 
 logLevel: ${log_level}
 
+maxIdleConnsPerHost: ${max_idle_conns_per_host}
+
 deploymentStrategy: ${deployment_strategy}
   # rollingUpdate:
   #   maxSurge: 1
   #   maxUnavailable: 0
   # type: RollingUpdate
+
+securityContext: ${security_context}
+useNonPriviledgedPorts: ${use_non_priviledged_ports}
+env: ${env}
 
 nodeSelector: ${node_selector}
 
@@ -59,6 +60,7 @@ kubernetes:
   #   ip: "127.0.0.1"
   #   publishedService: "namespace/servicename"
     useDefaultPublishedService: true
+
 proxyProtocol:
   enabled: false
   # trustedIPs is required when enabled
@@ -69,6 +71,22 @@ forwardedHeaders:
   # trustedIPs is required when enabled
   trustedIPs: []
   # - 10.0.0.0/8
+
+## Add arbitrary ConfigMaps to deployment
+## Will be mounted to /configs/, i.e. myconfig.json would
+## be mounted to /configs/myconfig.json.
+configFiles: ${config_files}
+  # myconfig.json: |
+  #   filecontents...
+
+## Add arbitrary Secrets to deployment
+## Will be mounted to /secrets/, i.e. file.name would
+## be mounted to /secrets/mysecret.txt.
+## The contents will be base64 encoded when added
+secretFiles: ${secret_files}
+  # mysecret.txt: |
+  #   filecontents...
+
 ssl:
   enabled: ${ssl_enabled}
   enforced: ${ssl_enforced}
@@ -170,10 +188,19 @@ rbac:
 metrics:
   prometheus:
     enabled: ${prometheus_enabled}
-    ## If true, prevents exposing port 8080 on the main Traefik service, reserving
-    ## it to the dashboard service only
-    restrictAccess: ${prometheus_restrict_access}
     buckets: ${prometheus_buckets}
+    service:
+      # Set a custom service name
+      name: ${prometheus_service_name}
+      annotations: ${prometheus_service_annotations}
+      # prometheus.io/scrape: "true"
+      port: ${prometheus_service_port}
+      type: ${prometheus_service_type}
+      # loadBalancerIP: ""
+      # loadBalancerSourceRanges: []
+      # externalIP: []
+      # externalTrafficPolicy: Cluster
+      # nodePort: 9100
   datadog:
     enabled: ${datadog_enabled}
     address: "${datadog_address}"
@@ -211,6 +238,49 @@ tracing:
   #   debug: false
   #   globalTag: ""
 
-secretFiles: ${secret_files}
-
 sendAnonymousUsage: false
+
+## Create HorizontalPodAutoscaler object.
+##
+autoscaling: ${autoscaling}
+#   minReplicas: 1
+#   maxReplicas: 10
+#   metrics:
+#   - type: Resource
+#     resource:
+#       name: cpu
+#       targetAverageUtilization: 60
+#   - type: Resource
+#     resource:
+#       name: memory
+#       targetAverageUtilization: 60
+
+## Timeouts
+##
+# timeouts:
+#   ## responding are timeouts for incoming requests to the Traefik instance
+#   responding:
+#     readTimeout: 0s
+#     writeTimeout: 0s
+#     idleTimeout: 180s
+#   ## forwarding are timeouts for requests forwarded to the backend servers
+#   forwarding:
+#     dialTimeout: 30s
+#     responseHeaderTimeout: 0s
+
+# forwardAuth:
+#   entryPoints: ["http", "https"]
+#   address: https://authserver.com/auth
+#   trustForwardHeader: true
+
+# Any extra volumes to define for the pod
+extraVolumes: ${extra_volumes}
+  # - name: example-name
+  #   hostPath:
+  #     path: /path/on/host
+  #     type: DirectoryOrCreate
+
+# Any extra volume mounts to define for the Traefik container
+extraVolumeMounts: ${extra_volume_mounts}
+#   - name: example-name
+#     mountPath: /path/in/container
