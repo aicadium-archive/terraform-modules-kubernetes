@@ -56,7 +56,7 @@ variable "jaeger_query_resources" {
     }
     requests = {
       cpu    = "25m"
-      memory = "32Mi"
+      memory = "128Mi"
     }
   }
 }
@@ -70,7 +70,7 @@ variable "jaeger_collector_resources" {
     }
     requests = {
       cpu    = "50m"
-      memory = "64Mi"
+      memory = "256Mi"
     }
   }
 }
@@ -84,7 +84,7 @@ variable "jaeger_agent_resources" {
     }
     requests = {
       cpu    = "25m"
-      memory = "16Mi"
+      memory = "128Mi"
     }
   }
 }
@@ -156,7 +156,7 @@ variable "elasticsearch_client_resources" {
     }
     requests = {
       cpu    = "25m"
-      memory = "512Mi"
+      memory = "1536Mi"
     }
   }
 }
@@ -180,7 +180,7 @@ variable "elasticsearch_master_resources" {
     }
     requests = {
       cpu    = "25m"
-      memory = "512Mi"
+      memory = "1536Mi"
     }
   }
 }
@@ -209,7 +209,7 @@ variable "elasticsearch_data_resources" {
     }
     requests = {
       cpu    = "25m"
-      memory = "1536Mi"
+      memory = "2560Mi"
     }
   }
 }
