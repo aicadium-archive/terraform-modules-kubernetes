@@ -287,9 +287,9 @@ server:
       # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
 
   readinessProbeInitialDelay: ${readiness_probe_initial_delay}
-  readinessProbeTimeout: readiness_probe_timeout
-  livenessProbeInitialDelay: liveness_probe_initial_delay
-  livenessProbeTimeout: liveness_probe_timeout
+  readinessProbeTimeout: ${readiness_probe_timeout}
+  livenessProbeInitialDelay: ${liveness_probe_initial_delay}
+  livenessProbeTimeout: ${liveness_probe_timeout}
 
 serverFiles:
   ${alerts}
