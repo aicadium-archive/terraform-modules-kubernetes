@@ -341,5 +341,10 @@ data "template_file" "server" {
 
     pdb_enable          = var.server_pdb_enable
     pdb_max_unavailable = jsonencode(var.server_pdb_max_unavailable)
+
+    readiness_probe_initial_delay = var.server_readiness_probe_initial_delay
+    readiness_probe_timeout       = var.server_readiness_probe_timeout
+    liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
+    liveness_probe_timeout        = var.server_liveness_probe_timeout
   }
 }
