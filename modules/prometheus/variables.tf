@@ -1193,6 +1193,26 @@ variable "server_pdb_max_unavailable" {
   default     = 1
 }
 
+variable "server_readiness_probe_initial_delay" {
+  description = "Initial delay before the probe starts checking. You might need to increase this for Prometheus to repair the TSDB servers if your pods keeps getting killed by probes during startup."
+  default     = 30
+}
+
+variable "server_readiness_probe_timeout" {
+  description = "Number of seconds before a probe fails due to timeout"
+  default     = 10
+}
+
+variable "server_liveness_probe_initial_delay" {
+  description = "Initial delay before the probe starts checking. You might need to increase this for Prometheus to repair the TSDB servers if your pods keeps getting killed by probes during startup."
+  default     = 30
+}
+
+variable "server_liveness_probe_timeout" {
+  description = "Number of seconds before a probe fails due to timeout"
+  default     = 10
+}
+
 variable "server_alerts" {
   description = "Prometheus server alerts entries in YAML"
 

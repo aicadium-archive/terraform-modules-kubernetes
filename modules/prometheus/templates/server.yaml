@@ -286,6 +286,11 @@ server:
       # seccomp.security.alpha.kubernetes.io/defaultProfileName: 'docker/default'
       # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
 
+  readiness_probe_initial_delay: ${readiness_probe_initial_delay}
+  readiness_probe_timeout: readiness_probe_timeout
+  liveness_probe_initial_delay: liveness_probe_initial_delay
+  liveness_probe_timeout: liveness_probe_timeout
+
 serverFiles:
   ${alerts}
   ${rules}
