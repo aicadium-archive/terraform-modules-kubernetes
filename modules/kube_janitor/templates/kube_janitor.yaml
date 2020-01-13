@@ -1,6 +1,7 @@
 schedule: "${schedule}"
 
 janitor:
+  image: ${image}:${image_tag}
   resources: ${resources}
   dryRun: ${dry_run}
 

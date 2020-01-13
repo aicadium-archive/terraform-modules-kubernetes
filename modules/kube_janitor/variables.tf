@@ -23,6 +23,16 @@ variable "kube_janitor_chart_version" {
   default     = "1.0.0"
 }
 
+variable "kube_janitor_image" {
+  description = "Docker image for Kube Janitor"
+  default     = "hjacobs/kube-janitor"
+}
+
+variable "kube_janitor_image_tag" {
+  description = "Docker image tag for Kube Janitor"
+  default     = "19.12.0"
+}
+
 variable "kube_janitor_schedule" {
   description = "Run frequency as a cron expression. Default hourly"
   default     = "0 * * * *"
