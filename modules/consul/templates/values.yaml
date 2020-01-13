@@ -22,6 +22,40 @@ global:
   # consul-k8s v0.8.0+.
   bootstrapACLs: false
 
+  # Enables TLS encryption across the cluster to verify authenticity of the
+  # servers and clients that connect. Note: It is HIGHLY recommended that you also
+  # enable Gossip encryption.
+  # See https://learn.hashicorp.com/consul/security-networking/agent-encryption
+  #
+  # Note: this relies on functionality introduced with Consul 1.4.1. Make sure
+  # your global.image value is at least version 1.4.1.
+  tls:
+    enabled: ${tls_enabled}
+
+    # serverAdditionalDNSSANs is a list of additional DNS names to
+    # set as Subject Alternative Names (SANs) in the server certificate.
+    # This is useful when you need to access the Consul server(s) externally,
+    # for example, if you're using the UI.
+    serverAdditionalDNSSANs: ${tls_server_additional_dns_sans}
+
+    # serverAdditionalIPSANs is a list of additional IP addresses to
+    # set as Subject Alternative Names (SANs) in the server certificate.
+    # This is useful when you need to access Consul server(s) externally,
+    # for example, if you're using the UI.
+    serverAdditionalIPSANs: ${tls_server_additional_ip_sans}
+
+    # If verify is true, 'verify_outgoing', 'verify_server_hostname', and
+    # 'verify_incoming_rpc' will be set to true for Consul servers and clients.
+    # Set this to false to incrementally roll out TLS on an existing Consul cluster.
+    # Note: remember to switch it back to true once the rollout is complete.
+    # Please see this guide for more details:
+    # https://learn.hashicorp.com/consul/security-networking/certificates
+    verify: ${tls_verify}
+
+    # If httpsOnly is true, Consul will disable the HTTP port on both
+    # clients and servers and only accept HTTPS connections.
+    httpsOnly: ${tls_https_only}
+
 server:
   replicas: ${server_replicas}
   bootstrapExpect: ${server_replicas}
@@ -57,6 +91,7 @@ syncCatalog:
   k8sTag: ${sync_k8s_tag}
   syncClusterIPServices: ${sync_cluster_ip_services}
   nodePortSyncType: ${sync_node_port_type}
+  addK8SNamespaceSuffix: ${sync_add_k8s_namespace_suffix}
 
 ui:
   enabled: ${enable_ui}

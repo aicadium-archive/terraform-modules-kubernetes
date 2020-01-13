@@ -138,7 +138,7 @@ variable "client_enabled" {
 
 variable "client_grpc" {
   description = "Enable GRPC port for clients. Required for Connect Inject"
-  default     = false
+  default     = true
 }
 
 variable "client_resources" {
@@ -218,6 +218,11 @@ variable "sync_cluster_ip_services" {
 variable "sync_node_port_type" {
   description = "Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead."
   default     = ""
+}
+
+variable "sync_add_k8s_namespace_suffix" {
+  description = "Appends Kubernetes namespace suffix to each service name synced to Consul, separated by a dash."
+  default     = true
 }
 
 variable "enable_ui" {
@@ -323,6 +328,39 @@ variable "secret_name" {
 variable "secret_annotation" {
   description = "Annotations for the Consul Secret"
   default     = {}
+}
+
+variable "tls_enabled" {
+  description = "Enable TLS for the cluster"
+  default     = false
+}
+
+variable "tls_server_additional_dns_sans" {
+  description = "List of additional DNS names to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access the Consul server(s) externally, for example, if you're using the UI."
+  default     = []
+}
+
+variable "tls_server_additional_ip_sans" {
+  description = "List of additional IP addresses to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access Consul server(s) externally, for example, if you're using the UI."
+  default     = []
+}
+
+variable "tls_verify" {
+  description = <<EOF
+If true, 'verify_outgoing', 'verify_server_hostname', and
+'verify_incoming_rpc' will be set to true for Consul servers and clients.
+Set this to false to incrementally roll out TLS on an existing Consul cluster.
+Note: remember to switch it back to true once the rollout is complete.
+Please see this guide for more details:
+https://learn.hashicorp.com/consul/security-networking/certificates
+EOF
+
+  default = true
+}
+
+variable "tls_https_only" {
+  description = "If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections."
+  default     = true
 }
 
 ###########################

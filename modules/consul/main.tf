@@ -46,14 +46,21 @@ data "template_file" "values" {
     client_priority_class = var.client_priority_class
     client_annotations    = jsonencode(var.client_annotations)
 
-    enable_sync_catalog      = var.enable_sync_catalog
-    sync_by_default          = var.sync_by_default
-    sync_to_consul           = var.sync_to_consul
-    sync_to_k8s              = var.sync_to_k8s
-    sync_k8s_prefix          = var.sync_k8s_prefix
-    sync_k8s_tag             = var.sync_k8s_tag
-    sync_cluster_ip_services = var.sync_cluster_ip_services
-    sync_node_port_type      = var.sync_node_port_type
+    tls_enabled                    = var.tls_enabled
+    tls_server_additional_dns_sans = jsonencode(var.tls_server_additional_dns_sans)
+    tls_server_additional_ip_sans  = jsonencode(var.tls_server_additional_ip_sans)
+    tls_verify                     = var.tls_verify
+    tls_https_only                 = var.tls_https_only
+
+    enable_sync_catalog           = var.enable_sync_catalog
+    sync_by_default               = var.sync_by_default
+    sync_to_consul                = var.sync_to_consul
+    sync_to_k8s                   = var.sync_to_k8s
+    sync_k8s_prefix               = var.sync_k8s_prefix
+    sync_k8s_tag                  = var.sync_k8s_tag
+    sync_cluster_ip_services      = var.sync_cluster_ip_services
+    sync_node_port_type           = var.sync_node_port_type
+    sync_add_k8s_namespace_suffix = var.sync_add_k8s_namespace_suffix
 
     enable_ui          = var.enable_ui
     ui_service_type    = var.ui_service_type
