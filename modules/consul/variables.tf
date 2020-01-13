@@ -35,7 +35,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.5.1"
+  default     = "1.6.2"
 }
 
 variable "consul_k8s_image" {
@@ -45,7 +45,7 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.7.0"
+  default     = "0.11.0"
 }
 
 variable "consul_domain" {
