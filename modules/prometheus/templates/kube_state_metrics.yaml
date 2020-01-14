@@ -36,7 +36,7 @@ kubeStateMetrics:
   ##
   nodeSelector: ${node_selector}
 
-  affinity: ${affinty}
+  affinity: ${affinity}
 
   ## Annotations to be added to kube-state-metrics pods
   ##
