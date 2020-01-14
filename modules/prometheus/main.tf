@@ -134,6 +134,7 @@ data "template_file" "kube_state_metrics" {
     tolerations   = jsonencode(var.kube_state_metrics_tolerations)
     labels        = jsonencode(var.kube_state_metrics_labels)
     node_selector = jsonencode(var.kube_state_metrics_node_selector)
+    affinity      = jsonencode(var.kube_state_metrics_affinity)
 
     security_context = coalesce(
       var.kube_state_metrics_security_context_json,

@@ -21,8 +21,9 @@ data "template_file" "esm_values" {
     image   = var.esm_image
     tag     = var.esm_tag
 
-    resources = jsonencode(var.esm_resources)
-    affinity  = jsonencode(var.esm_affinity)
+    resources   = jsonencode(var.esm_resources)
+    affinity    = jsonencode(var.esm_affinity)
+    tolerations = jsonencode(var.esm_tolerations)
 
     env       = jsonencode(var.esm_env)
     log_level = var.esm_log_level

@@ -57,3 +57,5 @@ config:
   pingType: "${ping_type}"
 
 affinity: ${affinity}
+
+tolerations: ${tolerations}

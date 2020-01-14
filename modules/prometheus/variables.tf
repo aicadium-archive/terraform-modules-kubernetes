@@ -443,6 +443,11 @@ variable "kube_state_metrics_tolerations" {
   default     = []
 }
 
+variable "kube_state_metrics_affinity" {
+  description = "Affinity for Kube State Metrics"
+  default     = {}
+}
+
 variable "kube_state_metrics_labels" {
   description = "Labels for Kube State Metrics"
   default     = {}
