@@ -424,6 +424,11 @@ variable "esm_affinity" {
   default     = {}
 }
 
+variable "esm_tolerations" {
+  description = "Toleration for ESM"
+  default     = []
+}
+
 variable "esm_log_level" {
   description = "Log level for ESM"
   default     = "INFO"

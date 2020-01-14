@@ -116,9 +116,9 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | connect\_inject\_namespace\_selector | A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
-| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.5.1"` | no |
+| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.6.2"` | no |
 | consul\_k8s\_image | Docker image of the consul-k8s binary to run | `string` | `"hashicorp/consul-k8s"` | no |
-| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.7.0"` | no |
+| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.11.0"` | no |
 | core\_dns\_labels | Labels for CoreDNS ConfigMap | `map` | <code><pre>{<br>  "addonmanager.kubernetes.io/mode": "EnsureExists",<br>  "eks.amazonaws.com/component": "coredns",<br>  "k8s-app": "kube-dns"<br>}<br></pre></code> | no |
 | core\_dns\_template | Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example | `string` | `".:53 {\n  errors\n  health\n  kubernetes cluster.local in-addr.arpa ip6.arpa {\n    pods insecure\n    upstream\n    fallthrough in-addr.arpa ip6.arpa\n  }\n  prometheus :9153\n  forward . /etc/resolv.conf\n  cache 30\n  loop\n  reload\n  loadbalance\n}\n\nconsul {\n  errors\n  cache 30\n  forward . ${consul_dns_address}\n}\n"` | no |
 | enable\_connect\_inject | Enable Connect Injector process | `string` | `"false"` | no |
@@ -146,6 +146,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | esm\_service\_name | ESM service name in Consul | `string` | `"consul-esm"` | no |
 | esm\_service\_tag | Service tag for ESM | `string` | `""` | no |
 | esm\_tag | Docker Image tag for ESM | `string` | `"0.3.3"` | no |
+| esm\_tolerations | Toleration for ESM | `list` | `[]` | no |
 | exporter\_affinity | Affinity for Consul Exporter | `map` | `{}` | no |
 | exporter\_chart\_name | Name of the Consul Exporter Chart name | `string` | `"prometheus-consul-exporter"` | no |
 | exporter\_chart\_repository | Consul Exporter Chart repository | `string` | `"stable"` | no |
