@@ -112,8 +112,10 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | configure\_core\_dns | Configure core-dns and OVERWRITE it to resolve .consul domains with Consul DNS | `bool` | `false` | no |
 | configure\_kube\_dns | Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS | `bool` | `false` | no |
 | connect\_enable | Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later | `bool` | `false` | no |
+| connect\_inject\_affinity | Template string for Connect Inject Affinity | `string` | `""` | no |
 | connect\_inject\_by\_default | If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection. | `string` | `"false"` | no |
 | connect\_inject\_namespace\_selector | A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `string` | `""` | no |
+| connect\_inject\_tolerations | Template string for Connect Inject Tolerations | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
 | consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.6.2"` | no |
@@ -175,6 +177,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | server\_storage\_class | The StorageClass to use for the servers' StatefulSet storage. It must be able to be dynamically provisioned if you want the storage to be automatically created. For example, to use Local storage classes, the PersistentVolumeClaims would need to be manually created. An empty value will use the Kubernetes cluster's default StorageClass. | `string` | `""` | no |
 | server\_tolerations | A YAML string that can be templated via helm specifying the tolerations for server pods | `string` | `""` | no |
 | sync\_add\_k8s\_namespace\_suffix | Appends Kubernetes namespace suffix to each service name synced to Consul, separated by a dash. | `bool` | `true` | no |
+| sync\_affinity | YAML template string for Sync Catalog affinity | `string` | `""` | no |
 | sync\_by\_default | If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default. | `string` | `"true"` | no |
 | sync\_cluster\_ip\_services | If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services. | `string` | `"true"` | no |
 | sync\_k8s\_prefix | A prefix to prepend to all services registered in Kubernetes from Consul. This defaults to '' where no prefix is prepended; Consul services are synced with the same name to Kubernetes. (Consul -> Kubernetes sync only) | `string` | `""` | no |
@@ -182,6 +185,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | sync\_node\_port\_type | Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead. | `string` | `""` | no |
 | sync\_to\_consul | If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
 | sync\_to\_k8s | If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
+| sync\_tolerations | Template string for Sync Catalog Tolerations | `string` | `""` | no |
 | tls\_enabled | Enable TLS for the cluster | `bool` | `false` | no |
 | tls\_https\_only | If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections. | `bool` | `true` | no |
 | tls\_server\_additional\_dns\_sans | List of additional DNS names to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access the Consul server(s) externally, for example, if you're using the UI. | `list` | `[]` | no |

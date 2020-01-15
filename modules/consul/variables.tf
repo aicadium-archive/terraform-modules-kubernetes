@@ -225,6 +225,16 @@ variable "sync_add_k8s_namespace_suffix" {
   default     = true
 }
 
+variable "sync_affinity" {
+  description = "YAML template string for Sync Catalog affinity"
+  default     = ""
+}
+
+variable "sync_tolerations" {
+  description = "Template string for Sync Catalog Tolerations"
+  default     = ""
+}
+
 variable "enable_ui" {
   description = "Enable Consul UI"
   default     = "false"
@@ -262,6 +272,16 @@ variable "connect_inject_by_default" {
 
 variable "connect_inject_namespace_selector" {
   description = "A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
+  default     = ""
+}
+
+variable "connect_inject_affinity" {
+  description = "Template string for Connect Inject Affinity"
+  default     = ""
+}
+
+variable "connect_inject_tolerations" {
+  description = "Template string for Connect Inject Tolerations"
   default     = ""
 }
 
