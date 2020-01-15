@@ -61,6 +61,8 @@ data "template_file" "values" {
     sync_cluster_ip_services      = var.sync_cluster_ip_services
     sync_node_port_type           = var.sync_node_port_type
     sync_add_k8s_namespace_suffix = var.sync_add_k8s_namespace_suffix
+    sync_affinity                 = jsonencode(var.sync_affinity)
+    sync_tolerations              = jsonencode(var.sync_tolerations)
 
     enable_ui          = var.enable_ui
     ui_service_type    = var.ui_service_type
@@ -71,6 +73,8 @@ data "template_file" "values" {
     enable_connect_inject             = var.enable_connect_inject
     connect_inject_by_default         = var.connect_inject_by_default
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
+    connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
+    connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
   }
 }
 

@@ -92,6 +92,8 @@ syncCatalog:
   syncClusterIPServices: ${sync_cluster_ip_services}
   nodePortSyncType: ${sync_node_port_type}
   addK8SNamespaceSuffix: ${sync_add_k8s_namespace_suffix}
+  affinity: ${sync_affinity}
+  tolerations: ${sync_tolerations}
 
 ui:
   enabled: ${enable_ui}
@@ -105,6 +107,8 @@ connectInject:
   enabled: ${enable_connect_inject}
   default: ${connect_inject_by_default}
   namespaceSelector: ${connect_inject_namespace_selector}
+  affinity: ${connect_inject_affinity}
+  tolerations: ${connect_inject_tolerations}
   # certs:
   #     secretName: ""
   #     caBundle: ""
