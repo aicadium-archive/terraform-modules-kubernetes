@@ -166,6 +166,7 @@ gzip:
 traefikLogFormat: ${traefik_log_format}
 accessLogs:
   enabled: ${access_logs_enabled}
+  filters: ${access_logs_filters}
   ## Path to the access logs file. If not provided, Traefik defaults it to stdout.
   # filePath: ""
   format: ${access_log_format}  # choices are: common, json

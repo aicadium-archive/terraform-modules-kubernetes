@@ -319,6 +319,12 @@ variable "access_logs_enabled" {
   default     = "true"
 }
 
+variable "access_logs_filters" {
+  description = "Enable access logs"
+  type        = map(string)
+  default     = {}
+}
+
 variable "access_log_format" {
   description = "Format of access logs. See https://docs.traefik.io/configuration/logs/#access-logs"
   default     = "json"
