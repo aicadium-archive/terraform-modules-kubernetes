@@ -126,7 +126,7 @@ locals {
 
     traefik_log_format  = var.traefik_log_format
     access_logs_enabled = var.access_logs_enabled
-    access_logs_filters = var.access_logs_filters
+    access_logs_filters = jsonencode(var.access_logs_filters)
     access_log_format   = var.access_log_format
 
     datadog_enabled       = var.datadog_enabled
