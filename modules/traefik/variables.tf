@@ -321,7 +321,6 @@ variable "access_logs_enabled" {
 
 variable "access_logs_filters" {
   description = "Access logs filters. See https://docs.traefik.io/v1.7/configuration/logs/#access-logs"
-  type        = map(string)
   default     = {}
 }
 
