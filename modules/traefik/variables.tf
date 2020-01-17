@@ -319,6 +319,11 @@ variable "access_logs_enabled" {
   default     = "true"
 }
 
+variable "access_logs_filters" {
+  description = "Access logs filters. See https://docs.traefik.io/v1.7/configuration/logs/#access-logs"
+  default     = {}
+}
+
 variable "access_log_format" {
   description = "Format of access logs. See https://docs.traefik.io/configuration/logs/#access-logs"
   default     = "json"
