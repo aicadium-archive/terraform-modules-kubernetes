@@ -30,6 +30,10 @@ data "template_file" "kube_janitor" {
     resources       = jsonencode(var.kube_janitor_resources)
     service_account = kubernetes_service_account.kube_janitor[0].metadata[0].name
 
+    tolerations   = var.kube_janitor_tolerations
+    affinity      = var.kube_janitor_affinity
+    node_selector = var.kube_janitor_node_selector
+
     schedule = var.kube_janitor_schedule
     rules    = jsonencode(var.kube_janitor_rules)
     dry_run  = jsonencode(var.kube_janitor_dry_run)

@@ -63,6 +63,22 @@ variable "kube_janitor_service_account" {
   default     = "kube-janitor"
 }
 
+variable "kube_janitor_node_selector" {
+  description = "Node labels for pod assignment for Kube Janitor"
+  default     = {}
+}
+
+variable "kube_janitor_affinity" {
+  description = "Affinity settings for Kube Janitor"
+  default     = {}
+}
+
+variable "kube_janitor_tolerations" {
+  description = "List of map of tolerations for Kube Janitor"
+  default     = []
+}
+
+
 variable "kube_janitor_working_namespaces" {
   description = "Namespaces where Kube Janitor will clean resources"
 }

@@ -8,3 +8,9 @@ janitor:
 rules: ${rules}
 
 serviceAccount: "${service_account}"
+
+nodeSelector: ${node_selector}
+
+tolerations: ${tolerations}
+
+affinity: ${affinity}
