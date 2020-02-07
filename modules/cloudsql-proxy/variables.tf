@@ -41,8 +41,10 @@ variable "replicas" {
 variable "deployment_strategy" {
   description = "Deployment strategy"
   default = {
-    maxSurge       = 1
-    maxUnavailable = 0
+    rollingUpdate = {
+      maxSurge       = 1
+      maxUnavailable = 0
+    }
   }
 }
 
