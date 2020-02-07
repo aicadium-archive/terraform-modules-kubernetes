@@ -121,3 +121,8 @@ variable "dashboard_viewers" {
     )
   )
 }
+
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}

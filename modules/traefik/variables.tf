@@ -34,6 +34,11 @@ variable "chart_namespace" {
   default     = "kube-system"
 }
 
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}
+
 variable "traefik_image_name" {
   description = "Docker Image of Traefik to run"
   default     = "traefik"

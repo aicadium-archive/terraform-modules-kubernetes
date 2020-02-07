@@ -7,6 +7,8 @@ resource "helm_release" "traefik" {
   version    = var.chart_version
   namespace  = var.chart_namespace
 
+  max_history = var.max_history
+
   values = [
     local.rendered_values
   ]

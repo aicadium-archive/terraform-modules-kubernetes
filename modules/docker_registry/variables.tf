@@ -234,3 +234,8 @@ variable "tolerations" {
   description = "Pod tolerations"
   default     = []
 }
+
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}

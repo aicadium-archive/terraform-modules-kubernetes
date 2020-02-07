@@ -9,6 +9,8 @@ resource "helm_release" "consul_exporter" {
   version    = var.exporter_chart_version
   namespace  = var.chart_namespace
 
+  max_history = var.max_history
+
   values = [
     data.template_file.exporter_values[0].rendered,
   ]

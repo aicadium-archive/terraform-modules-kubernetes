@@ -28,6 +28,11 @@ variable "fullname_override" {
   default     = ""
 }
 
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}
+
 variable "consul_image_name" {
   description = "Docker Image of Consul to run"
   default     = "consul"

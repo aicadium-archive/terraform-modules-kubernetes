@@ -1,9 +1,17 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 resource "helm_release" "prometheus_adapter" {
   name       = var.release_name
   chart      = var.chart_name
   repository = var.chart_repository
   version    = var.chart_version
   namespace  = var.chart_namespace
+
+  max_history = var.max_history
 
   values = [
     data.template_file.values.rendered,

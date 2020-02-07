@@ -3,6 +3,11 @@ variable "helm_release_timeout_seconds" {
   default     = 900
 }
 
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}
+
 ###########################
 # Jaeger
 ###########################

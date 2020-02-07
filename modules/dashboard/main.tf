@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 resource "helm_release" "dashboard" {
   depends_on = [kubernetes_secret.kubernetes_dashboard_key_holder]
 
@@ -6,6 +12,8 @@ resource "helm_release" "dashboard" {
   repository = var.dashboard_chart_repository
   version    = var.dashboard_chart_version
   namespace  = var.dashboard_namespace
+
+  max_history = var.max_history
 
   values = [
     data.template_file.dashboard.rendered,

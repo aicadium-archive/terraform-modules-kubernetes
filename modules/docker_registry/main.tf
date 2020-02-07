@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 locals {
   enabled = var.enabled ? 1 : 0
 
@@ -60,6 +66,8 @@ resource "helm_release" "registry" {
   repository = var.chart_repository
   version    = var.chart_version
   namespace  = var.namespace
+
+  max_history = var.max_history
 
   values = [
     templatefile("${path.module}/templates/values.yaml", local.values)

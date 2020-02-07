@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 resource "helm_release" "cloudsql_proxy" {
   count = var.enable ? 1 : 0
 
@@ -6,6 +12,8 @@ resource "helm_release" "cloudsql_proxy" {
   repository = data.helm_repository.amoy.name
   version    = var.chart_version
   namespace  = var.chart_namespace
+
+  max_history = var.max_history
 
   values = [
     data.template_file.values[0].rendered,
