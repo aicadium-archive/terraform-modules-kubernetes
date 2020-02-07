@@ -1,3 +1,9 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 locals {
   kube_janitor_enabled           = var.kube_janitor_enabled ? 1 : 0
   kube_janitor_namespace         = "core"
@@ -12,6 +18,8 @@ resource "helm_release" "kube_janitor" {
   repository = var.kube_janitor_chart_repository
   version    = var.kube_janitor_chart_version
   namespace  = local.kube_janitor_namespace
+
+  max_history = var.max_history
 
   values = [
     data.template_file.kube_janitor[0].rendered,

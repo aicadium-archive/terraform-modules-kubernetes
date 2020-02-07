@@ -18,6 +18,8 @@ resource "helm_release" "jaeger" {
   version    = var.jaeger_chart_version
   namespace  = local.jaeger_namespace
 
+  max_history = var.max_history
+
   timeout = var.helm_release_timeout_seconds
 
   values = [

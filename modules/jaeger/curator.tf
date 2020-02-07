@@ -9,6 +9,8 @@ resource "helm_release" "curator" {
 
   timeout = var.helm_release_timeout_seconds
 
+  max_history = var.max_history
+
   values = [
     data.template_file.curator[0].rendered,
   ]

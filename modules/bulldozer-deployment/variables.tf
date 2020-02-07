@@ -73,3 +73,8 @@ variable "name_override" {
   description = "Name for Bulldozer deployment"
   default     = null
 }
+
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}

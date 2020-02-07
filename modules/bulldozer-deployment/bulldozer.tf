@@ -1,8 +1,16 @@
+terraform {
+  required_providers {
+    helm = ">= 1.0"
+  }
+}
+
 resource "helm_release" "bulldozer" {
   name       = var.bulldozer_release_name
   chart      = var.bulldozer_chart_name
   repository = var.bulldozer_chart_repository
   version    = var.bulldozer_chart_version
+
+  max_history = var.max_history
 
   values = [
     local.rendered_values

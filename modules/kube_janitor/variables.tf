@@ -87,3 +87,8 @@ variable "kube_janitor_dry_run" {
   description = "Run Kube Janitor in dry-run mode"
   default     = false
 }
+
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}

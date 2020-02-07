@@ -23,6 +23,11 @@ variable "chart_namespace" {
   default     = "default"
 }
 
+variable "max_history" {
+  description = "Max History for Helm"
+  default     = 20
+}
+
 variable "pod_security_policy_enable" {
   description = "Create PodSecurityPolicy Resources"
   default     = true

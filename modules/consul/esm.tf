@@ -8,6 +8,8 @@ resource "helm_release" "consul_esm" {
   version    = var.esm_chart_version
   namespace  = var.chart_namespace
 
+  max_history = var.max_history
+
   values = [
     data.template_file.esm_values.rendered,
   ]

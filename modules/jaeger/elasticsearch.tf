@@ -10,6 +10,8 @@ resource "helm_release" "elasticsearch" {
 
   timeout = var.helm_release_timeout_seconds
 
+  max_history = var.max_history
+
   values = [
     data.template_file.elasticsearch[0].rendered,
   ]
@@ -27,6 +29,8 @@ resource "helm_release" "elasticsearch_data" {
 
   timeout = var.helm_release_timeout_seconds
 
+  max_history = var.max_history
+
   values = [
     data.template_file.elasticsearch_data[0].rendered,
   ]
@@ -43,6 +47,8 @@ resource "helm_release" "elasticsearch_client" {
   namespace  = local.elasticsearch_namespace
 
   timeout = var.helm_release_timeout_seconds
+
+  max_history = var.max_history
 
   values = [
     data.template_file.elasticsearch_client[0].rendered,
