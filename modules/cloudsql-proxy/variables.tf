@@ -45,6 +45,7 @@ variable "deployment_strategy" {
       maxSurge       = 1
       maxUnavailable = 0
     }
+    type = "RollingUpdate"
   }
 }
 
