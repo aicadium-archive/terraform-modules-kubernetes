@@ -158,6 +158,11 @@ variable "rbac_enabled" {
   default     = "true"
 }
 
+variable "sa_annotations" {
+  description = "Annotations for Traefik Service Account"
+  default     = {}
+}
+
 variable "namespaces" {
   description = "List of Kubernetes namespaces to watch"
   default     = ["default"]
