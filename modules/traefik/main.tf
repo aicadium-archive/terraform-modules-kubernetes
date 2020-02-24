@@ -42,7 +42,8 @@ locals {
     image_tag = var.traefik_image_tag
     replicas  = var.replicas
 
-    rbac_enabled = var.rbac_enabled
+    rbac_enabled   = var.rbac_enabled
+    sa_annotations = jsonencode(var.sa_annotations)
 
     max_idle_conns_per_host = var.max_idle_conns_per_host
 
