@@ -15,7 +15,7 @@ variable "chart_name" {
 
 variable "chart_version" {
   description = "Chart version"
-  default     = ""
+  default     = "1.9.2"
 }
 
 variable "chart_repository" {
@@ -227,6 +227,11 @@ variable "pod_disruption_budget" {
 
 variable "node_selector" {
   description = "Node selector for pods"
+  default     = {}
+}
+
+variable "affinity" {
+  description = "Affinity for pods"
   default     = {}
 }
 
