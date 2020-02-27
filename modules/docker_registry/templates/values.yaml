@@ -128,4 +128,6 @@ podDisruptionBudget: ${pod_disruption_budget}
 
 nodeSelector: ${node_selector}
 
+affinity: ${affinity}
+
 tolerations: ${tolerations}

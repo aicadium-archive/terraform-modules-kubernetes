@@ -54,6 +54,7 @@ locals {
     priority_class_name   = var.priority_class_name
     pod_disruption_budget = jsonencode(var.pod_disruption_budget)
     node_selector         = jsonencode(var.node_selector)
+    affinity              = jsonencode(var.affinity)
     tolerations           = jsonencode(var.tolerations)
   }
 }
