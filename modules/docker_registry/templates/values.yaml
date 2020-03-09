@@ -131,3 +131,7 @@ nodeSelector: ${node_selector}
 affinity: ${affinity}
 
 tolerations: ${tolerations}
+
+serviceAccount:
+  create: true
+  annotations: ${service_account_annotations}

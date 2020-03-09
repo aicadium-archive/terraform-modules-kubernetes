@@ -244,3 +244,8 @@ variable "max_history" {
   description = "Max History for Helm"
   default     = 20
 }
+
+variable "service_account_annotations" {
+  description = "Annotations for service account"
+  default     = {}
+}

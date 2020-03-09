@@ -56,6 +56,8 @@ locals {
     node_selector         = jsonencode(var.node_selector)
     affinity              = jsonencode(var.affinity)
     tolerations           = jsonencode(var.tolerations)
+
+    service_account_annotations = jsonencode(var.service_account_annotations)
   }
 }
 
