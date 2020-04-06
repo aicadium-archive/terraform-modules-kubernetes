@@ -9,7 +9,7 @@ serviceAccount:
   annotations: {}
 
 vmselect:
-  enabled: true
+  enabled: ${select_enabled}
   image:
     repository: ${select_image_repository}
     tag: ${select_image_tag}
@@ -34,36 +34,37 @@ vmselect:
   ingress:
     enabled: false
   statefulSet:
-    enabled: false
+    enabled: ${select_pv_enabled}
   persistentVolume:
-    enabled: false
+    enabled: ${select_pv_enabled}
+    accessModes: ${select_pv_access_modes}
+    annotations: ${select_pv_annotations}
+    size: ${select_pv_size}
   serviceMonitor:
     enabled: false
 
 vminsert:
-  enabled: true
+  enabled: ${insert_enabled}
   image:
     repository: ${insert_image_repository}
     tag: ${insert_image_tag}
     pullPolicy: IfNotPresent
   priorityClassName: ${insert_priority_class_name}
 
-  tolerations: []
-  nodeSelector: {}
-  affinity: {}
+  tolerations: ${insert_tolerations}
+  nodeSelector: ${insert_node_selector}
+  affinity: ${insert_affinity}
+  podAnnotations: ${insert_pod_annotations}
+  replicaCount: ${insert_replica_count}
+  resources: ${insert_resources}
 
-  replicaCount: 2
-  resources: {}
+  securityContext: ${insert_security_context}
 
   service:
-    annotations: {}
-    labels: {}
-    clusterIP: ""
-    externalIPs: []
-    loadBalancerIP: ""
-    loadBalancerSourceRanges: []
-    servicePort: 8480
-    type: ClusterIP
+    annotations: ${insert_service_annotations}
+    labels: ${insert_service_labels}
+    servicePort: ${insert_service_port}
+    type: ${insert_service_type}
 
   ingress:
     enabled: false
@@ -71,37 +72,38 @@ vminsert:
     enabled: false
 
 vmstorage:
-  enabled: true
+  enabled: ${storage_enabled}
   image:
     repository: ${storage_image_repository}
     tag: ${storage_image_tag}
     pullPolicy: IfNotPresent
-  priorityClassName: ""
+  priorityClassName: ${storage_priority_class_name}
 
-  ## Data retention period in month
-  ##
-  retentionPeriod: 2
+  ## Data retention period in months
+  retentionPeriod: ${storage_retention_period}
 
-  tolerations: []
-  nodeSelector: {}
-  affinity: {}
+  tolerations: ${storage_tolerations}
+  nodeSelector: ${storage_node_selector}
+  affinity: ${storage_affnity}
 
   persistentVolume:
-    enabled: true
-    accessModes:
-      - ReadWriteOnce
-    size: 8Gi
+    enabled: ${storage_pv_enabled}
+    accessModes: ${storage_pv_access_modes}
+    annotations: ${storage_pv_annotations}
+    size: ${storage_pv_size}
 
-  podManagementPolicy: OrderedReady
-  replicaCount: 2
-  resources: {}
+  podAnnotations: ${storage_pod_annotations}
+  replicaCount: ${storage_replica_count}
+  resources: ${storage_resources}
+
+  securityContext: ${storage_security_context}
 
   service:
-    annotations: {}
-    labels: {}
-    servicePort: 8482
-    vminsertPort: 8400
-    vmselectPort: 8401
-  terminationGracePeriodSeconds: 60
+    annotations: ${storage_service_annotations}
+    labels: ${storage_service_labels}
+    servicePort: ${storage_service_port}
+    vminsertPort: ${storage_vm_insert_port}
+    vmselectPort: ${storage_vm_select_port}
+  terminationGracePeriodSeconds: ${storage_termination_grace_period_seconds}
   serviceMonitor:
     enabled: false
