@@ -1,0 +1,107 @@
+rbac:
+  create: true
+  pspEnabled: true
+  namespaced: true
+  annotations: {}
+
+serviceAccount:
+  create: true
+  annotations: {}
+
+vmselect:
+  enabled: true
+  image:
+    repository: ${select_image_repository}
+    tag: ${select_image_tag}
+    pullPolicy: IfNotPresent
+  priorityClassName: ${select_priority_class_name}
+
+  tolerations: ${select_tolerations}
+  nodeSelector: ${select_node_selector}
+  affinity: ${select_affinity}
+  podAnnotations: ${select_pod_annotations}
+  replicaCount: ${select_replica_count}
+  resources: ${select_resources}
+
+  securityContext: ${select_security_context}
+
+  service:
+    annotations: ${select_service_annotations}
+    labels: ${select_service_labels}
+    servicePort: ${select_service_port}
+    type: ${select_service_type}
+
+  ingress:
+    enabled: false
+  statefulSet:
+    enabled: false
+  persistentVolume:
+    enabled: false
+  serviceMonitor:
+    enabled: false
+
+vminsert:
+  enabled: true
+  image:
+    repository: ${insert_image_repository}
+    tag: ${insert_image_tag}
+    pullPolicy: IfNotPresent
+  priorityClassName: ${insert_priority_class_name}
+
+  tolerations: []
+  nodeSelector: {}
+  affinity: {}
+
+  replicaCount: 2
+  resources: {}
+
+  service:
+    annotations: {}
+    labels: {}
+    clusterIP: ""
+    externalIPs: []
+    loadBalancerIP: ""
+    loadBalancerSourceRanges: []
+    servicePort: 8480
+    type: ClusterIP
+
+  ingress:
+    enabled: false
+  serviceMonitor:
+    enabled: false
+
+vmstorage:
+  enabled: true
+  image:
+    repository: ${storage_image_repository}
+    tag: ${storage_image_tag}
+    pullPolicy: IfNotPresent
+  priorityClassName: ""
+
+  ## Data retention period in month
+  ##
+  retentionPeriod: 2
+
+  tolerations: []
+  nodeSelector: {}
+  affinity: {}
+
+  persistentVolume:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+
+  podManagementPolicy: OrderedReady
+  replicaCount: 2
+  resources: {}
+
+  service:
+    annotations: {}
+    labels: {}
+    servicePort: 8482
+    vminsertPort: 8400
+    vmselectPort: 8401
+  terminationGracePeriodSeconds: 60
+  serviceMonitor:
+    enabled: false
