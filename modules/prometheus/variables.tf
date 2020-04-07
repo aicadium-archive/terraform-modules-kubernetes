@@ -1542,7 +1542,17 @@ EOF
 #################################
 variable "vm_enabled" {
   description = "Deploy VictoriaMetrics cluster"
-  default     = "true"
+  default     = true
+}
+
+variable "vm_psp_enabled" {
+  description = "Enable PodSecurityPolicy in VictoriaMetrics"
+  default     = true
+}
+
+variable "vm_service_account_annotations" {
+  description = "Service Account Annotations for VictoriaMetrics"
+  default     = {}
 }
 
 variable "vm_helm_release_max_history" {
@@ -1585,7 +1595,7 @@ variable "vm_namespace" {
 #################################
 variable "vm_select_enabled" {
   description = "Deploy VictoriaMetrics Select"
-  default     = "true"
+  default     = true
 }
 
 variable "vm_select_image_repository" {
@@ -1660,7 +1670,7 @@ variable "vm_select_service_type" {
 
 variable "vm_select_pv_enabled" {
   description = "Enable persistent volume on VictoriaMetrics Select server"
-  default     = "true"
+  default     = true
 }
 
 variable "vm_select_pv_access_modes" {
@@ -1686,7 +1696,7 @@ variable "vm_select_pv_size" {
 #################################
 variable "vm_insert_enabled" {
   description = "Deploy VictoriaMetrics Insert"
-  default     = "true"
+  default     = true
 }
 
 variable "vm_insert_image_repository" {
@@ -1764,7 +1774,7 @@ variable "vm_insert_service_type" {
 ##################################
 variable "vm_storage_enabled" {
   description = "Deploy VictoriaMetrics Storage"
-  default     = "true"
+  default     = true
 }
 
 variable "vm_storage_image_repository" {
@@ -1804,7 +1814,7 @@ variable "vm_storage_affinity" {
 
 variable "vm_storage_pv_enabled" {
   description = "Enable persistent volume on VictoriaMetrics Storage server"
-  default     = "true"
+  default     = true
 }
 
 variable "vm_storage_pv_access_modes" {

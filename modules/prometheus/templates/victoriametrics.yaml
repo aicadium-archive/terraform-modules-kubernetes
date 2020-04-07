@@ -1,12 +1,12 @@
 rbac:
   create: true
-  pspEnabled: true
+  pspEnabled: ${psp_enabled}
   namespaced: true
   annotations: {}
 
 serviceAccount:
   create: true
-  annotations: {}
+  annotations: ${service_account_annotations}
 
 vmselect:
   enabled: ${select_enabled}

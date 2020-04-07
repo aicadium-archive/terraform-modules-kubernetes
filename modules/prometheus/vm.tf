@@ -25,6 +25,9 @@ data "template_file" "vm" {
   template = file("${path.module}/templates/victoriametrics.yaml")
 
   vars = {
+    psp_enabled                 = var.vm_psp_enabled
+    service_account_annotations = jsonencode(var.vm_service_account_annotations)
+
     select_enabled             = var.vm_select_enabled
     select_image_repository    = var.vm_select_image_repository
     select_image_tag           = var.vm_select_image_tag
