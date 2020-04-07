@@ -78,9 +78,9 @@ data "template_file" "vm" {
 
     storage_retention_period = var.vm_storage_retention_period
 
-    storage_tolerations     = jsonencode(var.vm_storage_tolerations)
-    storage_node_selector   = jsonencode(var.vm_storage_node_selector)
-    storage_affinity        = jsonencode(var.vm_storage_affinity)
+    storage_tolerations   = jsonencode(var.vm_storage_tolerations)
+    storage_node_selector = jsonencode(var.vm_storage_node_selector)
+    storage_affinity      = jsonencode(var.vm_storage_affinity)
 
     storage_pv_enabled      = var.vm_storage_pv_enabled
     storage_pv_access_modes = jsonencode(var.vm_storage_pv_access_modes)
