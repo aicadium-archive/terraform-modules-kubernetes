@@ -1259,6 +1259,8 @@ variable "server_config" {
 
   default = <<EOF
 prometheus.yml:
+  ${remote_write_configs}
+
   rule_files:
     - /etc/config/rules
     - /etc/config/alerts

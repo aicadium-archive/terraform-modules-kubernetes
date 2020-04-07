@@ -338,7 +338,7 @@ data "template_file" "server" {
 
     alerts        = indent(2, var.server_alerts)
     rules         = indent(2, var.server_rules)
-    server_config = indent(2, var.server_config)
+    server_config = indent(2, data.template_file.server_config.rendered)
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
@@ -349,5 +349,19 @@ data "template_file" "server" {
     readiness_probe_timeout       = var.server_readiness_probe_timeout
     liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
     liveness_probe_timeout        = var.server_liveness_probe_timeout
+  }
+}
+
+data "template_file" "server" {
+  template = var.server_config
+
+  vars = {
+    remote_write_configs = var.vm_enabled && var.vm_storage_enabled ? indent(2, jsonencode({
+      remote_write = [
+        {
+          url = "http://${var.vm_release_name}-vminsert.${var.vm_namespace}.svc.cluster.local:${var.vm_insert_service_port}/insert/0/prometheus/"
+        }
+      ]
+    })) : ""
   }
 }
