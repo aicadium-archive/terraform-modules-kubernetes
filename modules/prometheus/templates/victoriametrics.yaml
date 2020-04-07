@@ -84,7 +84,7 @@ vmstorage:
 
   tolerations: ${storage_tolerations}
   nodeSelector: ${storage_node_selector}
-  affinity: ${storage_affnity}
+  affinity: ${storage_affinity}
 
   persistentVolume:
     enabled: ${storage_pv_enabled}
