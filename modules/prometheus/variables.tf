@@ -1545,16 +1545,6 @@ variable "vm_enabled" {
   default     = false
 }
 
-variable "vm_psp_enabled" {
-  description = "Enable PodSecurityPolicy in VictoriaMetrics"
-  default     = true
-}
-
-variable "vm_service_account_annotations" {
-  description = "Service Account Annotations for VictoriaMetrics"
-  default     = {}
-}
-
 variable "vm_helm_release_max_history" {
   description = "The maximum number of history releases to keep track for the VM helm release"
   default     = 20
@@ -1593,6 +1583,16 @@ variable "vm_namespace" {
 #################################
 # VictoriaMetrics Select service
 #################################
+variable "vm_psp_enabled" {
+  description = "Enable PodSecurityPolicy in VictoriaMetrics"
+  default     = true
+}
+
+variable "vm_service_account_annotations" {
+  description = "Service Account Annotations for VictoriaMetrics"
+  default     = {}
+}
+
 variable "vm_select_enabled" {
   description = "Deploy VictoriaMetrics Select"
   default     = true
