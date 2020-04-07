@@ -352,8 +352,8 @@ data "template_file" "server" {
   }
 }
 
-data "template_file" "server" {
-  template = var.server_config
+data "template_file" "server_config" {
+  template = file("${path.module}/templates/server_config.yaml")
 
   vars = {
     remote_write_configs = var.vm_enabled && var.vm_storage_enabled ? indent(2, jsonencode({
