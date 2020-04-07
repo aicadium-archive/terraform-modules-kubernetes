@@ -1536,3 +1536,362 @@ prometheus.yml:
 EOF
 
 }
+
+#################################
+# VictoriaMetrics
+#################################
+variable "vm_enabled" {
+  description = "Deploy VictoriaMetrics cluster"
+  default     = "true"
+}
+
+variable "vm_helm_release_max_history" {
+  description = "The maximum number of history releases to keep track for the VM helm release"
+  default     = 20
+}
+
+variable "vm_release_name" {
+  description = "Helm release name for Argo"
+  default     = "victoria-metrics"
+}
+
+variable "vm_chart" {
+  description = "Chart for VictoriaMetrics"
+  default     = "victoria-metrics-cluster"
+}
+
+variable "vm_chart_repository" {
+  description = "Chart Repository for Argo"
+  default     = "vm"
+}
+
+variable "vm_chart_repository_url" {
+  description = "Chart Repository URL for Argo"
+  default     = "https://victoriametrics.github.io/helm-charts/"
+}
+
+variable "vm_chart_version" {
+  description = "Chart version for VictoriaMetrics"
+  default     = "0.4.4"
+}
+
+variable "vm_namespace" {
+  description = "Namespace for VictoriaMetrics"
+  default     = "core"
+}
+
+#################################
+# VictoriaMetrics Select service
+#################################
+variable "vm_select_enabled" {
+  description = "Deploy VictoriaMetrics Select"
+  default     = "true"
+}
+
+variable "vm_select_image_repository" {
+  description = "Image repository for VictoriaMetrics Select server"
+  default     = "victoriametrics/vmselect"
+}
+
+variable "vm_select_image_tag" {
+  description = "Image tag for VictoriaMetrics Select server"
+  default     = "v1.34.7-cluster"
+}
+
+variable "vm_select_priority_class_name" {
+  description = "Priority Class Name for VictoriaMetrics Select server"
+  default     = ""
+}
+
+variable "vm_select_tolerations" {
+  description = "Tolerations for VictoriaMetrics Select server"
+  default     = []
+}
+
+variable "vm_select_node_selector" {
+  description = "Node selector for VictoriaMetrics Select server pods"
+  default     = {}
+}
+
+variable "vm_select_affinity" {
+  description = "Affinity for VictoriaMetrics Select server pods"
+  default     = {}
+}
+
+variable "vm_select_pod_annotations" {
+  description = "Annotations for VictoriaMetrics Select server pods"
+  default     = {}
+}
+
+variable "vm_select_replica_count" {
+  description = "Number of replicas for VictoriaMetrics Select server"
+  default     = 2
+}
+
+variable "vm_select_resources" {
+  description = "Resources for VictoriaMetrics Select server"
+  default     = {}
+}
+
+variable "vm_select_security_context" {
+  description = <<EOF
+  Security context for VictoriaMetrics Select server pods defined as a map which will be
+  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
+  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
+  with `server_security_context_json` instead
+EOF
+
+  default = {}
+}
+
+variable "vm_select_service_annotations" {
+  description = "Annotations for VictoriaMetrics Select server service"
+
+  default = {}
+}
+
+variable "vm_select_service_labels" {
+  description = "Labels for VictoriaMetrics Select server service"
+  default     = {}
+}
+
+variable "vm_select_service_port" {
+  description = "Service port for VictoriaMetrics Select server"
+  default     = 8481
+}
+
+variable "vm_select_service_type" {
+  description = "Type of service for VictoriaMetrics Select server"
+  default     = "ClusterIP"
+}
+
+variable "vm_select_pv_enabled" {
+  description = "Enable persistent volume on VictoriaMetrics Select server"
+  default     = "true"
+}
+
+variable "vm_select_pv_access_modes" {
+  description = "VictoriaMetrics Select server data Persistent Volume access modes"
+
+  default = [
+    "ReadWriteOnce",
+  ]
+}
+
+variable "vm_select_pv_annotations" {
+  description = "Annotations for VictoriaMetrics Select server PV"
+  default     = {}
+}
+
+variable "vm_select_pv_size" {
+  description = "VictoriaMetrics Select server data Persistent Volume size"
+  default     = "8Gi"
+}
+
+#################################
+# VictoriaMetrics Insert service
+#################################
+variable "vm_insert_enabled" {
+  description = "Deploy VictoriaMetrics Insert"
+  default     = "true"
+}
+
+variable "vm_insert_image_repository" {
+  description = "Image repository for VictoriaMetrics Insert server"
+  default     = "victoriametrics/vminsert"
+}
+
+variable "vm_insert_image_tag" {
+  description = "Image tag for VictoriaMetrics Insert server"
+  default     = "v1.34.7-cluster"
+}
+
+variable "vm_insert_priority_class_name" {
+  description = "Priority Class Name for VictoriaMetrics Insert server"
+  default     = ""
+}
+
+variable "vm_insert_tolerations" {
+  description = "Tolerations for VictoriaMetrics Insert server"
+  default     = []
+}
+
+variable "vm_insert_node_selector" {
+  description = "Node selector for VictoriaMetrics Insert server pods"
+  default     = {}
+}
+
+variable "vm_insert_affinity" {
+  description = "Affinity for VictoriaMetrics Insert server pods"
+  default     = {}
+}
+
+variable "vm_insert_pod_annotations" {
+  description = "Annotations for VictoriaMetrics Insert server pods"
+  default     = {}
+}
+
+variable "vm_insert_replica_count" {
+  description = "Number of replicas for VictoriaMetrics Insert server"
+  default     = 2
+}
+
+variable "vm_insert_resources" {
+  description = "Resources for VictoriaMetrics Insert server"
+  default     = {}
+}
+
+variable "vm_insert_security_context" {
+  description = <<EOF
+  Security context for VictoriaMetrics Insert server pods defined as a map which will be
+  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
+  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
+  with `server_security_context_json` instead
+EOF
+
+  default = {}
+}
+
+variable "vm_insert_service_annotations" {
+  description = "Annotations for VictoriaMetrics Insert server service"
+
+  default = {}
+}
+
+variable "vm_insert_service_labels" {
+  description = "Labels for VictoriaMetrics Insert server service"
+  default     = {}
+}
+
+variable "vm_insert_service_port" {
+  description = "Service port for VictoriaMetrics Insert server"
+  default     = 8480
+}
+
+variable "vm_insert_service_type" {
+  description = "Type of service for VictoriaMetrics Insert server"
+  default     = "ClusterIP"
+}
+
+##################################
+# VictoriaMetrics Storage service
+##################################
+variable "vm_storage_enabled" {
+  description = "Deploy VictoriaMetrics Storage"
+  default     = "true"
+}
+
+variable "vm_storage_image_repository" {
+  description = "Image repository for VictoriaMetrics Storage server"
+  default     = "victoriametrics/vmstorage"
+}
+
+variable "vm_storage_image_tag" {
+  description = "Image tag for VictoriaMetrics Storage server"
+  default     = "v1.34.7-cluster"
+}
+
+variable "vm_storage_priority_class_name" {
+  description = "Priority Class Name for VictoriaMetrics Storage server"
+  default     = ""
+}
+
+variable "vm_storage_retention_period" {
+  description = "VictoriaMetrics Storage data retention period in months"
+  default     = 1
+}
+
+variable "vm_storage_tolerations" {
+  description = "Tolerations for VictoriaMetrics Storage server"
+  default     = []
+}
+
+variable "vm_storage_node_selector" {
+  description = "Node selector for VictoriaMetrics Storage server pods"
+  default     = {}
+}
+
+variable "vm_storage_affinity" {
+  description = "Affinity for VictoriaMetrics Storage server pods"
+  default     = {}
+}
+
+variable "vm_storage_pv_enabled" {
+  description = "Enable persistent volume on VictoriaMetrics Storage server"
+  default     = "true"
+}
+
+variable "vm_storage_pv_access_modes" {
+  description = "VictoriaMetrics Storage server data Persistent Volume access modes"
+
+  default = [
+    "ReadWriteOnce",
+  ]
+}
+
+variable "vm_storage_pv_annotations" {
+  description = "Annotations for VictoriaMetrics Storage server PV"
+  default     = {}
+}
+
+variable "vm_storage_pv_size" {
+  description = "VictoriaMetrics Storage server data Persistent Volume size"
+  default     = "8Gi"
+}
+
+variable "vm_storage_pod_annotations" {
+  description = "Annotations for VictoriaMetrics Storage server pods"
+  default     = {}
+}
+
+variable "vm_storage_replica_count" {
+  description = "Number of replicas for VictoriaMetrics Storage server"
+  default     = 2
+}
+
+variable "vm_storage_resources" {
+  description = "Resources for VictoriaMetrics Storage server"
+  default     = {}
+}
+
+variable "vm_storage_security_context" {
+  description = <<EOF
+  Security context for VictoriaMetrics Storage server pods defined as a map which will be
+  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
+  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
+  with `server_security_context_json` instead
+EOF
+
+  default = {}
+}
+
+variable "vm_storage_service_annotations" {
+  description = "Annotations for VictoriaMetrics Storage server service"
+
+  default = {}
+}
+
+variable "vm_storage_service_labels" {
+  description = "Labels for VictoriaMetrics Storage server service"
+  default     = {}
+}
+
+variable "vm_storage_service_port" {
+  description = "Service port for VictoriaMetrics Storage server"
+  default     = 8482
+}
+
+variable "vm_storage_vm_insert_port" {
+  description = "Service port for for accepting connections from vminsert"
+  default     = 8400
+}
+
+variable "vm_storage_vm_select_port" {
+  description = "Service port for for accepting connections from vmselect"
+  default     = 8401
+}
+
+variable "vm_storage_termination_grace_period_seconds" {
+  description = "VictoriaMetrics Select server pods' termination grace period in seconds"
+  default     = 60
+}
