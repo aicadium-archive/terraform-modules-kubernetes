@@ -1542,7 +1542,7 @@ EOF
 #################################
 variable "vm_enabled" {
   description = "Deploy VictoriaMetrics cluster"
-  default     = true
+  default     = false
 }
 
 variable "vm_psp_enabled" {
