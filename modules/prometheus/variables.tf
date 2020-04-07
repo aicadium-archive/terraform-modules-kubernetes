@@ -1269,7 +1269,7 @@ variable "vm_helm_release_max_history" {
 
 variable "vm_release_name" {
   description = "Helm release name for Argo"
-  default     = "victoria-metrics"
+  default     = "victoria-metrics-cluster"
 }
 
 variable "vm_chart" {
