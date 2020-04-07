@@ -1634,20 +1634,13 @@ variable "vm_select_resources" {
 }
 
 variable "vm_select_security_context" {
-  description = <<EOF
-  Security context for VictoriaMetrics Select server pods defined as a map which will be
-  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
-  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
-  with `server_security_context_json` instead
-EOF
-
-  default = {}
+  description = "Security context for VictoriaMetrics Select server pods defined as a map which will be serialized to JSON"
+  default     = {}
 }
 
 variable "vm_select_service_annotations" {
   description = "Annotations for VictoriaMetrics Select server service"
-
-  default = {}
+  default     = {}
 }
 
 variable "vm_select_service_labels" {
@@ -1742,20 +1735,13 @@ variable "vm_insert_resources" {
 }
 
 variable "vm_insert_security_context" {
-  description = <<EOF
-  Security context for VictoriaMetrics Insert server pods defined as a map which will be
-  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
-  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
-  with `server_security_context_json` instead
-EOF
-
-  default = {}
+  description = "Security context for VictoriaMetrics Insert server pods defined as a map which will be serialized to JSON."
+  default     = {}
 }
 
 variable "vm_insert_service_annotations" {
   description = "Annotations for VictoriaMetrics Insert server service"
-
-  default = {}
+  default     = {}
 }
 
 variable "vm_insert_service_labels" {
@@ -1855,20 +1841,13 @@ variable "vm_storage_resources" {
 }
 
 variable "vm_storage_security_context" {
-  description = <<EOF
-  Security context for VictoriaMetrics Storage server pods defined as a map which will be
-  serialized to JSON. Due to limitations with Terraform 0.11 and below, integers are serialized
-  as strings in JSON and this will not work for fields like `runAsUser`. Specify a JSON string
-  with `server_security_context_json` instead
-EOF
-
-  default = {}
+  description = "Security context for VictoriaMetrics Storage server pods defined as a map which will be serialized to JSON"
+  default     = {}
 }
 
 variable "vm_storage_service_annotations" {
   description = "Annotations for VictoriaMetrics Storage server service"
-
-  default = {}
+  default     = {}
 }
 
 variable "vm_storage_service_labels" {
