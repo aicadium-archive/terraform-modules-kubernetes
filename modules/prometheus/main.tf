@@ -356,7 +356,7 @@ data "template_file" "server_config" {
   template = file("${path.module}/templates/server_config.yaml")
 
   vars = {
-    remote_write_configs = var.vm_enabled && var.vm_storage_enabled ? indent(2, jsonencode({
+    remote_write_configs = var.vm_enabled && var.vm_storage_enabled ? indent(2, yamlencode({
       remote_write = [
         {
           url = "http://${var.vm_release_name}-vminsert.${var.vm_namespace}.svc.cluster.local:${var.vm_insert_service_port}/insert/0/prometheus/"
