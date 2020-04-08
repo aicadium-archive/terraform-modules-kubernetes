@@ -1,3 +1,5 @@
+clusterDomainSuffix: cluster.local
+
 rbac:
   create: true
   pspEnabled: ${psp_enabled}
@@ -10,6 +12,7 @@ serviceAccount:
 
 vmselect:
   enabled: ${select_enabled}
+  name: vmselect
   image:
     repository: ${select_image_repository}
     tag: ${select_image_tag}
@@ -45,6 +48,7 @@ vmselect:
 
 vminsert:
   enabled: ${insert_enabled}
+  name: vminsert
   image:
     repository: ${insert_image_repository}
     tag: ${insert_image_tag}
@@ -73,6 +77,7 @@ vminsert:
 
 vmstorage:
   enabled: ${storage_enabled}
+  name: vmstorage
   image:
     repository: ${storage_image_repository}
     tag: ${storage_image_tag}
