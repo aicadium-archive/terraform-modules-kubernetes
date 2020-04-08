@@ -359,7 +359,7 @@ data "template_file" "server_config" {
     remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
       remote_write = [
         {
-          url = local.prometheus_remote_write_api
+          url = local.prometheus_remote_write_api_url
         }
       ]
     })) : ""
