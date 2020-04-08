@@ -81,6 +81,7 @@ vmstorage:
 
   ## Data retention period in months
   retentionPeriod: ${storage_retention_period}
+  extraArgs: ${storage_extra_args}
 
   tolerations: ${storage_tolerations}
   nodeSelector: ${storage_node_selector}

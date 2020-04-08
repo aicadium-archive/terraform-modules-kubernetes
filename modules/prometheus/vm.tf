@@ -77,6 +77,7 @@ data "template_file" "vm" {
     storage_priority_class_name = var.vm_storage_priority_class_name
 
     storage_retention_period = var.vm_storage_retention_period
+    storage_extra_args       = jsonencode(var.vm_storage_extra_args)
 
     storage_tolerations   = jsonencode(var.vm_storage_tolerations)
     storage_node_selector = jsonencode(var.vm_storage_node_selector)

@@ -1514,6 +1514,11 @@ variable "vm_storage_retention_period" {
   default     = 1
 }
 
+variable "vm_storage_extra_args" {
+  description = "Additional VictoriaMetrics Storage container arguments"
+  default     = {}
+}
+
 variable "vm_storage_tolerations" {
   description = "Tolerations for VictoriaMetrics Storage server"
   default     = []
