@@ -37,6 +37,7 @@ data "template_file" "vm" {
     select_image_repository    = var.vm_select_image_repository
     select_image_tag           = var.vm_select_image_tag
     select_priority_class_name = var.vm_select_priority_class_name
+    select_extra_args          = var.vm_select_extra_args
 
     select_tolerations     = jsonencode(var.vm_select_tolerations)
     select_node_selector   = jsonencode(var.vm_select_node_selector)
@@ -61,6 +62,7 @@ data "template_file" "vm" {
     insert_image_repository    = var.vm_insert_image_repository
     insert_image_tag           = var.vm_insert_image_tag
     insert_priority_class_name = var.vm_insert_priority_class_name
+    insert_extra_args          = var.vm_insert_extra_args
 
     insert_tolerations     = jsonencode(var.vm_insert_tolerations)
     insert_node_selector   = jsonencode(var.vm_insert_node_selector)

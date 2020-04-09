@@ -18,6 +18,7 @@ vmselect:
     tag: ${select_image_tag}
     pullPolicy: IfNotPresent
   priorityClassName: ${select_priority_class_name}
+  extraArgs: ${select_extra_args}
 
   tolerations: ${select_tolerations}
   nodeSelector: ${select_node_selector}
@@ -54,6 +55,7 @@ vminsert:
     tag: ${insert_image_tag}
     pullPolicy: IfNotPresent
   priorityClassName: ${insert_priority_class_name}
+  extraArgs: ${insert_extra_args}
 
   tolerations: ${insert_tolerations}
   nodeSelector: ${insert_node_selector}

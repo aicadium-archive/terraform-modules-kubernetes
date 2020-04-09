@@ -1335,6 +1335,11 @@ variable "vm_select_priority_class_name" {
   default     = ""
 }
 
+variable "vm_select_extra_args" {
+  description = "Additional VictoriaMetrics Select container arguments"
+  default     = {}
+}
+
 variable "vm_select_tolerations" {
   description = "Tolerations for VictoriaMetrics Select server"
   default     = []
@@ -1434,6 +1439,11 @@ variable "vm_insert_image_tag" {
 variable "vm_insert_priority_class_name" {
   description = "Priority Class Name for VictoriaMetrics Insert server"
   default     = ""
+}
+
+variable "vm_insert_extra_args" {
+  description = "Additional VictoriaMetrics Insert container arguments"
+  default     = {}
 }
 
 variable "vm_insert_tolerations" {
