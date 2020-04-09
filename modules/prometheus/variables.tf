@@ -1254,6 +1254,11 @@ EOF
 
 }
 
+variable "server_config_override" {
+  description = "Overriding the Prometheus server config file in YAML"
+  default     = ""
+}
+
 #################################
 # VictoriaMetrics
 #################################
