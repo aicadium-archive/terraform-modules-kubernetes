@@ -49,7 +49,7 @@ server:
   skipTSDBLock: ${skip_tsdb_lock}
 
   ## Path to a configuration file on prometheus server container FS
-  configPath: /etc/config/$(HOSTNAME).yml
+  configPath: /etc/config/$(POD_NAME).yml
 
   global:
     ## How frequently to scrape targets by default
