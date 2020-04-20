@@ -952,7 +952,7 @@ variable "server_extra_args" {
 
 variable "server_extra_env" {
   description = "Extra environment variables for server container"
-  default     = [{
+  default = [{
     name = "POD_NAME"
     valueFrom = {
       fieldRef = {
