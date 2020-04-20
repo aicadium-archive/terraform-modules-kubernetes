@@ -1,4 +1,4 @@
-prometheus.yml:
+prometheus-server-${replica_id}.yml:
   ${remote_write_configs}
 
   rule_files:
@@ -6,6 +6,19 @@ prometheus.yml:
     - /etc/config/alerts
 
   scrape_configs:
+    # Shard scrape targets such that each prometheus statefulset replica scrapes a
+    # subset of targets.
+    # See https://www.robustperception.io/scaling-and-federating-prometheus
+    - job_name: sharding
+      relabel_configs:
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
     - job_name: prometheus
       static_configs:
         - targets:

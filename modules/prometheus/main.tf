@@ -338,7 +338,7 @@ data "template_file" "server" {
 
     alerts        = indent(2, var.server_alerts)
     rules         = indent(2, var.server_rules)
-    server_config = indent(2, data.template_file.server_config.rendered)
+    server_config = indent(2, join("\n", data.template_file.server_config[*].rendered))
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
@@ -353,6 +353,8 @@ data "template_file" "server" {
 }
 
 data "template_file" "server_config" {
+  count = var.server_replica
+
   template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
 
   vars = {
@@ -363,5 +365,8 @@ data "template_file" "server_config" {
         }
       ]
     })) : ""
+
+    replica_count = var.server_replica
+    replica_id    = count.index
   }
 }
