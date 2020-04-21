@@ -6,16 +6,15 @@ prometheus-server-${replica_id}.yml:
     - /etc/config/alerts
 
   scrape_configs:
-    # Shard scrape targets such that each prometheus statefulset replica scrapes a
-    # subset of targets.
-    # See https://www.robustperception.io/scaling-and-federating-prometheus
-    - job_name: sharding
-      kubernetes_sd_configs:
-        - role: node
-        - role: service
-        - role: pod
-        - role: endpoints
+    - job_name: prometheus
+      static_configs:
+        - targets:
+          - localhost:9090
+
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
         - source_labels: [__address__]
           modulus:       ${replica_count}
           target_label:  __tmp_hash
@@ -23,11 +22,6 @@ prometheus-server-${replica_id}.yml:
         - source_labels: [__tmp_hash]
           regex:         ^${replica_id}$
           action:        keep
-
-    - job_name: prometheus
-      static_configs:
-        - targets:
-          - localhost:9090
 
     # A scrape configuration for running Prometheus on a Kubernetes cluster.
     # This uses separate scrape configs for cluster components (i.e. API server, node)
@@ -73,6 +67,17 @@ prometheus-server-${replica_id}.yml:
       # will add targets for each API server which Kubernetes adds an endpoint to
       # the default/kubernetes service.
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
           action: keep
           regex: default;kubernetes;https
@@ -104,6 +109,17 @@ prometheus-server-${replica_id}.yml:
         - role: node
 
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - action: labelmap
           regex: __meta_kubernetes_node_label_(.+)
         - target_label: __address__
@@ -146,6 +162,17 @@ prometheus-server-${replica_id}.yml:
       # replacement: /api/v1/nodes/$1:4194/proxy/metrics
       # more info here https://github.com/coreos/prometheus-operator/issues/633
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - action: labelmap
           regex: __meta_kubernetes_node_label_(.+)
         - target_label: __address__
@@ -174,6 +201,17 @@ prometheus-server-${replica_id}.yml:
         - role: endpoints
 
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scrape]
           action: keep
           regex: true
@@ -218,6 +256,17 @@ prometheus-server-${replica_id}.yml:
         - role: service
 
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_probe]
           action: keep
           regex: pushgateway
@@ -238,6 +287,17 @@ prometheus-server-${replica_id}.yml:
         - role: service
 
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_probe]
           action: keep
           regex: true
@@ -270,6 +330,17 @@ prometheus-server-${replica_id}.yml:
         - role: pod
 
       relabel_configs:
+        # Shard scrape targets such that each prometheus statefulset replica
+        # scrapes a subset of targets.
+        # See https://www.robustperception.io/scaling-and-federating-prometheus
+        - source_labels: [__address__]
+          modulus:       ${replica_count}
+          target_label:  __tmp_hash
+          action:        hashmod
+        - source_labels: [__tmp_hash]
+          regex:         ^${replica_id}$
+          action:        keep
+
         - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
           action: keep
           regex: true
