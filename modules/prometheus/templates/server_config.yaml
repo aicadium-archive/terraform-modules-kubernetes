@@ -10,6 +10,11 @@ prometheus-server-${replica_id}.yml:
     # subset of targets.
     # See https://www.robustperception.io/scaling-and-federating-prometheus
     - job_name: sharding
+      kubernetes_sd_configs:
+        - role: node
+        - role: service
+        - role: pod
+        - role: endpoints
       relabel_configs:
         - source_labels: [__address__]
           modulus:       ${replica_count}
