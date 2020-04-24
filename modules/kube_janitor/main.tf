@@ -15,7 +15,7 @@ resource "helm_release" "kube_janitor" {
 
   name       = var.kube_janitor_release_name
   chart      = var.kube_janitor_chart_name
-  repository = var.kube_janitor_chart_repository
+  repository = data.helm_repository.kube_janitor.metadata[0].name
   version    = var.kube_janitor_chart_version
   namespace  = local.kube_janitor_namespace
 
