@@ -1,3 +1,6 @@
+rbac:
+  create: true
+
 podSecurityPolicy:
   enabled: ${pod_security_policy_enable}
 
@@ -9,78 +12,104 @@ serviceAccounts:
   alertmanager:
     create: true
     name: ${alertmanager_service_account}
+    annotations: ${alertmanager_service_account_annotations}
   kubeStateMetrics:
     create: true
     name: ${kube_state_metrics_service_account}
+    annotations: ${kube_state_metrics_service_account_annotations}
   nodeExporter:
     create: true
     name: ${node_exporter_service_account}
+    annotations: ${node_exporter_service_account_annotations}
   pushgateway:
     create: true
     name: ${pushgateway_service_account}
+    annotations: ${pushgateway_service_account_annotations}
   server:
     create: true
     name: ${server_service_account}
+    annotations: ${server_service_account_annotations}
 
 ## Monitors ConfigMap changes and POSTs to a URL
 ## Ref: https://github.com/jimmidyson/configmap-reload
 ##
 configmapReload:
-  ## configmap-reload container name
-  ##
-  name: ${configmap_name}
+  prometheus:
+    ## If false, the configmap-reload container will not be deployed
+    ##
+    enabled: true
 
-  ## configmap-reload container image
-  ##
-  image:
-    repository: ${configmap_image_repo}
-    tag: ${configmap_image_tag}
-    pullPolicy: ${configmap_image_pull_policy}
+    ## configmap-reload container name
+    ##
+    name: ${configmap_name}
 
-  ## Additional configmap-reload container arguments
-  ##
-  extraArgs: ${configmap_extra_args}
-  ## Additional configmap-reload volume directories
-  ##
-  extraVolumeDirs: ${configmap_extra_args}
+    ## configmap-reload container image
+    ##
+    image:
+      repository: ${configmap_image_repo}
+      tag: ${configmap_image_tag}
+      pullPolicy: ${configmap_image_pull_policy}
 
-
-  ## Additional configmap-reload mounts
-  ##
-  extraConfigmapMounts: ${configmap_extra_volumes}
-    # - name: prometheus-alerts
-    #   mountPath: /etc/alerts.d
-    #   subPath: ""
-    #   configMap: prometheus-alerts
-    #   readOnly: true
+    ## Additional configmap-reload container arguments
+    ##
+    extraArgs: ${configmap_extra_args}
+    ## Additional configmap-reload volume directories
+    ##
+    extraVolumeDirs: ${configmap_extra_args}
 
 
-  ## configmap-reload resource requests and limits
-  ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  ##
-  resources: ${configmap_resources}
+    ## Additional configmap-reload mounts
+    ##
+    extraConfigmapMounts: ${configmap_extra_volumes}
+      # - name: prometheus-alerts
+      #   mountPath: /etc/alerts.d
+      #   subPath: ""
+      #   configMap: prometheus-alerts
+      #   readOnly: true
 
-initChownData:
-  ## If false, data ownership will not be reset at startup
-  ## This allows the prometheus-server to be run with an arbitrary user
-  ##
-  enabled: ${init_chown_enabled}
+    ## configmap-reload resource requests and limits
+    ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
+    ##
+    resources: ${configmap_resources}
 
-  ## initChownData container name
-  ##
-  name: ${init_chown_name}
+  alertmanager:
+    ## If false, the configmap-reload container will not be deployed
+    ##
+    enabled: true
 
-  ## initChownData container image
-  ##
-  image:
-    repository: ${init_chown_image_repo}
-    tag: ${init_chown_image_tag}
-    pullPolicy: ${init_chown_pull_policy}
+    ## configmap-reload container name
+    ##
+    name: ${configmap_name}
 
-  ## initChownData resource requests and limits
-  ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
-  ##
-  resources: ${init_chown_resources}
+    ## configmap-reload container image
+    ##
+    image:
+      repository: ${configmap_image_repo}
+      tag: ${configmap_image_tag}
+      pullPolicy: ${configmap_image_pull_policy}
+
+    ## Additional configmap-reload container arguments
+    ##
+    extraArgs: ${configmap_extra_args}
+    ## Additional configmap-reload volume directories
+    ##
+    extraVolumeDirs: ${configmap_extra_args}
+
+
+    ## Additional configmap-reload mounts
+    ##
+    extraConfigmapMounts: ${configmap_extra_volumes}
+      # - name: prometheus-alerts
+      #   mountPath: /etc/alerts.d
+      #   subPath: ""
+      #   configMap: prometheus-alerts
+      #   readOnly: true
+
+
+    ## configmap-reload resource requests and limits
+    ## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
+    ##
+    resources: ${configmap_resources}
 
 # adds additional scrape configs to prometheus.yml
 # must be a string so you have to add a | after extraScrapeConfigs:
@@ -100,6 +129,14 @@ extraScrapeConfigs: ${extra_scrape_configs}
   #       target_label: instance
   #     - target_label: __address__
   #       replacement: prometheus-blackbox-exporter:9115
+
+# Adds option to add alert_relabel_configs to avoid duplicate alerts in alertmanager
+# useful in H/A prometheus with different external labels but the same alerts
+alertRelabelConfigs: ${alert_relabel_configs}
+  # alert_relabel_configs:
+  # - source_labels: [dc]
+  #   regex: (.+)\d+
+  #   target_label: dc
 
 networkPolicy:
   ## Enable creation of NetworkPolicy resources.

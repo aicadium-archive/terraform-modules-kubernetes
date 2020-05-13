@@ -8,7 +8,7 @@ resource "helm_release" "prometheus" {
   max_history = var.max_history
 
   values = [
-    data.template_file.general.rendered,
+    templatefile("${path.module}/templates/general.yaml", local.general_variables),
     data.template_file.alertmanager.rendered,
     data.template_file.kube_state_metrics.rendered,
     data.template_file.node_exporter.rendered,
@@ -17,10 +17,8 @@ resource "helm_release" "prometheus" {
   ]
 }
 
-data "template_file" "general" {
-  template = file("${path.module}/templates/general.yaml")
-
-  vars = {
+locals {
+  general_variables = {
     pod_security_policy_enable = var.pod_security_policy_enable
 
     image_pull_secrets = jsonencode(var.image_pull_secrets)
@@ -34,21 +32,22 @@ data "template_file" "general" {
     configmap_extra_volumes = jsonencode(var.configmap_extra_volumes)
     configmap_resources     = jsonencode(var.configmap_resources)
 
-    init_chown_enabled     = var.init_chown_enabled
-    init_chown_name        = var.init_chown_name
-    init_chown_image_repo  = var.init_chown_image_repo
-    init_chown_image_tag   = var.init_chown_image_tag
-    init_chown_pull_policy = var.init_chown_pull_policy
-    init_chown_resources   = jsonencode(var.init_chown_resources)
-
     extra_scrape_configs  = jsonencode(var.extra_scrape_configs)
     enable_network_policy = var.enable_network_policy
+
+    alert_relabel_configs = jsonencode(var.alert_relabel_configs)
 
     alertmanager_service_account       = var.alertmanager_service_account
     kube_state_metrics_service_account = var.kube_state_metrics_service_account
     node_exporter_service_account      = var.node_exporter_service_account
     pushgateway_service_account        = var.pushgateway_service_account
     server_service_account             = var.server_service_account
+
+    alertmanager_service_account_annotations       = var.alertmanager_service_account_annotations
+    kube_state_metrics_service_account_annotations = var.kube_state_metrics_service_account_annotations
+    node_exporter_service_account_annotations      = var.node_exporter_service_account_annotations
+    pushgateway_service_account_annotations        = var.pushgateway_service_account_annotations
+    server_service_account_annotations             = var.server_service_account_annotations
   }
 }
 

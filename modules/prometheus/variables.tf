@@ -73,6 +73,36 @@ variable "server_service_account" {
   default     = ""
 }
 
+variable "alertmanager_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "kube_state_metrics_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "node_exporter_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "pushgateway_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "server_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "alert_relabel_configs" {
+  description = "Adds option to add alert_relabel_configs to avoid duplicate alerts in alertmanager useful in H/A prometheus with different external labels but the same alerts"
+  default     = {}
+}
+
 ################################
 # ConfigMap Reload
 ################################
@@ -108,39 +138,6 @@ variable "configmap_extra_volumes" {
 
 variable "configmap_resources" {
   description = "Resources for ConfigMap Reload pod"
-  default     = {}
-}
-
-################################
-# initChownData
-################################
-variable "init_chown_enabled" {
-  description = "Enable initChownData"
-  default     = "true"
-}
-
-variable "init_chown_name" {
-  description = "Name of the initChownData container"
-  default     = "init-chown-data"
-}
-
-variable "init_chown_image_repo" {
-  description = "Docker Image repo for initChownData"
-  default     = "busybox"
-}
-
-variable "init_chown_image_tag" {
-  description = "Docker image tag for initChownData"
-  default     = "latest"
-}
-
-variable "init_chown_pull_policy" {
-  description = "Image pull policy for initChownData"
-  default     = "IfNotPresent"
-}
-
-variable "init_chown_resources" {
-  description = "Resources for initChownData"
   default     = {}
 }
 
@@ -1280,11 +1277,6 @@ variable "vm_release_name" {
 variable "vm_chart" {
   description = "Chart for VictoriaMetrics"
   default     = "victoria-metrics-cluster"
-}
-
-variable "vm_chart_repository" {
-  description = "Chart Repository for Argo"
-  default     = "vm"
 }
 
 variable "vm_chart_repository_url" {
