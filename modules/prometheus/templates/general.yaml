@@ -13,10 +13,6 @@ serviceAccounts:
     create: true
     name: ${alertmanager_service_account}
     annotations: ${alertmanager_service_account_annotations}
-  kubeStateMetrics:
-    create: true
-    name: ${kube_state_metrics_service_account}
-    annotations: ${kube_state_metrics_service_account_annotations}
   nodeExporter:
     create: true
     name: ${node_exporter_service_account}
@@ -142,3 +138,9 @@ networkPolicy:
   ## Enable creation of NetworkPolicy resources.
   ##
   enabled: ${enable_network_policy}
+
+# Disable "dependent" chart
+kubeStateMetrics:
+  ## If false, kube-state-metrics will not be installed
+  ##
+  enabled: false

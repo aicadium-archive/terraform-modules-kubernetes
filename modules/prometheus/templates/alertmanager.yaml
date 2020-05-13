@@ -36,6 +36,16 @@ alertmanager:
   ##
   extraEnv: ${extra_env}
 
+  ## Additional alertmanager Secret mounts
+  # Defines additional mounts with secrets. Secrets must be manually created in the namespace.
+  extraSecretMounts: ${extra_secret_mounts}
+    # - name: secret-files
+    #   mountPath: /etc/secrets
+    #   subPath: ""
+    #   secretName: alertmanager-secret-files
+    #   readOnly: true
+
+
   ## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.alertmanager.configMapOverrideName}}
   ## Defining configMapOverrideName will cause templates/alertmanager-configmap.yaml
   ## to NOT generate a ConfigMap resource
@@ -153,12 +163,19 @@ alertmanager:
     ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
     ##   GKE, AWS & OpenStack)
     ##
-    # storageClass: "-"
+    storageClass: ${storage_class}
+
+    ## alertmanager data Persistent Volume Binding Mode
+    ## If defined, volumeBindingMode: <volumeBindingMode>
+    ## If undefined (the default) or set to null, no volumeBindingMode spec is
+    ##   set, choosing the default mode.
+    ##
+    volumeBindingMode: ${volume_binding_mode}
 
     ## Subdirectory of alertmanager data Persistent Volume to mount
     ## Useful if the volume's root directory is not empty
     ##
-    subPath: ""
+    subPath: "${sub_path}"
 
   ## Annotations to be added to alertmanager pods
   ##
