@@ -10,7 +10,7 @@ resource "helm_release" "prometheus" {
   values = [
     templatefile("${path.module}/templates/general.yaml", local.general_values),
     templatefile("${path.module}/templates/alertmanager.yaml", local.alertmanager_values),
-    data.template_file.node_exporter.rendered,
+    templatefile("${path.module}/templates/node_exporter.yaml", local.node_exporter_values),
     data.template_file.pushgateway.rendered,
     data.template_file.server.rendered,
   ]
@@ -115,12 +115,8 @@ locals {
 
     alertmanager_files = indent(2, var.alertmanager_files)
   }
-}
 
-data "template_file" "node_exporter" {
-  template = file("${path.module}/templates/node_exporter.yaml")
-
-  vars = {
+  node_exporter_values = {
     enable = var.node_exporter_enable
 
     host_network = var.node_exporter_host_network
