@@ -1,8 +1,151 @@
-kubeStateMetrics:
-  ## If false, kube-state-metrics will not be installed
-  ##
-  enabled: ${enable}
+# Default values for kube-state-metrics.
+prometheusScrape: null
+image:
+  repository: ${repository}
+  tag: ${tag}
+  pullPolicy: ${pull_policy}
 
+# If set to true, this will deploy kube-state-metrics as a StatefulSet and the data
+# will be automatically sharded across <.Values.replicas> pods using the built-in
+# autodiscovery feature: https://github.com/kubernetes/kube-state-metrics#automated-sharding
+# This is an experimental feature and there are no stability guarantees.
+autosharding:
+  enabled: ${autosharding}
+
+replicas: ${replica}
+
+service:
+  port: ${service_port}
+  # Default to clusterIP for backward compatibility
+  type: ${service_type}
+  nodePort: 0
+  loadBalancerIP: ${service_lb_ip}
+  annotations: ${service_annotations}
+
+customLabels: ${labels}
+
+hostNetwork: ${host_network}
+
+rbac:
+  # If true, create & use RBAC resources
+  create: true
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created, require rbac true
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ${service_account}
+  # Reference to one or more secrets to be used when pulling images
+  # ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  imagePullSecrets: []
+  annotations: ${service_account_annotations}
+
+prometheus:
+  monitor:
+    enabled: false
+    additionalLabels: {}
+    namespace: ""
+    honorLabels: false
+
+## Specify if a Pod Security Policy for kube-state-metrics must be created
+## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+##
+podSecurityPolicy:
+  enabled: ${psp_enable}
+  annotations: ${psp_annotations}
+    ## Specify pod annotations
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#apparmor
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#seccomp
+    ## Ref: https://kubernetes.io/docs/concepts/policy/pod-security-policy/#sysctl
+    ##
+    # seccomp.security.alpha.kubernetes.io/allowedProfileNames: '*'
+    # seccomp.security.alpha.kubernetes.io/defaultProfileName: 'docker/default'
+    # apparmor.security.beta.kubernetes.io/defaultProfileName: 'runtime/default'
+
+
+securityContext: ${security_context}
+  # enabled: true
+  # runAsUser: 65534
+  # fsGroup: 65534
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: ${node_selector}
+
+## Affinity settings for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+affinity: ${affinity}
+
+## Tolerations for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: ${tolerations}
+
+# Annotations to be added to the pod
+podAnnotations: ${annotations}
+
+## kube-state-metrics resource requests and limits
+## Ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources: ${resources}
+  # limits:
+  #   cpu: 10m
+  #   memory: 16Mi
+  # requests:
+  #   cpu: 10m
+  #   memory: 16Mi
+
+## Assign a PriorityClassName to pods if set
+priorityClassName: ${priority_class_name}
+
+# Ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+podDisruptionBudget: ${pdb}
+
+# Available collectors for kube-state-metrics. By default all available
+# collectors are enabled.
+collectors: ${collectors}
+  # certificatesigningrequests: true
+  # configmaps: true
+  # cronjobs: true
+  # daemonsets: true
+  # deployments: true
+  # endpoints: true
+  # horizontalpodautoscalers: true
+  # ingresses: true
+  # jobs: true
+  # limitranges: true
+  # mutatingwebhookconfigurations: true
+  # namespaces: true
+  # networkpolicies: true
+  # nodes: true
+  # persistentvolumeclaims: true
+  # persistentvolumes: true
+  # poddisruptionbudgets: true
+  # pods: true
+  # replicasets: true
+  # replicationcontrollers: true
+  # resourcequotas: true
+  # secrets: true
+  # services: true
+  # statefulsets: true
+  # storageclasses: true
+  # validatingwebhookconfigurations: true
+  # verticalpodautoscalers: true
+  # volumeattachments: true
+
+# Namespace to be enabled for collecting resources. By default all namespaces are collected.
+namespace: ${collection_namespace}
+
+## Override the deployment namespace
+##
+namespaceOverride: ""
+
+################################################################################################
+
+# kube-state-metrics sub-chart configurable values
+# Please see https://github.com/helm/charts/tree/master/stable/kube-state-metrics
+#
+kube-state-metrics:
   ## kube-state-metrics container name
   ##
   name: kube-state-metrics

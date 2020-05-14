@@ -3,17 +3,12 @@ locals {
   prometheus_query_api_url        = var.vm_enabled && var.vm_select_enabled ? "http://${helm_release.vm[0].metadata[0].name}-vmselect.${helm_release.vm[0].metadata[0].namespace}.svc.cluster.local:${var.vm_select_service_port}/select/0/prometheus" : ""
 }
 
-data "helm_repository" "vm" {
-  name = var.vm_chart_repository
-  url  = var.vm_chart_repository_url
-}
-
 resource "helm_release" "vm" {
   count = var.vm_enabled ? 1 : 0
 
   name       = var.vm_release_name
   chart      = var.vm_chart
-  repository = data.helm_repository.vm.metadata[0].name
+  repository = var.vm_chart_repository_url
   version    = var.vm_chart_version
   namespace  = var.vm_namespace
 

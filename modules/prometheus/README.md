@@ -5,6 +5,13 @@ Deploys Prometheus and some supporting services on a Kubernetes cluster running 
 This module makes use of the
 [`stable/prometheus`](https://github.com/helm/charts/tree/master/stable/prometheus) chart.
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| helm | >= 1.0 |
+
 ## Providers
 
 | Name | Version |
@@ -15,7 +22,8 @@ This module makes use of the
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
+|------|-------------|------|---------|:--------:|
+| alert\_relabel\_configs | Adds option to add alert\_relabel\_configs to avoid duplicate alerts in alertmanager useful in H/A prometheus with different external labels but the same alerts | `map` | `{}` | no |
 | alertmanager\_affinity | Affinity for alertmanager pods | `map` | `{}` | no |
 | alertmanager\_annotations | Annotations for Alertmanager pods | `map` | `{}` | no |
 | alertmanager\_base\_url | External URL which can access alertmanager | `string` | `"/"` | no |
@@ -25,6 +33,7 @@ This module makes use of the
 | alertmanager\_enable | Enable Alert manager | `string` | `"true"` | no |
 | alertmanager\_extra\_args | Extra arguments for Alertmanager container | `map` | `{}` | no |
 | alertmanager\_extra\_env | Extra environment variables for Alertmanager container | `map` | `{}` | no |
+| alertmanager\_extra\_secret\_mounts | Defines additional mounts with secrets. Secrets must be manually created in the namespace. | `list` | `[]` | no |
 | alertmanager\_files | Additional ConfigMap entries for Alertmanager in YAML string | `string` | `"alertmanager.yml:\n  global: {}\n    # slack_api_url: ''\n\n  receivers:\n    - name: default-receiver\n      # slack_configs:\n      #  - channel: '@you'\n      #    send_resolved: true\n\n  route:\n    group_wait: 10s\n    group_interval: 5m\n    receiver: default-receiver\n    repeat_interval: 3h\n"` | no |
 | alertmanager\_headless\_annotations | Annotations for alertmanager StatefulSet headless service | `map` | `{}` | no |
 | alertmanager\_headless\_labels | Labels for alertmanager StatefulSet headless service | `map` | `{}` | no |
@@ -48,9 +57,10 @@ This module makes use of the
 | alertmanager\_replica | Number of replicas for AlertManager | `number` | `1` | no |
 | alertmanager\_repository | Docker repository for Alert Manager | `string` | `"prom/alertmanager"` | no |
 | alertmanager\_resources | Resources for alertmanager | `map` | `{}` | no |
-| alertmanager\_security\_context | Security context for alertmanager pods defined as a map which will be serialized to JSON.   Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and   this will not work for fields like `runAsUser`. Specify a JSON string with   `alertmanager_security_context_json` instead | `map` | `{}` | no |
+| alertmanager\_security\_context | Security context for alertmanager pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `alertmanager_security_context_json` instead | `map` | `{}` | no |
 | alertmanager\_security\_context\_json | JSON string for security context for alertmanager pods | `string` | `""` | no |
 | alertmanager\_service\_account | Name of the service account for AlertManager. Defaults to component's fully qualified name. | `string` | `""` | no |
+| alertmanager\_service\_account\_annotations | Annotations for the service account | `map` | `{}` | no |
 | alertmanager\_service\_annotations | Annotations for Alertmanager service | `map` | `{}` | no |
 | alertmanager\_service\_cluster\_ip | Cluster IP for Alertmanager Service | `string` | `""` | no |
 | alertmanager\_service\_external\_ips | External IPs for Alertmanager service | `list` | `[]` | no |
@@ -59,8 +69,11 @@ This module makes use of the
 | alertmanager\_service\_lb\_source\_ranges | List of source CIDRs allowed to access the Alertmanager LB | `list` | `[]` | no |
 | alertmanager\_service\_port | Service port for Alertmanager | `number` | `80` | no |
 | alertmanager\_service\_type | Type of service for Alertmanager | `string` | `"ClusterIP"` | no |
+| alertmanager\_storage\_class | Storage class for alertmanager PV. If set to "-", storageClassName: "", which disables dynamic provisioning | `string` | `""` | no |
+| alertmanager\_sub\_path | Subdirectory of alertmanager data Persistent Volume to mount | `string` | `""` | no |
 | alertmanager\_tag | Tag for Alertmanager Docker Image | `string` | `"v0.16.1"` | no |
 | alertmanager\_tolerations | Tolerations for Alertmanager | `list` | `[]` | no |
+| alertmanager\_volume\_binding\_mode | Alertmanager data Persistent Volume Binding Mode | `string` | `""` | no |
 | chart\_name | Helm chart name to provision | `string` | `"prometheus"` | no |
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
 | chart\_repository | Helm repository for the chart | `string` | `"stable"` | no |
@@ -75,36 +88,36 @@ This module makes use of the
 | enable\_network\_policy | Create a NetworkPolicy resource | `string` | `"false"` | no |
 | extra\_scrape\_configs | YAML String for extra scrape configs | `string` | `""` | no |
 | image\_pull\_secrets | Image pull secrets, if any | `map` | `{}` | no |
-| init\_chown\_enabled | Enable initChownData | `string` | `"true"` | no |
-| init\_chown\_image\_repo | Docker Image repo for initChownData | `string` | `"busybox"` | no |
-| init\_chown\_image\_tag | Docker image tag for initChownData | `string` | `"latest"` | no |
-| init\_chown\_name | Name of the initChownData container | `string` | `"init-chown-data"` | no |
-| init\_chown\_pull\_policy | Image pull policy for initChownData | `string` | `"IfNotPresent"` | no |
-| init\_chown\_resources | Resources for initChownData | `map` | `{}` | no |
 | kube\_state\_metrics\_affinity | Affinity for Kube State Metrics | `map` | `{}` | no |
 | kube\_state\_metrics\_annotations | Annotations for Kube State Metrics pods | `map` | `{}` | no |
+| kube\_state\_metrics\_autosharding | If set to true, this will deploy kube-state-metrics as a StatefulSet and the data<br>will be automatically sharded across <.Values.replicas> pods using the built-in<br>autodiscovery feature: https://github.com/kubernetes/kube-state-metrics#automated-sharding<br>This is an experimental feature and there are no stability guarantees. | `bool` | `false` | no |
+| kube\_state\_metrics\_chart\_name | Helm chart name to provision | `string` | `"kube-state-metrics"` | no |
+| kube\_state\_metrics\_chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
+| kube\_state\_metrics\_chart\_repository | Helm repository for the chart | `string` | `"stable"` | no |
+| kube\_state\_metrics\_chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `""` | no |
+| kube\_state\_metrics\_collection\_namespace | Specific namespaces to collect metrics for | `string` | `""` | no |
+| kube\_state\_metrics\_collectors | Collectors for Kube state metrics | `map` | <pre>{<br>  "certificatesigningrequests": true,<br>  "configmaps": true,<br>  "cronjobs": true,<br>  "daemonsets": true,<br>  "deployments": true,<br>  "endpoints": true,<br>  "horizontalpodautoscalers": true,<br>  "ingresses": true,<br>  "jobs": true,<br>  "limitranges": true,<br>  "mutatingwebhookconfigurations": true,<br>  "namespaces": true,<br>  "networkpolicies": true,<br>  "nodes": true,<br>  "persistentvolumeclaims": true,<br>  "persistentvolumes": true,<br>  "poddisruptionbudgets": true,<br>  "pods": true,<br>  "replicasets": true,<br>  "replicationcontrollers": true,<br>  "resourcequotas": true,<br>  "secrets": true,<br>  "services": true,<br>  "statefulsets": true,<br>  "storageclasses": true,<br>  "validatingwebhookconfigurations": true,<br>  "verticalpodautoscalers": true,<br>  "volumeattachments": true<br>}</pre> | no |
 | kube\_state\_metrics\_enable | Enable Kube State Metrics | `string` | `"true"` | no |
 | kube\_state\_metrics\_extra\_args | Extra arguments for Kube State Metrics container | `map` | `{}` | no |
 | kube\_state\_metrics\_extra\_env | Extra environment variables for Kube State Metrics container | `map` | `{}` | no |
+| kube\_state\_metrics\_host\_network | Use host network for KSM | `bool` | `false` | no |
 | kube\_state\_metrics\_labels | Labels for Kube State Metrics | `map` | `{}` | no |
 | kube\_state\_metrics\_node\_selector | Node selector for Kube State Metrics pods | `map` | `{}` | no |
-| kube\_state\_metrics\_pdb\_enable | Enable PDB | `bool` | `true` | no |
-| kube\_state\_metrics\_pdb\_max\_unavailable | Max unavailable pods for Kube State Metrics | `number` | `1` | no |
+| kube\_state\_metrics\_pdb | PDB for Kubestatemetrics | `map` | <pre>{<br>  "maxUnavailable": 1<br>}</pre> | no |
 | kube\_state\_metrics\_pod\_security\_policy\_annotations | PodSecurityPolicy annotations for Kube State Metrics | `map` | <pre>{<br>  "apparmor.security.beta.kubernetes.io/allowedProfileNames": "runtime/default",<br>  "apparmor.security.beta.kubernetes.io/defaultProfileName": "runtime/default",<br>  "seccomp.security.alpha.kubernetes.io/allowedProfileNames": "docker/default,runtime/default",<br>  "seccomp.security.alpha.kubernetes.io/defaultProfileName": "runtime/default"<br>}</pre> | no |
 | kube\_state\_metrics\_priority\_class\_name | Priority Class Name for Kube State Metrics pods | `string` | `""` | no |
 | kube\_state\_metrics\_pull\_policy | Image pull policy for Kube State Metrics | `string` | `"IfNotPresent"` | no |
+| kube\_state\_metrics\_release\_name | Helm release name for Kube State Metrics | `string` | `"kube-state-metrics"` | no |
 | kube\_state\_metrics\_replica | Number of replicas for Kube State Metrics | `number` | `1` | no |
 | kube\_state\_metrics\_repository | Docker repository for Kube State Metrics | `string` | `"quay.io/coreos/kube-state-metrics"` | no |
 | kube\_state\_metrics\_resources | Resources for Kube State Metrics | `map` | `{}` | no |
-| kube\_state\_metrics\_security\_context | Security context for kube\_state\_metrics pods defined as a map which will be serialized to JSON.   Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and   this will not work for fields like `runAsUser`. Specify a JSON string with   `kube_state_metrics_security_context_json` instead | `map` | `{}` | no |
+| kube\_state\_metrics\_security\_context | Security context for kube\_state\_metrics pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `kube_state_metrics_security_context_json` instead | `map` | `{}` | no |
 | kube\_state\_metrics\_security\_context\_json | JSON string for security context for kube\_state\_metrics pods | `string` | `""` | no |
 | kube\_state\_metrics\_service\_account | Name of the service account for kubeStateMetrics. Defaults to component's fully qualified name. | `string` | `""` | no |
+| kube\_state\_metrics\_service\_account\_annotations | Annotations for the service account | `map` | `{}` | no |
 | kube\_state\_metrics\_service\_annotations | Annotations for Kube State Metrics service | `map` | <pre>{<br>  "prometheus.io/scrape": "true"<br>}</pre> | no |
 | kube\_state\_metrics\_service\_cluster\_ip | Cluster IP for Kube State Metrics Service | `string` | `"None"` | no |
-| kube\_state\_metrics\_service\_external\_ips | External IPs for Kube State Metrics service | `list` | `[]` | no |
-| kube\_state\_metrics\_service\_labels | Labels for Kube State Metrics service | `map` | `{}` | no |
 | kube\_state\_metrics\_service\_lb\_ip | Load Balancer IP for Kube State Metrics service | `string` | `""` | no |
-| kube\_state\_metrics\_service\_lb\_source\_ranges | List of source CIDRs allowed to access the Kube State Metrics LB | `list` | `[]` | no |
 | kube\_state\_metrics\_service\_port | Service port for Kube State Metrics | `number` | `80` | no |
 | kube\_state\_metrics\_service\_type | Type of service for Kube State Metrics | `string` | `"ClusterIP"` | no |
 | kube\_state\_metrics\_tag | Tag for Kube State Metrics Docker Image | `string` | `"v1.5.0"` | no |
@@ -128,9 +141,10 @@ This module makes use of the
 | node\_exporter\_replica | Number of replicas for Node Exporter | `number` | `1` | no |
 | node\_exporter\_repository | Docker repository for Node Exporter | `string` | `"prom/node-exporter"` | no |
 | node\_exporter\_resources | Resources for node\_exporter | `map` | `{}` | no |
-| node\_exporter\_security\_context | Security context for node\_exporter pods defined as a map which will be serialized to JSON.   Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and   this will not work for fields like `runAsUser`. Specify a JSON string with   `node_exporter_security_context_json` instead | `map` | `{}` | no |
+| node\_exporter\_security\_context | Security context for node\_exporter pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `node_exporter_security_context_json` instead | `map` | `{}` | no |
 | node\_exporter\_security\_context\_json | JSON string for security context for node\_exporter pods | `string` | `""` | no |
 | node\_exporter\_service\_account | Name of the service account for nodeExporter. Defaults to component's fully qualified name. | `string` | `""` | no |
+| node\_exporter\_service\_account\_annotations | Annotations for the service account | `map` | `{}` | no |
 | node\_exporter\_service\_annotations | Annotations for Node Exporter service | `map` | <pre>{<br>  "prometheus.io/scrape": "true"<br>}</pre> | no |
 | node\_exporter\_service\_cluster\_ip | Cluster IP for Node Exporter Service | `string` | `"None"` | no |
 | node\_exporter\_service\_external\_ips | External IPs for Node Exporter service | `list` | `[]` | no |
@@ -165,9 +179,10 @@ This module makes use of the
 | pushgateway\_replica | Number of replicas for pushgateway | `number` | `1` | no |
 | pushgateway\_repository | Docker repository for Pushgateway | `string` | `"prom/pushgateway"` | no |
 | pushgateway\_resources | Resources for pushgateway | `map` | `{}` | no |
-| pushgateway\_security\_context | Security context for pushgateway pods defined as a map which will be serialized to JSON.   Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and   this will not work for fields like `runAsUser`. Specify a JSON string with   `pushgateway_security_context_json` instead | `map` | `{}` | no |
+| pushgateway\_security\_context | Security context for pushgateway pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `pushgateway_security_context_json` instead | `map` | `{}` | no |
 | pushgateway\_security\_context\_json | JSON string for security context for pushgateway pods | `string` | `""` | no |
 | pushgateway\_service\_account | Name of the service account for pushgateway. Defaults to component's fully qualified name. | `string` | `""` | no |
+| pushgateway\_service\_account\_annotations | Annotations for the service account | `map` | `{}` | no |
 | pushgateway\_service\_annotations | Annotations for Pushgateway service | `map` | <pre>{<br>  "prometheus.io/probe": "pushgateway"<br>}</pre> | no |
 | pushgateway\_service\_cluster\_ip | Cluster IP for Pushgateway Service | `string` | `""` | no |
 | pushgateway\_service\_external\_ips | External IPs for Pushgateway service | `list` | `[]` | no |
@@ -183,8 +198,10 @@ This module makes use of the
 | server\_alerts | Prometheus server alerts entries in YAML | `string` | `"## Alerts configuration\n## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/nalerts: {}\n# groups:\n#   - name: Instances\n#     rules:\n#       - alert: InstanceDown\n#         expr: up == 0\n#         for: 5m\n#         labels:\n#           severity: page\n#         annotations:\n#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'\n#           summary: 'Instance {{ $labels.instance }} down'\n"` | no |
 | server\_annotations | Annotations for server pods | `map` | `{}` | no |
 | server\_base\_url | External URL which can access alertmanager | `string` | `""` | no |
+| server\_config\_override | Overriding the Prometheus server config file in YAML | `string` | `""` | no |
 | server\_data\_retention | Prometheus data retention period (i.e 360h) | `string` | `""` | no |
 | server\_enable\_admin\_api | Enable Admin API for server | `string` | `"false"` | no |
+| server\_enable\_service\_links | EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. | `bool` | `true` | no |
 | server\_evaluation\_interval | How frequently to evaluate rules | `string` | `"1m"` | no |
 | server\_extra\_args | Extra arguments for server container | `map` | `{}` | no |
 | server\_extra\_configmap\_mounts | Additional Prometheus server ConfigMap mounts | `list` | `[]` | no |
@@ -222,9 +239,10 @@ This module makes use of the
 | server\_rules | Prometheus server rules entries in YAML | `string` | `"rules: {}\n"` | no |
 | server\_scrape\_interval | How frequently to scrape targets by default | `string` | `"1m"` | no |
 | server\_scrape\_timeout | How long until a scrape request times out | `string` | `"10s"` | no |
-| server\_security\_context | Security context for server pods defined as a map which will be serialized to JSON.   Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and   this will not work for fields like `runAsUser`. Specify a JSON string with   `server_security_context_json` instead | `map` | `{}` | no |
+| server\_security\_context | Security context for server pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `server_security_context_json` instead | `map` | `{}` | no |
 | server\_security\_context\_json | JSON string for security context for server pods | `string` | `""` | no |
 | server\_service\_account | Name of the service account for server. Defaults to component's fully qualified name. | `string` | `""` | no |
+| server\_service\_account\_annotations | Annotations for the service account | `map` | `{}` | no |
 | server\_service\_annotations | Annotations for server service | `map` | <pre>{<br>  "prometheus.io/probe": "server"<br>}</pre> | no |
 | server\_service\_cluster\_ip | Cluster IP for server Service | `string` | `""` | no |
 | server\_service\_external\_ips | External IPs for server service | `list` | `[]` | no |
@@ -240,13 +258,13 @@ This module makes use of the
 | server\_termination\_grace\_seconds | Prometheus server pod termination grace period | `string` | `"300"` | no |
 | server\_tolerations | Tolerations for server | `list` | `[]` | no |
 | vm\_chart | Chart for VictoriaMetrics | `string` | `"victoria-metrics-cluster"` | no |
-| vm\_chart\_repository | Chart Repository for Argo | `string` | `"vm"` | no |
 | vm\_chart\_repository\_url | Chart Repository URL for Argo | `string` | `"https://victoriametrics.github.io/helm-charts/"` | no |
 | vm\_chart\_version | Chart version for VictoriaMetrics | `string` | `"0.4.4"` | no |
 | vm\_enabled | Deploy VictoriaMetrics cluster | `bool` | `false` | no |
 | vm\_helm\_release\_max\_history | The maximum number of history releases to keep track for the VM helm release | `number` | `20` | no |
 | vm\_insert\_affinity | Affinity for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_enabled | Deploy VictoriaMetrics Insert | `bool` | `true` | no |
+| vm\_insert\_extra\_args | Additional VictoriaMetrics Insert container arguments | `map` | `{}` | no |
 | vm\_insert\_image\_repository | Image repository for VictoriaMetrics Insert server | `string` | `"victoriametrics/vminsert"` | no |
 | vm\_insert\_image\_tag | Image tag for VictoriaMetrics Insert server | `string` | `"v1.34.7-cluster"` | no |
 | vm\_insert\_node\_selector | Node selector for VictoriaMetrics Insert server pods | `map` | `{}` | no |
@@ -265,6 +283,7 @@ This module makes use of the
 | vm\_release\_name | Helm release name for Argo | `string` | `"victoria-metrics-cluster"` | no |
 | vm\_select\_affinity | Affinity for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_enabled | Deploy VictoriaMetrics Select | `bool` | `true` | no |
+| vm\_select\_extra\_args | Additional VictoriaMetrics Select container arguments | `map` | `{}` | no |
 | vm\_select\_image\_repository | Image repository for VictoriaMetrics Select server | `string` | `"victoriametrics/vmselect"` | no |
 | vm\_select\_image\_tag | Image tag for VictoriaMetrics Select server | `string` | `"v1.34.7-cluster"` | no |
 | vm\_select\_node\_selector | Node selector for VictoriaMetrics Select server pods | `map` | `{}` | no |
@@ -311,5 +330,5 @@ This module makes use of the
 
 | Name | Description |
 |------|-------------|
-| prometheus\_query\_api | Prometheus query API: https://prometheus.io/docs/prometheus/latest/querying/api/#expression-queries |
-| prometheus\_remote\_write\_api | Prometheus Remote Write API: https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations |
+| prometheus\_query\_api\_url | Prometheus query API URL: https://prometheus.io/docs/prometheus/latest/querying/api/#expression-queries |
+| prometheus\_remote\_write\_api\_url | Prometheus Remote Write API URL: https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations |

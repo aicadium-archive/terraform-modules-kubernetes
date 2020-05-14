@@ -73,6 +73,36 @@ variable "server_service_account" {
   default     = ""
 }
 
+variable "alertmanager_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "kube_state_metrics_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "node_exporter_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "pushgateway_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "server_service_account_annotations" {
+  description = "Annotations for the service account"
+  default     = {}
+}
+
+variable "alert_relabel_configs" {
+  description = "Adds option to add alert_relabel_configs to avoid duplicate alerts in alertmanager useful in H/A prometheus with different external labels but the same alerts"
+  default     = {}
+}
+
 ################################
 # ConfigMap Reload
 ################################
@@ -112,39 +142,6 @@ variable "configmap_resources" {
 }
 
 ################################
-# initChownData
-################################
-variable "init_chown_enabled" {
-  description = "Enable initChownData"
-  default     = "true"
-}
-
-variable "init_chown_name" {
-  description = "Name of the initChownData container"
-  default     = "init-chown-data"
-}
-
-variable "init_chown_image_repo" {
-  description = "Docker Image repo for initChownData"
-  default     = "busybox"
-}
-
-variable "init_chown_image_tag" {
-  description = "Docker image tag for initChownData"
-  default     = "latest"
-}
-
-variable "init_chown_pull_policy" {
-  description = "Image pull policy for initChownData"
-  default     = "IfNotPresent"
-}
-
-variable "init_chown_resources" {
-  description = "Resources for initChownData"
-  default     = {}
-}
-
-################################
 # Alertmanager
 ################################
 variable "alertmanager_enable" {
@@ -180,6 +177,11 @@ variable "alertmanager_extra_args" {
 variable "alertmanager_extra_env" {
   description = "Extra environment variables for Alertmanager container"
   default     = {}
+}
+
+variable "alertmanager_extra_secret_mounts" {
+  description = "Defines additional mounts with secrets. Secrets must be manually created in the namespace."
+  default     = []
 }
 
 variable "alertmanager_prefix_url" {
@@ -278,6 +280,21 @@ variable "alertmanager_pv_existing_claim" {
 variable "alertmanager_pv_size" {
   description = "alertmanager data Persistent Volume size"
   default     = "2Gi"
+}
+
+variable "alertmanager_storage_class" {
+  description = "Storage class for alertmanager PV. If set to \"-\", storageClassName: \"\", which disables dynamic provisioning"
+  default     = ""
+}
+
+variable "alertmanager_volume_binding_mode" {
+  description = "Alertmanager data Persistent Volume Binding Mode"
+  default     = ""
+}
+
+variable "alertmanager_sub_path" {
+  description = "Subdirectory of alertmanager data Persistent Volume to mount"
+  default     = ""
 }
 
 variable "alertmanager_replica" {
@@ -408,6 +425,31 @@ variable "kube_state_metrics_enable" {
   default     = "true"
 }
 
+variable "kube_state_metrics_release_name" {
+  description = "Helm release name for Kube State Metrics"
+  default     = "kube-state-metrics"
+}
+
+variable "kube_state_metrics_chart_name" {
+  description = "Helm chart name to provision"
+  default     = "kube-state-metrics"
+}
+
+variable "kube_state_metrics_chart_repository" {
+  description = "Helm repository for the chart"
+  default     = "stable"
+}
+
+variable "kube_state_metrics_chart_version" {
+  description = "Version of Chart to install. Set to empty to install the latest version"
+  default     = ""
+}
+
+variable "kube_state_metrics_chart_namespace" {
+  description = "Namespace to install the chart into"
+  default     = "default"
+}
+
 variable "kube_state_metrics_repository" {
   description = "Docker repository for Kube State Metrics"
   default     = "quay.io/coreos/kube-state-metrics"
@@ -421,6 +463,16 @@ variable "kube_state_metrics_tag" {
 variable "kube_state_metrics_pull_policy" {
   description = "Image pull policy for Kube State Metrics"
   default     = "IfNotPresent"
+}
+
+variable "kube_state_metrics_autosharding" {
+  description = <<EOF
+If set to true, this will deploy kube-state-metrics as a StatefulSet and the data
+will be automatically sharded across <.Values.replicas> pods using the built-in
+autodiscovery feature: https://github.com/kubernetes/kube-state-metrics#automated-sharding
+This is an experimental feature and there are no stability guarantees.
+EOF
+  default     = false
 }
 
 variable "kube_state_metrics_priority_class_name" {
@@ -498,29 +550,14 @@ variable "kube_state_metrics_service_annotations" {
   }
 }
 
-variable "kube_state_metrics_service_labels" {
-  description = "Labels for Kube State Metrics service"
-  default     = {}
-}
-
 variable "kube_state_metrics_service_cluster_ip" {
   description = "Cluster IP for Kube State Metrics Service"
   default     = "None"
 }
 
-variable "kube_state_metrics_service_external_ips" {
-  description = "External IPs for Kube State Metrics service"
-  default     = []
-}
-
 variable "kube_state_metrics_service_lb_ip" {
   description = "Load Balancer IP for Kube State Metrics service"
   default     = ""
-}
-
-variable "kube_state_metrics_service_lb_source_ranges" {
-  description = "List of source CIDRs allowed to access the Kube State Metrics LB"
-  default     = []
 }
 
 variable "kube_state_metrics_service_port" {
@@ -543,14 +580,54 @@ variable "kube_state_metrics_pod_security_policy_annotations" {
   }
 }
 
-variable "kube_state_metrics_pdb_enable" {
-  description = "Enable PDB"
-  default     = true
+variable "kube_state_metrics_pdb" {
+  description = "PDB for Kubestatemetrics"
+  default     = { maxUnavailable = 1 }
 }
 
-variable "kube_state_metrics_pdb_max_unavailable" {
-  description = "Max unavailable pods for Kube State Metrics"
-  default     = 1
+variable "kube_state_metrics_host_network" {
+  description = "Use host network for KSM"
+  default     = false
+}
+
+variable "kube_state_metrics_collection_namespace" {
+  description = "Specific namespaces to collect metrics for"
+  default     = ""
+}
+
+variable "kube_state_metrics_collectors" {
+  description = "Collectors for Kube state metrics"
+
+  default = {
+    certificatesigningrequests      = true
+    configmaps                      = true
+    cronjobs                        = true
+    daemonsets                      = true
+    deployments                     = true
+    endpoints                       = true
+    horizontalpodautoscalers        = true
+    ingresses                       = true
+    jobs                            = true
+    limitranges                     = true
+    mutatingwebhookconfigurations   = true
+    namespaces                      = true
+    networkpolicies                 = true
+    nodes                           = true
+    persistentvolumeclaims          = true
+    persistentvolumes               = true
+    poddisruptionbudgets            = true
+    pods                            = true
+    replicasets                     = true
+    replicationcontrollers          = true
+    resourcequotas                  = true
+    secrets                         = true
+    services                        = true
+    statefulsets                    = true
+    storageclasses                  = true
+    validatingwebhookconfigurations = true
+    verticalpodautoscalers          = true
+    volumeattachments               = true
+  }
 }
 
 ################################
@@ -945,6 +1022,11 @@ variable "server_priority_class_name" {
   default     = ""
 }
 
+variable "server_enable_service_links" {
+  description = "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links."
+  default     = true
+}
+
 variable "server_extra_args" {
   description = "Extra arguments for server container"
   default     = {}
@@ -1280,11 +1362,6 @@ variable "vm_release_name" {
 variable "vm_chart" {
   description = "Chart for VictoriaMetrics"
   default     = "victoria-metrics-cluster"
-}
-
-variable "vm_chart_repository" {
-  description = "Chart Repository for Argo"
-  default     = "vm"
 }
 
 variable "vm_chart_repository_url" {
