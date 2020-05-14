@@ -283,7 +283,7 @@ locals {
 
     alerts        = indent(2, var.server_alerts)
     rules         = indent(2, var.server_rules)
-    server_config = indent(2, templatefile(coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml")), local.server_config))
+    server_config = indent(2, data.template_file.server_config.rendered)
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
@@ -295,8 +295,12 @@ locals {
     liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
     liveness_probe_timeout        = var.server_liveness_probe_timeout
   }
+}
 
-  server_config = {
+data "template_file" "server_config" {
+  template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
+
+  vars = {
     remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
       remote_write = [
         {
