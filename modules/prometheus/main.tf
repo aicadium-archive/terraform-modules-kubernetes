@@ -11,8 +11,8 @@ resource "helm_release" "prometheus" {
     templatefile("${path.module}/templates/general.yaml", local.general_values),
     templatefile("${path.module}/templates/alertmanager.yaml", local.alertmanager_values),
     templatefile("${path.module}/templates/node_exporter.yaml", local.node_exporter_values),
-    data.template_file.pushgateway.rendered,
-    data.template_file.server.rendered,
+    templatefile("${path.module}/templates/pushgateway.yaml", local.pushgateway_values),
+    templatefile("${path.module}/templates/server.yaml", local.server_values),
   ]
 }
 
@@ -161,12 +161,8 @@ locals {
     pdb_enable          = var.node_exporter_pdb_enable
     pdb_max_unavailable = jsonencode(var.node_exporter_pdb_max_unavailable)
   }
-}
 
-data "template_file" "pushgateway" {
-  template = file("${path.module}/templates/pushgateway.yaml")
-
-  vars = {
+  pushgateway_values = {
     enable = var.pushgateway_enable
 
     repository  = var.pushgateway_repository
@@ -215,12 +211,8 @@ data "template_file" "pushgateway" {
     pdb_enable          = var.pushgateway_pdb_enable
     pdb_max_unavailable = jsonencode(var.pushgateway_pdb_max_unavailable)
   }
-}
 
-data "template_file" "server" {
-  template = file("${path.module}/templates/server.yaml")
-
-  vars = {
+  server_values = {
     repository  = var.server_repository
     tag         = var.server_tag
     pull_policy = var.server_pull_policy
@@ -229,6 +221,8 @@ data "template_file" "server" {
 
     replica   = var.server_replica
     resources = jsonencode(var.server_resources)
+
+    enable_service_links = var.server_enable_service_links
 
     annotations   = jsonencode(var.server_annotations)
     tolerations   = jsonencode(var.server_tolerations)
@@ -289,7 +283,7 @@ data "template_file" "server" {
 
     alerts        = indent(2, var.server_alerts)
     rules         = indent(2, var.server_rules)
-    server_config = indent(2, data.template_file.server_config.rendered)
+    server_config = indent(2, templatefile(coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml")), local.server_config))
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
@@ -301,12 +295,8 @@ data "template_file" "server" {
     liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
     liveness_probe_timeout        = var.server_liveness_probe_timeout
   }
-}
 
-data "template_file" "server_config" {
-  template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
-
-  vars = {
+  server_config = {
     remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
       remote_write = [
         {

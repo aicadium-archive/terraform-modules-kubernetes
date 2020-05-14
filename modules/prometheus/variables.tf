@@ -1022,6 +1022,11 @@ variable "server_priority_class_name" {
   default     = ""
 }
 
+variable "server_enable_service_links" {
+  description = "EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links."
+  default     = true
+}
+
 variable "server_extra_args" {
   description = "Extra arguments for server container"
   default     = {}
