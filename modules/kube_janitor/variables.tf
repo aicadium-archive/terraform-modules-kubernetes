@@ -15,12 +15,17 @@ variable "kube_janitor_chart_name" {
 
 variable "kube_janitor_chart_repository" {
   description = "Chart repository for Kube Janitor"
-  default     = "amoy"
+  default     = "kube-janitor"
+}
+
+variable "kube_janitor_chart_repository_url" {
+  description = "Chart repository URL for Kube Janitor"
+  default     = "https://basisai.github.io/kube-janitor-helm"
 }
 
 variable "kube_janitor_chart_version" {
   description = "Chart version for Kube Janitor"
-  default     = "1.0.0"
+  default     = "1.0.4"
 }
 
 variable "kube_janitor_image" {
@@ -30,7 +35,7 @@ variable "kube_janitor_image" {
 
 variable "kube_janitor_image_tag" {
   description = "Docker image tag for Kube Janitor"
-  default     = "19.12.0"
+  default     = "20.4.1"
 }
 
 variable "kube_janitor_schedule" {
