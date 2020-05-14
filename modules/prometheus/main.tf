@@ -42,11 +42,11 @@ locals {
     pushgateway_service_account        = var.pushgateway_service_account
     server_service_account             = var.server_service_account
 
-    alertmanager_service_account_annotations       = var.alertmanager_service_account_annotations
-    kube_state_metrics_service_account_annotations = var.kube_state_metrics_service_account_annotations
-    node_exporter_service_account_annotations      = var.node_exporter_service_account_annotations
-    pushgateway_service_account_annotations        = var.pushgateway_service_account_annotations
-    server_service_account_annotations             = var.server_service_account_annotations
+    alertmanager_service_account_annotations       = jsonencode(var.alertmanager_service_account_annotations)
+    kube_state_metrics_service_account_annotations = jsonencode(var.kube_state_metrics_service_account_annotations)
+    node_exporter_service_account_annotations      = jsonencode(var.node_exporter_service_account_annotations)
+    pushgateway_service_account_annotations        = jsonencode(var.pushgateway_service_account_annotations)
+    server_service_account_annotations             = jsonencode(var.server_service_account_annotations)
   }
 
   alertmanager_values = {
