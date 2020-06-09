@@ -308,5 +308,13 @@ data "template_file" "server_config" {
         }
       ]
     })) : ""
+
+    remote_read_configs = var.vm_enabled && var.vm_select_enabled ? indent(2, yamlencode({
+      remote_read = [
+        {
+          url = local.prometheus_query_api_url
+        }
+      ]
+    })) : ""
   }
 }

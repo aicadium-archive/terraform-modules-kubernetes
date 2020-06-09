@@ -1,5 +1,6 @@
 prometheus.yml:
   ${remote_write_configs}
+  ${remote_read_configs}
 
   rule_files:
     - /etc/config/rules

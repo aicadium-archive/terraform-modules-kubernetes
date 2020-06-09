@@ -1404,7 +1404,7 @@ variable "vm_select_image_repository" {
 
 variable "vm_select_image_tag" {
   description = "Image tag for VictoriaMetrics Select server"
-  default     = "v1.34.7-cluster"
+  default     = "v1.37.0-cluster"
 }
 
 variable "vm_select_priority_class_name" {
@@ -1510,7 +1510,7 @@ variable "vm_insert_image_repository" {
 
 variable "vm_insert_image_tag" {
   description = "Image tag for VictoriaMetrics Insert server"
-  default     = "v1.34.7-cluster"
+  default     = "v1.37.0-cluster"
 }
 
 variable "vm_insert_priority_class_name" {
@@ -1593,7 +1593,7 @@ variable "vm_storage_image_repository" {
 
 variable "vm_storage_image_tag" {
   description = "Image tag for VictoriaMetrics Storage server"
-  default     = "v1.34.7-cluster"
+  default     = "v1.37.0-cluster"
 }
 
 variable "vm_storage_priority_class_name" {
