@@ -251,7 +251,7 @@ server:
 
   # Resource settings for Server agents.
   resources:
-    ${indent(server_resources, 4)}
+    ${indent(4, server_resources)}
 
   # updatePartition is used to control a careful rolling update of Consul
   # servers. This should be done particularly when changing the version
@@ -399,7 +399,7 @@ client:
 
   # Resource settings for Client agents.
   resources:
-    ${indent(client_resources, 4)}
+    ${indent(4, client_resources)}
 
   # extraConfig is a raw string of extra configuration to set with the
   # client. This should be JSON.
@@ -673,7 +673,7 @@ syncCatalog:
 
   # Resource settings for sync catalog pods.
   resources:
-    ${indent(sync_resources, 4)}
+    ${indent(4, sync_resources)}
 
   # Log verbosity level. One of "trace", "debug", "info", "warn", or "error".
   logLevel: info
