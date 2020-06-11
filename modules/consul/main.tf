@@ -37,7 +37,7 @@ locals {
     server_priority_class = var.server_priority_class
     server_annotations    = jsonencode(var.server_annotations)
 
-    client_enabled        = var.client_enabled
+    client_enabled        = jsonencode(var.client_enabled)
     client_grpc           = var.client_grpc
     client_resources      = yamlencode(var.client_resources)
     client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
@@ -52,7 +52,7 @@ locals {
     tls_verify                     = var.tls_verify
     tls_https_only                 = var.tls_https_only
 
-    enable_sync_catalog           = var.enable_sync_catalog
+    enable_sync_catalog           = jsonencode(var.enable_sync_catalog)
     sync_by_default               = var.sync_by_default
     sync_to_consul                = var.sync_to_consul
     sync_to_k8s                   = var.sync_to_k8s
@@ -65,12 +65,12 @@ locals {
     sync_tolerations              = jsonencode(var.sync_tolerations)
     sync_resources                = yamlencode(var.sync_resources)
 
-    enable_ui          = var.enable_ui
+    enable_ui          = jsonencode(var.enable_ui)
     ui_service_type    = var.ui_service_type
     ui_annotations     = jsonencode(var.ui_annotations)
     ui_additional_spec = jsonencode(var.ui_additional_spec)
 
-    connect_enable                    = var.connect_enable
+    connect_enable                    = jsonencode(var.connect_enable)
     enable_connect_inject             = var.enable_connect_inject
     connect_inject_by_default         = var.connect_inject_by_default
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
