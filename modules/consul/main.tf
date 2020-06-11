@@ -9,7 +9,6 @@ resource "helm_release" "consul" {
 
   values = [
     templatefile("${path.module}/templates/values.yaml", local.consul_values),
-    data.template_file.values.rendered,
   ]
 }
 
@@ -30,7 +29,7 @@ locals {
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
     server_storage_class  = var.server_storage_class
-    server_resources      = jsonencode(yamlencode(var.server_resources))
+    server_resources      = yamlencode(var.server_resources)
     server_extra_config   = jsonencode(jsonencode(var.server_extra_config))
     server_extra_volumes  = jsonencode(var.server_extra_volumes)
     server_affinity       = jsonencode(var.server_affinity)
@@ -40,7 +39,7 @@ locals {
 
     client_enabled        = var.client_enabled
     client_grpc           = var.client_grpc
-    client_resources      = jsonencode(yamlencode(var.client_resources))
+    client_resources      = yamlencode(var.client_resources)
     client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
     client_extra_volumes  = jsonencode(var.client_extra_volumes)
     client_tolerations    = jsonencode(var.client_tolerations)
@@ -64,6 +63,7 @@ locals {
     sync_add_k8s_namespace_suffix = var.sync_add_k8s_namespace_suffix
     sync_affinity                 = jsonencode(var.sync_affinity)
     sync_tolerations              = jsonencode(var.sync_tolerations)
+    sync_resources                = yamlencode(var.sync_resources)
 
     enable_ui          = var.enable_ui
     ui_service_type    = var.ui_service_type
@@ -76,6 +76,7 @@ locals {
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
     connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
     connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
+    connect_inject_resources          = yamlencode(var.connect_inject_resources)
   }
 }
 

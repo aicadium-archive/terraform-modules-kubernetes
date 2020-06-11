@@ -249,10 +249,7 @@ server:
   # via the extraConfig setting.
   connect: ${connect_enable}
 
-  # Resource requests, limits, etc. for the server cluster placement. This
-  # should map directly to the value of the resources field for a PodSpec,
-  # formatted as a multi-line string. By default no direct resource request
-  # is made.
+  # Resource settings for Server agents.
   resources: ${server_resources}
 
   # updatePartition is used to control a careful rolling update of Consul
@@ -399,10 +396,7 @@ client:
   # also changes the clients' advertised IP to the hostIP rather than podIP.
   exposeGossipPorts: false
 
-  # Resource requests, limits, etc. for the client cluster placement. This
-  # should map directly to the value of the resources field for a PodSpec,
-  # formatted as a multi-line string. By default no direct resource request
-  # is made.
+  # Resource settings for Client agents.
   resources: ${client_resources}
 
   # extraConfig is a raw string of extra configuration to set with the
@@ -494,6 +488,24 @@ client:
     configSecret:
       secretName: null
       secretKey: null
+
+    # Resource settings for snapshot agent pods.
+    resources:
+      requests:
+        memory: "50Mi"
+        cpu: "50m"
+      limits:
+        memory: "50Mi"
+        cpu: "50m"
+
+    # Optional PEM-encoded CA certificate that will be added to the trusted system CAs.
+    # Useful if using an S3-compatible storage exposing a self-signed certificate.
+    # Example
+    #   caCert: |
+    #     -----BEGIN CERTIFICATE-----
+    #     MIIC7jCCApSgAwIBAgIRAIq2zQEVexqxvtxP6J0bXAwwCgYIKoZIzj0EAwIwgbkx
+    #     ...
+    caCert: null
 
 # Configuration for DNS configuration within the Kubernetes cluster.
 # This creates a service that routes to all agents (client or server)
@@ -657,6 +669,9 @@ syncCatalog:
     secretName: null
     secretKey: null
 
+  # Resource settings for sync catalog pods.
+  resources: ${sync_resources}
+
   # Log verbosity level. One of "trace", "debug", "info", "warn", or "error".
   logLevel: info
 
@@ -675,6 +690,15 @@ connectInject:
   # The Docker image for Consul to use when performing Connect injection.
   # Defaults to global.image.
   imageConsul: null
+
+  # Resource settings for connect inject pods.
+  resources:
+    requests:
+      memory: "50Mi"
+      cpu: "50m"
+    limits:
+      memory: "50Mi"
+      cpu: "50m"
 
   # The Docker image for envoy to use as the proxy sidecar when performing
   # Connect injection. If using Consul 1.7+, the envoy version must be 1.13+.
@@ -933,13 +957,13 @@ meshGateway:
   # workaround.
   enableHealthChecks: true
 
-  resources: |
+  resources:
     requests:
-      memory: "128Mi"
-      cpu: "250m"
+      memory: "100Mi"
+      cpu: "100m"
     limits:
-      memory: "256Mi"
-      cpu: "500m"
+      memory: "100Mi"
+      cpu: "100m"
   # By default, we set an anti affinity so that two gateway pods won't be
   # on the same node. NOTE: Gateways require that Consul client agents are
   # also running on the nodes alongside each gateway Pod.

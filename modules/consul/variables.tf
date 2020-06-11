@@ -91,11 +91,13 @@ variable "server_resources" {
   description = "Resources for server"
   default = {
     requests = {
-      cpu = "500m"
+      cpu    = "100m"
+      memory = "100Mi"
     }
 
     limits = {
-      memory = "1Gi"
+      cpu    = "100m"
+      memory = "100Mi"
     }
   }
 }
@@ -155,12 +157,13 @@ variable "client_resources" {
   description = "Resources for clients"
   default = {
     requests = {
-      cpu = "250m"
+      cpu    = "100m"
+      memory = "100Mi"
     }
 
     limits = {
-      cpu    = "250m"
-      memory = "50Mi"
+      cpu    = "100m"
+      memory = "100Mi"
     }
   }
 }
@@ -240,6 +243,20 @@ variable "sync_affinity" {
   default     = ""
 }
 
+variable "sync_resources" {
+  description = "Sync Catalog resources"
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
+}
+
 variable "sync_tolerations" {
   description = "Template string for Sync Catalog Tolerations"
   default     = ""
@@ -293,6 +310,20 @@ variable "connect_inject_affinity" {
 variable "connect_inject_tolerations" {
   description = "Template string for Connect Inject Tolerations"
   default     = ""
+}
+
+variable "connect_inject_resources" {
+  description = "Resources for connect inject pod"
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
 }
 
 variable "configure_kube_dns" {
