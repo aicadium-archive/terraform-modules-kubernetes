@@ -250,7 +250,8 @@ server:
   connect: ${connect_enable}
 
   # Resource settings for Server agents.
-  resources: ${server_resources}
+  resources:
+    ${indent(server_resources, 4)}
 
   # updatePartition is used to control a careful rolling update of Consul
   # servers. This should be done particularly when changing the version
@@ -397,7 +398,8 @@ client:
   exposeGossipPorts: false
 
   # Resource settings for Client agents.
-  resources: ${client_resources}
+  resources:
+    ${indent(client_resources, 4)}
 
   # extraConfig is a raw string of extra configuration to set with the
   # client. This should be JSON.
@@ -670,7 +672,8 @@ syncCatalog:
     secretKey: null
 
   # Resource settings for sync catalog pods.
-  resources: ${sync_resources}
+  resources:
+    ${indent(sync_resources, 4)}
 
   # Log verbosity level. One of "trace", "debug", "info", "warn", or "error".
   logLevel: info
@@ -964,6 +967,7 @@ meshGateway:
     limits:
       memory: "100Mi"
       cpu: "100m"
+
   # By default, we set an anti affinity so that two gateway pods won't be
   # on the same node. NOTE: Gateways require that Consul client agents are
   # also running on the nodes alongside each gateway Pod.
