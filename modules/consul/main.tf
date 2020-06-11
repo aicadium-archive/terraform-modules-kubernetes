@@ -8,17 +8,16 @@ resource "helm_release" "consul" {
   max_history = var.max_history
 
   values = [
+    templatefile("${path.module}/templates/values.yaml", local.consul_values),
     data.template_file.values.rendered,
   ]
 }
 
-data "template_file" "values" {
-  template = file("${path.module}/templates/values.yaml")
-
-  vars = {
-    fullname_override = var.fullname_override
-    image             = "${var.consul_image_name}:${var.consul_image_tag}"
-    image_k8s         = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+locals {
+  consul_values = {
+    name      = var.name != null ? jsonencode(var.name) : "null"
+    image     = "${var.consul_image_name}:${var.consul_image_tag}"
+    image_k8s = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
 
     pod_security_policy_enable = var.pod_security_policy_enable
 
@@ -31,8 +30,8 @@ data "template_file" "values" {
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
     server_storage_class  = var.server_storage_class
-    server_resources      = jsonencode(jsonencode(var.server_resources))
-    server_extra_config   = jsonencode(var.server_extra_config)
+    server_resources      = jsonencode(yamlencode(var.server_resources))
+    server_extra_config   = jsonencode(jsonencode(var.server_extra_config))
     server_extra_volumes  = jsonencode(var.server_extra_volumes)
     server_affinity       = jsonencode(var.server_affinity)
     server_tolerations    = jsonencode(var.server_tolerations)
@@ -41,8 +40,8 @@ data "template_file" "values" {
 
     client_enabled        = var.client_enabled
     client_grpc           = var.client_grpc
-    client_resources      = jsonencode(jsonencode(var.client_resources))
-    client_extra_config   = jsonencode(var.client_extra_config)
+    client_resources      = jsonencode(yamlencode(var.client_resources))
+    client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
     client_extra_volumes  = jsonencode(var.client_extra_volumes)
     client_tolerations    = jsonencode(var.client_tolerations)
     client_priority_class = var.client_priority_class

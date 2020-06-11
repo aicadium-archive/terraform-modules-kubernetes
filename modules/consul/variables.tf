@@ -23,6 +23,11 @@ variable "chart_namespace" {
   default     = "default"
 }
 
+variable "name" {
+  description = "Sets the prefix used for all resources in the helm chart. If not set, the prefix will be \"<helm release name>-consul\"."
+  default     = null
+}
+
 variable "fullname_override" {
   description = "Fullname Override of Helm resources"
   default     = ""
@@ -40,7 +45,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.6.2"
+  default     = "1.7.4"
 }
 
 variable "consul_k8s_image" {
@@ -50,7 +55,7 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.11.0"
+  default     = "0.15.0"
 }
 
 variable "consul_domain" {
@@ -96,8 +101,8 @@ variable "server_resources" {
 }
 
 variable "server_extra_config" {
-  description = "Raw string of additional configuration to include for servers in JSON/HCL"
-  default     = "{}"
+  description = "Additional configuration to include for servers in JSON/HCL"
+  default     = {}
 }
 
 variable "server_extra_volumes" {
@@ -138,7 +143,7 @@ variable "server_annotations" {
 
 variable "client_enabled" {
   description = "Enable running Consul client agents on every Kubernetes node"
-  default     = "true"
+  default     = "-"
 }
 
 variable "client_grpc" {
@@ -161,8 +166,8 @@ variable "client_resources" {
 }
 
 variable "client_extra_config" {
-  description = "Raw string of additional configuration to include for client agents in JSON/HCL"
-  default     = "{}"
+  description = "Additional configuration to include for client agents"
+  default     = {}
 }
 
 variable "client_extra_volumes" {
