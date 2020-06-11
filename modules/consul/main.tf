@@ -6,6 +6,7 @@ resource "helm_release" "consul" {
   namespace  = var.chart_namespace
 
   max_history = var.max_history
+  timeout     = 600
 
   values = [
     templatefile("${path.module}/templates/values.yaml", local.consul_values),
