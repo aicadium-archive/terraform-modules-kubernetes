@@ -6,19 +6,18 @@ resource "helm_release" "consul" {
   namespace  = var.chart_namespace
 
   max_history = var.max_history
+  timeout     = 600
 
   values = [
-    data.template_file.values.rendered,
+    templatefile("${path.module}/templates/values.yaml", local.consul_values),
   ]
 }
 
-data "template_file" "values" {
-  template = file("${path.module}/templates/values.yaml")
-
-  vars = {
-    fullname_override = var.fullname_override
-    image             = "${var.consul_image_name}:${var.consul_image_tag}"
-    image_k8s         = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+locals {
+  consul_values = {
+    name      = var.name != null ? jsonencode(var.name) : "null"
+    image     = "${var.consul_image_name}:${var.consul_image_tag}"
+    image_k8s = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
 
     pod_security_policy_enable = var.pod_security_policy_enable
 
@@ -31,18 +30,18 @@ data "template_file" "values" {
     server_replicas       = var.server_replicas
     server_storage        = var.server_storage
     server_storage_class  = var.server_storage_class
-    server_resources      = jsonencode(jsonencode(var.server_resources))
-    server_extra_config   = jsonencode(var.server_extra_config)
+    server_resources      = yamlencode(var.server_resources)
+    server_extra_config   = jsonencode(jsonencode(var.server_extra_config))
     server_extra_volumes  = jsonencode(var.server_extra_volumes)
     server_affinity       = jsonencode(var.server_affinity)
     server_tolerations    = jsonencode(var.server_tolerations)
     server_priority_class = var.server_priority_class
     server_annotations    = jsonencode(var.server_annotations)
 
-    client_enabled        = var.client_enabled
+    client_enabled        = jsonencode(var.client_enabled)
     client_grpc           = var.client_grpc
-    client_resources      = jsonencode(jsonencode(var.client_resources))
-    client_extra_config   = jsonencode(var.client_extra_config)
+    client_resources      = yamlencode(var.client_resources)
+    client_extra_config   = jsonencode(jsonencode(var.client_extra_config))
     client_extra_volumes  = jsonencode(var.client_extra_volumes)
     client_tolerations    = jsonencode(var.client_tolerations)
     client_priority_class = var.client_priority_class
@@ -54,7 +53,7 @@ data "template_file" "values" {
     tls_verify                     = var.tls_verify
     tls_https_only                 = var.tls_https_only
 
-    enable_sync_catalog           = var.enable_sync_catalog
+    enable_sync_catalog           = jsonencode(var.enable_sync_catalog)
     sync_by_default               = var.sync_by_default
     sync_to_consul                = var.sync_to_consul
     sync_to_k8s                   = var.sync_to_k8s
@@ -65,18 +64,20 @@ data "template_file" "values" {
     sync_add_k8s_namespace_suffix = var.sync_add_k8s_namespace_suffix
     sync_affinity                 = jsonencode(var.sync_affinity)
     sync_tolerations              = jsonencode(var.sync_tolerations)
+    sync_resources                = yamlencode(var.sync_resources)
 
-    enable_ui          = var.enable_ui
+    enable_ui          = jsonencode(var.enable_ui)
     ui_service_type    = var.ui_service_type
     ui_annotations     = jsonencode(var.ui_annotations)
     ui_additional_spec = jsonencode(var.ui_additional_spec)
 
-    connect_enable                    = var.connect_enable
+    connect_enable                    = jsonencode(var.connect_enable)
     enable_connect_inject             = var.enable_connect_inject
     connect_inject_by_default         = var.connect_inject_by_default
     connect_inject_namespace_selector = var.connect_inject_namespace_selector
     connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
     connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
+    connect_inject_resources          = yamlencode(var.connect_inject_resources)
   }
 }
 
