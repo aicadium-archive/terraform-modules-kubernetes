@@ -23,6 +23,11 @@ variable "chart_namespace" {
   default     = "default"
 }
 
+variable "chart_timeout" {
+  description = "Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout"
+  default     = 1800
+}
+
 variable "name" {
   description = "Sets the prefix used for all resources in the helm chart. If not set, the prefix will be \"<helm release name>-consul\"."
   default     = null
