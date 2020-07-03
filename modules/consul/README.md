@@ -85,6 +85,13 @@ However, you should probably get any existing `CoreDNS` settings and set it to t
 
 You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.12 |
+| helm | >= 1.0 |
+
 ## Providers
 
 | Name | Version |
@@ -96,18 +103,19 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:-----:|
-| chart\_name | Helm chart name to provision | `string` | `""` | no |
+|------|-------------|------|---------|:--------:|
+| chart\_name | Helm chart name to provision | `string` | `"consul"` | no |
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
-| chart\_repository | Helm repository for the chart | `string` | `""` | no |
-| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `""` | no |
+| chart\_repository | Helm repository for the chart | `string` | `"https://helm.releases.hashicorp.com"` | no |
+| chart\_timeout | Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout | `number` | `1800` | no |
+| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.22.0"` | no |
 | client\_annotations | A YAML string for client pods | `string` | `""` | no |
-| client\_enabled | Enable running Consul client agents on every Kubernetes node | `string` | `"true"` | no |
-| client\_extra\_config | Raw string of additional configuration to include for client agents in JSON/HCL | `string` | `"{}"` | no |
+| client\_enabled | Enable running Consul client agents on every Kubernetes node | `string` | `"-"` | no |
+| client\_extra\_config | Additional configuration to include for client agents | `map` | `{}` | no |
 | client\_extra\_volumes | List of map of extra volumes specification. See https://www.consul.io/docs/platform/k8s/helm.html#v-client-extravolumes for the keys | `list` | `[]` | no |
 | client\_grpc | Enable GRPC port for clients. Required for Connect Inject | `bool` | `true` | no |
 | client\_priority\_class | Priority class for clients | `string` | `""` | no |
-| client\_resources | Resources for clients | `map` | <pre>{<br>  "limits": {<br>    "cpu": "250m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "250m"<br>  }<br>}</pre> | no |
+| client\_resources | Resources for clients | `map` | <pre>{<br>  "limits": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  },<br>  "requests": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  }<br>}</pre> | no |
 | client\_tolerations | A YAML string that can be templated via helm specifying the tolerations for client pods | `string` | `""` | no |
 | configure\_core\_dns | Configure core-dns and OVERWRITE it to resolve .consul domains with Consul DNS | `bool` | `false` | no |
 | configure\_kube\_dns | Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS | `bool` | `false` | no |
@@ -115,12 +123,13 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | connect\_inject\_affinity | Template string for Connect Inject Affinity | `string` | `""` | no |
 | connect\_inject\_by\_default | If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection. | `string` | `"false"` | no |
 | connect\_inject\_namespace\_selector | A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `string` | `""` | no |
+| connect\_inject\_resources | Resources for connect inject pod | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
 | connect\_inject\_tolerations | Template string for Connect Inject Tolerations | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
-| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.6.2"` | no |
+| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.0"` | no |
 | consul\_k8s\_image | Docker image of the consul-k8s binary to run | `string` | `"hashicorp/consul-k8s"` | no |
-| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.11.0"` | no |
+| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.16.0"` | no |
 | core\_dns\_labels | Labels for CoreDNS ConfigMap | `map` | <pre>{<br>  "addonmanager.kubernetes.io/mode": "EnsureExists",<br>  "eks.amazonaws.com/component": "coredns",<br>  "k8s-app": "kube-dns"<br>}</pre> | no |
 | core\_dns\_template | Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example | `string` | `".:53 {\n  errors\n  health\n  kubernetes cluster.local in-addr.arpa ip6.arpa {\n    pods insecure\n    upstream\n    fallthrough in-addr.arpa ip6.arpa\n  }\n  prometheus :9153\n  forward . /etc/resolv.conf\n  cache 30\n  loop\n  reload\n  loadbalance\n}\n\nconsul {\n  errors\n  cache 30\n  forward . ${consul_dns_address}\n}\n"` | no |
 | enable\_connect\_inject | Enable Connect Injector process | `string` | `"false"` | no |
@@ -160,8 +169,9 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | exporter\_service\_annotations | A YAML string for describing Consul Exporter service's annotations | `string` | `""` | no |
 | exporter\_tag | Docker Image tag for Consul Exporter | `string` | `"v0.4.0"` | no |
 | fullname\_override | Fullname Override of Helm resources | `string` | `""` | no |
-| gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | n/a | yes |
+| gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | `null` | no |
 | max\_history | Max History for Helm | `number` | `20` | no |
+| name | Sets the prefix used for all resources in the helm chart. If not set, the prefix will be "<helm release name>-consul". | `any` | `null` | no |
 | pod\_security\_policy\_enable | Create PodSecurityPolicy Resources | `bool` | `true` | no |
 | release\_name | Helm release name for Consul | `string` | `"consul"` | no |
 | secret\_annotation | Annotations for the Consul Secret | `map` | `{}` | no |
@@ -169,11 +179,11 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | server\_affinity | A YAML string that can be templated via helm specifying the affinity for server pods | `string` | `"podAntiAffinity:\n  requiredDuringSchedulingIgnoredDuringExecution:\n    - labelSelector:\n        matchLabels:\n          app: {{ template \"consul.name\" . }}\n          release: \"{{ .Release.Name }}\"\n          component: server\n      topologyKey: kubernetes.io/hostname\n"` | no |
 | server\_annotations | A YAML string for server pods | `string` | `""` | no |
 | server\_datacenter | Datacenter to configure Consul as. | `any` | n/a | yes |
-| server\_extra\_config | Raw string of additional configuration to include for servers in JSON/HCL | `string` | `"{}"` | no |
+| server\_extra\_config | Additional configuration to include for servers in JSON/HCL | `map` | `{}` | no |
 | server\_extra\_volumes | List of map of extra volumes specification for server pods. See https://www.consul.io/docs/platform/k8s/helm.html#v-server-extravolumes for the keys | `list` | `[]` | no |
 | server\_priority\_class | Priority class for servers | `string` | `""` | no |
 | server\_replicas | Number of server replicas to run | `number` | `5` | no |
-| server\_resources | Resources for server | `map` | <pre>{<br>  "limits": {<br>    "memory": "1Gi"<br>  },<br>  "requests": {<br>    "cpu": "500m"<br>  }<br>}</pre> | no |
+| server\_resources | Resources for server | `map` | <pre>{<br>  "limits": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  },<br>  "requests": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  }<br>}</pre> | no |
 | server\_storage | This defines the disk size for configuring the servers' StatefulSet storage. For dynamically provisioned storage classes, this is the desired size. For manually defined persistent volumes, this should be set to the disk size of the attached volume. | `string` | `"10Gi"` | no |
 | server\_storage\_class | The StorageClass to use for the servers' StatefulSet storage. It must be able to be dynamically provisioned if you want the storage to be automatically created. For example, to use Local storage classes, the PersistentVolumeClaims would need to be manually created. An empty value will use the Kubernetes cluster's default StorageClass. | `string` | `""` | no |
 | server\_tolerations | A YAML string that can be templated via helm specifying the tolerations for server pods | `string` | `""` | no |
@@ -184,6 +194,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | sync\_k8s\_prefix | A prefix to prepend to all services registered in Kubernetes from Consul. This defaults to '' where no prefix is prepended; Consul services are synced with the same name to Kubernetes. (Consul -> Kubernetes sync only) | `string` | `""` | no |
 | sync\_k8s\_tag | An optional tag that is applied to all of the Kubernetes services that are synced into Consul. If nothing is set, this defaults to 'k8s'. (Kubernetes -> Consul sync only) | `string` | `"k8s"` | no |
 | sync\_node\_port\_type | Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead. | `string` | `""` | no |
+| sync\_resources | Sync Catalog resources | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
 | sync\_to\_consul | If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
 | sync\_to\_k8s | If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
 | sync\_tolerations | Template string for Sync Catalog Tolerations | `string` | `""` | no |
@@ -191,7 +202,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | tls\_https\_only | If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections. | `bool` | `true` | no |
 | tls\_server\_additional\_dns\_sans | List of additional DNS names to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access the Consul server(s) externally, for example, if you're using the UI. | `list` | `[]` | no |
 | tls\_server\_additional\_ip\_sans | List of additional IP addresses to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access Consul server(s) externally, for example, if you're using the UI. | `list` | `[]` | no |
-| tls\_verify | If true, 'verify\_outgoing', 'verify\_server\_hostname', and 'verify\_incoming\_rpc' will be set to true for Consul servers and clients.<br>Set this to false to incrementally roll out TLS on an existing Consul cluster.<br>Note: remember to switch it back to true once the rollout is complete.<br>Please see this guide for more details:<br>https://learn.hashicorp.com/consul/security-networking/certificates | `bool` | `true` | no |
+| tls\_verify | If true, 'verify\_outgoing', 'verify\_server\_hostname', and<br>'verify\_incoming\_rpc' will be set to true for Consul servers and clients.<br>Set this to false to incrementally roll out TLS on an existing Consul cluster.<br>Note: remember to switch it back to true once the rollout is complete.<br>Please see this guide for more details:<br>https://learn.hashicorp.com/consul/security-networking/certificates | `bool` | `true` | no |
 | ui\_additional\_spec | Additional Spec for the UI service | `string` | `""` | no |
 | ui\_annotations | UI service annotations | `string` | `""` | no |
 | ui\_service\_type | Type of service for Consul UI | `string` | `"ClusterIP"` | no |
