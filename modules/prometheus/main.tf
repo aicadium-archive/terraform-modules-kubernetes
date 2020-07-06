@@ -301,6 +301,8 @@ data "template_file" "server_config" {
   template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
 
   vars = {
+    additional_configs = var.server_additional_configs
+
     remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
       remote_write = [
         {

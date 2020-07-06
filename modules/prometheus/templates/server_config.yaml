@@ -1,4 +1,6 @@
 prometheus.yml:
+  ${indent(2, additional_configs)}
+
   ${remote_write_configs}
   ${remote_read_configs}
 

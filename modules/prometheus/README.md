@@ -194,6 +194,7 @@ This module makes use of the
 | pushgateway\_tag | Tag for Pushgateway Docker Image | `string` | `"v0.6.0"` | no |
 | pushgateway\_tolerations | Tolerations for Pushgateway | `list` | `[]` | no |
 | release\_name | Helm release name for Prometheus | `string` | `"prometheus"` | no |
+| server\_additional\_configs | YAML string for additional configuration for Prometheus Server | `string` | `""` | no |
 | server\_affinity | Affinity for server pods | `map` | `{}` | no |
 | server\_alerts | Prometheus server alerts entries in YAML | `string` | `"## Alerts configuration\n## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/nalerts: {}\n# groups:\n#   - name: Instances\n#     rules:\n#       - alert: InstanceDown\n#         expr: up == 0\n#         for: 5m\n#         labels:\n#           severity: page\n#         annotations:\n#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'\n#           summary: 'Instance {{ $labels.instance }} down'\n"` | no |
 | server\_annotations | Annotations for server pods | `map` | `{}` | no |
@@ -266,7 +267,7 @@ This module makes use of the
 | vm\_insert\_enabled | Deploy VictoriaMetrics Insert | `bool` | `true` | no |
 | vm\_insert\_extra\_args | Additional VictoriaMetrics Insert container arguments | `map` | `{}` | no |
 | vm\_insert\_image\_repository | Image repository for VictoriaMetrics Insert server | `string` | `"victoriametrics/vminsert"` | no |
-| vm\_insert\_image\_tag | Image tag for VictoriaMetrics Insert server | `string` | `"v1.34.7-cluster"` | no |
+| vm\_insert\_image\_tag | Image tag for VictoriaMetrics Insert server | `string` | `"v1.37.0-cluster"` | no |
 | vm\_insert\_node\_selector | Node selector for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_pod\_annotations | Annotations for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_priority\_class\_name | Priority Class Name for VictoriaMetrics Insert server | `string` | `""` | no |
@@ -285,7 +286,7 @@ This module makes use of the
 | vm\_select\_enabled | Deploy VictoriaMetrics Select | `bool` | `true` | no |
 | vm\_select\_extra\_args | Additional VictoriaMetrics Select container arguments | `map` | `{}` | no |
 | vm\_select\_image\_repository | Image repository for VictoriaMetrics Select server | `string` | `"victoriametrics/vmselect"` | no |
-| vm\_select\_image\_tag | Image tag for VictoriaMetrics Select server | `string` | `"v1.34.7-cluster"` | no |
+| vm\_select\_image\_tag | Image tag for VictoriaMetrics Select server | `string` | `"v1.37.0-cluster"` | no |
 | vm\_select\_node\_selector | Node selector for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_pod\_annotations | Annotations for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_priority\_class\_name | Priority Class Name for VictoriaMetrics Select server | `string` | `""` | no |
@@ -306,7 +307,7 @@ This module makes use of the
 | vm\_storage\_enabled | Deploy VictoriaMetrics Storage | `bool` | `true` | no |
 | vm\_storage\_extra\_args | Additional VictoriaMetrics Storage container arguments | `map` | `{}` | no |
 | vm\_storage\_image\_repository | Image repository for VictoriaMetrics Storage server | `string` | `"victoriametrics/vmstorage"` | no |
-| vm\_storage\_image\_tag | Image tag for VictoriaMetrics Storage server | `string` | `"v1.34.7-cluster"` | no |
+| vm\_storage\_image\_tag | Image tag for VictoriaMetrics Storage server | `string` | `"v1.37.0-cluster"` | no |
 | vm\_storage\_node\_selector | Node selector for VictoriaMetrics Storage server pods | `map` | `{}` | no |
 | vm\_storage\_pod\_annotations | Annotations for VictoriaMetrics Storage server pods | `map` | `{}` | no |
 | vm\_storage\_priority\_class\_name | Priority Class Name for VictoriaMetrics Storage server | `string` | `""` | no |
