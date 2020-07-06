@@ -1336,6 +1336,11 @@ EOF
 
 }
 
+variable "server_additional_global" {
+  description = "YAML string for additional global configuration for Prometheus Server"
+  default     = ""
+}
+
 variable "server_config_override" {
   description = "Overriding the Prometheus server config file in YAML"
   default     = ""
