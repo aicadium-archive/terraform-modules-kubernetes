@@ -194,7 +194,7 @@ This module makes use of the
 | pushgateway\_tag | Tag for Pushgateway Docker Image | `string` | `"v0.6.0"` | no |
 | pushgateway\_tolerations | Tolerations for Pushgateway | `list` | `[]` | no |
 | release\_name | Helm release name for Prometheus | `string` | `"prometheus"` | no |
-| server\_additional\_configs | YAML string for additional configuration for Prometheus Server | `string` | `""` | no |
+| server\_additional\_global | YAML string for additional global configuration for Prometheus Server | `string` | `""` | no |
 | server\_affinity | Affinity for server pods | `map` | `{}` | no |
 | server\_alerts | Prometheus server alerts entries in YAML | `string` | `"## Alerts configuration\n## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/nalerts: {}\n# groups:\n#   - name: Instances\n#     rules:\n#       - alert: InstanceDown\n#         expr: up == 0\n#         for: 5m\n#         labels:\n#           severity: page\n#         annotations:\n#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'\n#           summary: 'Instance {{ $labels.instance }} down'\n"` | no |
 | server\_annotations | Annotations for server pods | `map` | `{}` | no |
