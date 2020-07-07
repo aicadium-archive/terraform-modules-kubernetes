@@ -39,6 +39,7 @@ locals {
     tolerations      = jsonencode(var.vm_alert_tolerations)
     affinity         = jsonencode(var.vm_alert_affinity)
 
-    alerts = indent(4, var.vmalert_alerts)
+    alerts = indent(4, var.server_alerts)
+    rules  = indent(4, var.server_rules)
   }
 }

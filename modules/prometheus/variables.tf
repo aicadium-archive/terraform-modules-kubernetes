@@ -1306,11 +1306,9 @@ variable "server_liveness_probe_timeout" {
 }
 
 variable "server_alerts" {
-  description = "Prometheus server alerts entries in YAML"
+  description = "Prometheus server alerts entries in YAML. Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
 
   default = <<EOF
-## Alerts configuration
-## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
 alerts: {}
 # groups:
 #   - name: Instances

@@ -282,8 +282,8 @@ locals {
     retention           = jsonencode(var.server_data_retention)
     additional_global   = var.server_additional_global
 
-    alerts        = indent(2, var.server_alerts)
-    rules         = indent(2, var.server_rules)
+    alerts        = var.vm_alert_enabled ? "" : indent(2, var.server_alerts)
+    rules         = var.vm_alert_enabled ? "" : indent(2, var.server_rules)
     server_config = indent(2, data.template_file.server_config.rendered)
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
