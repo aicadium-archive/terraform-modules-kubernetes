@@ -296,6 +296,10 @@ server:
   livenessProbeTimeout: ${liveness_probe_timeout}
 
 serverFiles:
-  ${alerts}
-  ${rules}
+  alerts:
+    groups:
+      ${alerts}
+  rules:
+    groups:
+      ${rules}
   ${server_config}

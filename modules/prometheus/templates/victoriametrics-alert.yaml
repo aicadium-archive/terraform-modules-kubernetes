@@ -56,5 +56,6 @@ server:
   configMap: ""
   config:
     alerts:
-      ${alerts}
-      ${rules}
+      groups:
+        ${alerts}
+        ${rules}

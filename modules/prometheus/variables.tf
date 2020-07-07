@@ -1309,18 +1309,17 @@ variable "server_alerts" {
   description = "Prometheus server alerts entries in YAML. Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
 
   default = <<EOF
-alerts: {}
-# groups:
-#   - name: Instances
-#     rules:
-#       - alert: InstanceDown
-#         expr: up == 0
-#         for: 5m
-#         labels:
-#           severity: page
-#         annotations:
-#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
-#           summary: 'Instance {{ $labels.instance }} down'
+[]
+# - name: Instances
+#   rules:
+#     - alert: InstanceDown
+#       expr: up == 0
+#       for: 5m
+#       labels:
+#         severity: page
+#       annotations:
+#         description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
+#         summary: 'Instance {{ $labels.instance }} down'
 EOF
 
 }
@@ -1329,7 +1328,11 @@ variable "server_rules" {
   description = "Prometheus server rules entries in YAML"
 
   default = <<EOF
-rules: {}
+[]
+# - name: k8s_health
+#   rules:
+#     - record: k8s_container_oom
+#       expr: increase(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[2m]) and on(pod) increase(kube_pod_container_status_restarts_total[2m])
 EOF
 
 }

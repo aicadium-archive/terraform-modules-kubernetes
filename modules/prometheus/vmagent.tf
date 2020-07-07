@@ -39,7 +39,7 @@ locals {
     tolerations      = jsonencode(var.vm_alert_tolerations)
     affinity         = jsonencode(var.vm_alert_affinity)
 
-    alerts = yamldecode(var.server_alerts)["alerts"]["groups"]
-    rules  = yamldecode(var.server_rules)["rules"]["groups"]
+    alerts = indent(8, var.server_alerts)
+    rules  = indent(8, var.server_rules)
   }
 }
