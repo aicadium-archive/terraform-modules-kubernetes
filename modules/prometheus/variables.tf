@@ -1719,12 +1719,12 @@ variable "vm_alert_helm_release_max_history" {
 
 variable "vm_alert_release_name" {
   description = "Helm release name for VictoriaMetrics Alert"
-  default     = "victoria-metrics-cluster"
+  default     = "victoria-metrics-alert"
 }
 
 variable "vm_alert_chart" {
   description = "Chart for VictoriaMetrics Alert"
-  default     = "victoria-metrics-cluster"
+  default     = "victoria-metrics-alert"
 }
 
 variable "vm_alert_chart_repository_url" {
@@ -1734,7 +1734,7 @@ variable "vm_alert_chart_repository_url" {
 
 variable "vm_alert_chart_version" {
   description = "Chart version for VictoriaMetrics Alert"
-  default     = "0.4.4"
+  default     = "0.0.16"
 }
 
 variable "vm_alert_namespace" {
