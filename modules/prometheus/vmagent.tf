@@ -17,7 +17,7 @@ resource "helm_release" "vm_alert" {
 locals {
   alert_values = {
     enabled          = var.vm_alert_enabled
-    image_repository = var.vm_insert_image_repository
+    image_repository = var.vm_alert_image_repository
     image_tag        = var.vm_alert_image_tag
 
     datasource_url   = local.prometheus_query_api_url
