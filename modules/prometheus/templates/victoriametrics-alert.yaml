@@ -55,5 +55,6 @@ server:
   # otherwise .config values will be used
   configMap: ""
   config:
-    ${alerts}
-    ${rules}
+    alerts:
+      ${alerts}
+      ${rules}
