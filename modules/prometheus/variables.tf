@@ -1306,23 +1306,20 @@ variable "server_liveness_probe_timeout" {
 }
 
 variable "server_alerts" {
-  description = "Prometheus server alerts entries in YAML"
+  description = "Prometheus server alerts entries in YAML. Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/"
 
   default = <<EOF
-## Alerts configuration
-## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
-alerts: {}
-# groups:
-#   - name: Instances
-#     rules:
-#       - alert: InstanceDown
-#         expr: up == 0
-#         for: 5m
-#         labels:
-#           severity: page
-#         annotations:
-#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
-#           summary: 'Instance {{ $labels.instance }} down'
+[]
+# - name: Instances
+#   rules:
+#     - alert: InstanceDown
+#       expr: up == 0
+#       for: 5m
+#       labels:
+#         severity: page
+#       annotations:
+#         description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'
+#         summary: 'Instance {{ $labels.instance }} down'
 EOF
 
 }
@@ -1331,7 +1328,11 @@ variable "server_rules" {
   description = "Prometheus server rules entries in YAML"
 
   default = <<EOF
-rules: {}
+[]
+# - name: k8s_health
+#   rules:
+#     - record: k8s_container_oom
+#       expr: increase(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[2m]) and on(pod) increase(kube_pod_container_status_restarts_total[2m])
 EOF
 
 }
@@ -1360,7 +1361,7 @@ variable "vm_helm_release_max_history" {
 }
 
 variable "vm_release_name" {
-  description = "Helm release name for Argo"
+  description = "Helm release name for VictoriaMetrics"
   default     = "victoria-metrics-cluster"
 }
 
@@ -1370,13 +1371,13 @@ variable "vm_chart" {
 }
 
 variable "vm_chart_repository_url" {
-  description = "Chart Repository URL for Argo"
+  description = "Chart Repository URL for VictoriaMetrics"
   default     = "https://victoriametrics.github.io/helm-charts/"
 }
 
 variable "vm_chart_version" {
   description = "Chart version for VictoriaMetrics"
-  default     = "0.4.4"
+  default     = "0.5.15"
 }
 
 variable "vm_namespace" {
@@ -1409,7 +1410,7 @@ variable "vm_select_image_repository" {
 
 variable "vm_select_image_tag" {
   description = "Image tag for VictoriaMetrics Select server"
-  default     = "v1.37.0-cluster"
+  default     = "v1.37.4-cluster"
 }
 
 variable "vm_select_priority_class_name" {
@@ -1515,7 +1516,7 @@ variable "vm_insert_image_repository" {
 
 variable "vm_insert_image_tag" {
   description = "Image tag for VictoriaMetrics Insert server"
-  default     = "v1.37.0-cluster"
+  default     = "v1.37.4-cluster"
 }
 
 variable "vm_insert_priority_class_name" {
@@ -1598,7 +1599,7 @@ variable "vm_storage_image_repository" {
 
 variable "vm_storage_image_tag" {
   description = "Image tag for VictoriaMetrics Storage server"
-  default     = "v1.37.0-cluster"
+  default     = "v1.37.4-cluster"
 }
 
 variable "vm_storage_priority_class_name" {
@@ -1702,4 +1703,112 @@ variable "vm_storage_vm_select_port" {
 variable "vm_storage_termination_grace_period_seconds" {
   description = "VictoriaMetrics Select server pods' termination grace period in seconds"
   default     = 60
+}
+
+#################################
+# VictoriaMetrics Alert service
+#################################
+variable "vm_alert_enabled" {
+  description = "Deploy VictoriaMetrics Alert"
+  default     = true
+}
+
+variable "vm_alert_helm_release_max_history" {
+  description = "The maximum number of history releases to keep track for the VM helm release"
+  default     = 20
+}
+
+variable "vm_alert_release_name" {
+  description = "Helm release name for VictoriaMetrics Alert"
+  default     = "victoria-metrics-alert"
+}
+
+variable "vm_alert_chart" {
+  description = "Chart for VictoriaMetrics Alert"
+  default     = "victoria-metrics-alert"
+}
+
+variable "vm_alert_chart_repository_url" {
+  description = "Chart Repository URL for VictoriaMetrics Alert"
+  default     = "https://victoriametrics.github.io/helm-charts/"
+}
+
+variable "vm_alert_chart_version" {
+  description = "Chart version for VictoriaMetrics Alert"
+  default     = "0.0.16"
+}
+
+variable "vm_alert_namespace" {
+  description = "Namespace for VictoriaMetrics Alert"
+  default     = "core"
+}
+
+variable "vm_alert_image_repository" {
+  description = "Image repository for VictoriaMetrics Alert server"
+  default     = "victoriametrics/vmalert"
+}
+
+variable "vm_alert_image_tag" {
+  description = "Image tag for VictoriaMetrics Alert server"
+  default     = "v1.37.4"
+}
+
+variable "vm_alert_extra_args" {
+  description = "Additional VictoriaMetrics Alert container arguments"
+  default     = {}
+}
+
+variable "vm_alert_tolerations" {
+  description = "Tolerations for VictoriaMetrics Alert server"
+  default     = []
+}
+
+variable "vm_alert_node_selector" {
+  description = "Node selector for VictoriaMetrics Alert server pods"
+  default     = {}
+}
+
+variable "vm_alert_affinity" {
+  description = "Affinity for VictoriaMetrics Alert server pods"
+  default     = {}
+}
+
+variable "vm_alert_pod_annotations" {
+  description = "Annotations for VictoriaMetrics Alert server pods"
+  default     = {}
+}
+
+variable "vm_alert_replica_count" {
+  description = "Number of replicas for VictoriaMetrics Alert server"
+  default     = 1
+}
+
+variable "vm_alert_resources" {
+  description = "Resources for VictoriaMetrics Alert server"
+  default     = {}
+}
+
+variable "vm_alert_security_context" {
+  description = "Security context for VictoriaMetrics Alert server pods defined as a map which will be serialized to JSON."
+  default     = {}
+}
+
+variable "vm_alert_service_annotations" {
+  description = "Annotations for VictoriaMetrics Alert server service"
+  default     = {}
+}
+
+variable "vm_alert_service_labels" {
+  description = "Labels for VictoriaMetrics Alert server service"
+  default     = {}
+}
+
+variable "vm_alert_service_port" {
+  description = "Service port for VictoriaMetrics Alert server"
+  default     = 8880
+}
+
+variable "vm_alert_service_type" {
+  description = "Type of service for VictoriaMetrics Alert server"
+  default     = "ClusterIP"
 }
