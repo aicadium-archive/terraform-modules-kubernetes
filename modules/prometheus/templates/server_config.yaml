@@ -192,7 +192,10 @@ prometheus.yml:
           target_label: pod_name
         - source_labels: [__meta_kubernetes_pod_container_name]
           action: replace
-          target_label: container_name
+          target_label: pod_container_name
+        - source_labels: [__meta_kubernetes_service_name]
+          action: replace
+          target_label: service_name
 
         # Enable the lines below to turn all pod and service meta labels into labels
         # Warning: This may increase the number of time series on Prometheus by a significant margin
