@@ -176,8 +176,6 @@ prometheus.yml:
         - action: labelmap
           regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
           replacement: __param_$1
-        - action: labelmap
-          regex: __meta_kubernetes_service_label_(.+)
         - source_labels: [__meta_kubernetes_namespace]
           action: replace
           target_label: kubernetes_namespace
@@ -197,6 +195,8 @@ prometheus.yml:
         # Enable the lines below to turn all pod and service meta labels into labels
         # Warning: This may increase the number of time series on Prometheus by a significant margin
 
+        # - action: labelmap
+        #   regex: __meta_kubernetes_service_label_(.+)
         # - action: labelmap
         #   regex: __meta_kubernetes_pod_(.+)
         #   replacement: pod_$1
