@@ -15,7 +15,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = "0.22.0"
+  default     = "0.23.1"
 }
 
 variable "chart_namespace" {
@@ -60,7 +60,7 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.16.0"
+  default     = "0.17.0"
 }
 
 variable "consul_domain" {
