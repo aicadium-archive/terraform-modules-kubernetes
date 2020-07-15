@@ -1,5 +1,5 @@
 resource "helm_release" "vm_alert" {
-  count = var.vm_alert_enabled ? 1 : 0
+  count = var.vm_enabled && var.vm_alert_enabled ? 1 : 0
 
   name       = var.vm_alert_release_name
   chart      = var.vm_alert_chart

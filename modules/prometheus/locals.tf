@@ -11,4 +11,26 @@ locals {
     "http://${helm_release.vm_alert[0].metadata[0].name}-server.${helm_release.vm_alert[0].metadata[0].namespace}.svc.cluster.local:${var.vm_alert_service_port}" :
     local.prometheus_server_url
   )
+
+  self_scrape_config = var.vm_enabled && var.vm_alert_enabled ?
+    [
+      {
+        job_name = "vmagent"
+        static_configs = [
+          {
+            targets = ["localhost:8429"]
+          }
+        ]
+      }
+    ] :
+    [
+      {
+        job_name = "prometheus"
+        static_configs = [
+          {
+            targets = ["localhost:9090"]
+          }
+        ]
+      }
+    ]
 }
