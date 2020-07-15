@@ -285,7 +285,7 @@ locals {
     alerts = var.vm_alert_enabled ? "[]" : indent(6, var.server_alerts)
     rules  = var.vm_alert_enabled ? "[]" : indent(6, var.server_rules)
 
-    remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
+    remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(4, yamlencode({
       remote_write = [
         {
           url = local.prometheus_remote_write_api_url
@@ -293,7 +293,7 @@ locals {
       ]
     })) : ""
 
-    remote_read_configs = var.vm_enabled && var.vm_select_enabled ? indent(2, yamlencode({
+    remote_read_configs = var.vm_enabled && var.vm_select_enabled ? indent(4, yamlencode({
       remote_read = [
         {
           url = local.prometheus_remote_read_api_url
@@ -301,8 +301,8 @@ locals {
       ]
     })) : ""
 
-    self_scrape_config = ! local.vm_alert_enabled ? indent(4, yamlencode(local.self_scrape_config)) : ""
-    scrape_configs     = ! local.vm_alert_enabled ? indent(4, file("${path.module}/templates/scrape_configs.yaml")) : ""
+    self_scrape_config = ! local.vm_alert_enabled ? indent(6, yamlencode(local.self_scrape_config)) : ""
+    scrape_configs     = ! local.vm_alert_enabled ? indent(6, file("${path.module}/templates/scrape_configs.yaml")) : ""
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
