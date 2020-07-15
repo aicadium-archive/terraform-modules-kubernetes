@@ -12,25 +12,23 @@ locals {
     local.prometheus_server_url
   )
 
-  self_scrape_config = var.vm_enabled && var.vm_alert_enabled ?
-    [
-      {
-        job_name = "vmagent"
-        static_configs = [
-          {
-            targets = ["localhost:8429"]
-          }
-        ]
-      }
-    ] :
-    [
-      {
-        job_name = "prometheus"
-        static_configs = [
-          {
-            targets = ["localhost:9090"]
-          }
-        ]
-      }
-    ]
+  self_scrape_config = var.vm_enabled && var.vm_agent_enabled ? [
+    {
+      job_name = "vmagent"
+      static_configs = [
+        {
+          targets = ["localhost:8429"]
+        }
+      ]
+    }
+    ] : [
+    {
+      job_name = "prometheus"
+      static_configs = [
+        {
+          targets = ["localhost:9090"]
+        }
+      ]
+    }
+  ]
 }

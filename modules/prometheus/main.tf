@@ -301,8 +301,8 @@ locals {
       ]
     })) : ""
 
-    self_scrape_config = !local.vm_alert_enabled ? indent(4, yamlencode(local.self_scrape_config)) : ""
-    scrape_configs     = !local.vm_alert_enabled ? indent(4, file("${path.module}/templates/scrape_configs.yaml")) : ""
+    self_scrape_config = ! local.vm_alert_enabled ? indent(4, yamlencode(local.self_scrape_config)) : ""
+    scrape_configs     = ! local.vm_alert_enabled ? indent(4, file("${path.module}/templates/scrape_configs.yaml")) : ""
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
