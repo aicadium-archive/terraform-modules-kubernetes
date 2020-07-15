@@ -282,26 +282,9 @@ locals {
     retention           = jsonencode(var.server_data_retention)
     additional_global   = var.server_additional_global
 
-    alerts        = var.vm_alert_enabled ? "[]" : indent(6, var.server_alerts)
-    rules         = var.vm_alert_enabled ? "[]" : indent(6, var.server_rules)
-    server_config = indent(2, data.template_file.server_config.rendered)
+    alerts = var.vm_alert_enabled ? "[]" : indent(6, var.server_alerts)
+    rules  = var.vm_alert_enabled ? "[]" : indent(6, var.server_rules)
 
-    pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
-
-    pdb_enable          = var.server_pdb_enable
-    pdb_max_unavailable = jsonencode(var.server_pdb_max_unavailable)
-
-    readiness_probe_initial_delay = var.server_readiness_probe_initial_delay
-    readiness_probe_timeout       = var.server_readiness_probe_timeout
-    liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
-    liveness_probe_timeout        = var.server_liveness_probe_timeout
-  }
-}
-
-data "template_file" "server_config" {
-  template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
-
-  vars = {
     remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
       remote_write = [
         {
@@ -317,5 +300,17 @@ data "template_file" "server_config" {
         }
       ]
     })) : ""
+
+    scrape_configs = file("${path.module}/templates/scrape_configs.yaml")
+
+    pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
+
+    pdb_enable          = var.server_pdb_enable
+    pdb_max_unavailable = jsonencode(var.server_pdb_max_unavailable)
+
+    readiness_probe_initial_delay = var.server_readiness_probe_initial_delay
+    readiness_probe_timeout       = var.server_readiness_probe_timeout
+    liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
+    liveness_probe_timeout        = var.server_liveness_probe_timeout
   }
 }

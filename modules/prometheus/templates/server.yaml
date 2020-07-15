@@ -302,4 +302,18 @@ serverFiles:
   rules:
     groups:
       ${rules}
-  ${server_config}
+
+  prometheus.yml:
+    ${remote_write_configs}
+    ${remote_read_configs}
+
+    rule_files:
+      - /etc/config/rules
+      - /etc/config/alerts
+
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+      ${scrape_configs}

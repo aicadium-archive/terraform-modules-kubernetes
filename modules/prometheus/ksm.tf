@@ -10,6 +10,7 @@ resource "helm_release" "kube_state_metrics" {
   max_history = var.max_history
 
   values = [
+    templatefile("${path.module}/templates/kube_state_metrics.yaml", local.kube_state_metrics_values),
   ]
 }
 
