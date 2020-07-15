@@ -46,7 +46,7 @@ locals {
     service_type        = var.kube_state_metrics_service_type
 
     service_account             = var.kube_state_metrics_service_account
-    service_account_annotations = var.kube_state_metrics_service_account_annotations
+    service_account_annotations = jsonencode(var.kube_state_metrics_service_account_annotations)
 
     pdb          = jsonencode(var.kube_state_metrics_pdb)
     host_network = var.kube_state_metrics_host_network
