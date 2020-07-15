@@ -1828,12 +1828,12 @@ variable "vm_agent_helm_release_max_history" {
 
 variable "vm_agent_release_name" {
   description = "Helm release name for VictoriaMetrics Agent"
-  default     = "victoria-metrics-alert"
+  default     = "victoria-metrics-agent"
 }
 
 variable "vm_agent_chart" {
   description = "Chart for VictoriaMetrics Agent"
-  default     = "victoria-metrics-alert"
+  default     = "victoria-metrics-agent"
 }
 
 variable "vm_agent_chart_repository_url" {
@@ -1843,7 +1843,7 @@ variable "vm_agent_chart_repository_url" {
 
 variable "vm_agent_chart_version" {
   description = "Chart version for VictoriaMetrics Agent"
-  default     = "0.0.16"
+  default     = "0.4.7"
 }
 
 variable "vm_agent_namespace" {
@@ -1853,7 +1853,7 @@ variable "vm_agent_namespace" {
 
 variable "vm_agent_image_repository" {
   description = "Image repository for VictoriaMetrics Agent server"
-  default     = "victoriametrics/vmalert"
+  default     = "victoriametrics/vmagent"
 }
 
 variable "vm_agent_image_tag" {
