@@ -282,9 +282,27 @@ locals {
     retention           = jsonencode(var.server_data_retention)
     additional_global   = var.server_additional_global
 
-    alerts        = var.vm_alert_enabled ? "[]" : indent(6, var.server_alerts)
-    rules         = var.vm_alert_enabled ? "[]" : indent(6, var.server_rules)
-    server_config = indent(2, data.template_file.server_config.rendered)
+    alerts = var.vm_alert_enabled ? "[]" : indent(6, var.server_alerts)
+    rules  = var.vm_alert_enabled ? "[]" : indent(6, var.server_rules)
+
+    remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(4, yamlencode({
+      remote_write = [
+        {
+          url = local.prometheus_remote_write_api_url
+        }
+      ]
+    })) : ""
+
+    remote_read_configs = var.vm_enabled && var.vm_select_enabled ? indent(4, yamlencode({
+      remote_read = [
+        {
+          url = local.prometheus_remote_read_api_url
+        }
+      ]
+    })) : ""
+
+    self_scrape_config = ! local.vm_agent_enabled ? indent(6, yamlencode(local.self_scrape_config)) : ""
+    scrape_configs     = ! local.vm_agent_enabled ? indent(6, templatefile("${path.module}/templates/scrape_configs.yaml", local.scrape_config_values)) : ""
 
     pod_security_policy_annotations = jsonencode(var.server_pod_security_policy_annotations)
 
@@ -295,27 +313,5 @@ locals {
     readiness_probe_timeout       = var.server_readiness_probe_timeout
     liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
     liveness_probe_timeout        = var.server_liveness_probe_timeout
-  }
-}
-
-data "template_file" "server_config" {
-  template = coalesce(var.server_config_override, file("${path.module}/templates/server_config.yaml"))
-
-  vars = {
-    remote_write_configs = var.vm_enabled && var.vm_insert_enabled ? indent(2, yamlencode({
-      remote_write = [
-        {
-          url = local.prometheus_remote_write_api_url
-        }
-      ]
-    })) : ""
-
-    remote_read_configs = var.vm_enabled && var.vm_select_enabled ? indent(2, yamlencode({
-      remote_read = [
-        {
-          url = local.prometheus_remote_read_api_url
-        }
-      ]
-    })) : ""
   }
 }

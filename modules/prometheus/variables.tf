@@ -1812,3 +1812,91 @@ variable "vm_alert_service_type" {
   description = "Type of service for VictoriaMetrics Alert server"
   default     = "ClusterIP"
 }
+
+#################################
+# VictoriaMetrics Agent service
+#################################
+variable "vm_agent_enabled" {
+  description = "Deploy VictoriaMetrics Agent"
+  default     = true
+}
+
+variable "vm_agent_helm_release_max_history" {
+  description = "The maximum number of history releases to keep track for the VM helm release"
+  default     = 20
+}
+
+variable "vm_agent_release_name" {
+  description = "Helm release name for VictoriaMetrics Agent"
+  default     = "victoria-metrics-agent"
+}
+
+variable "vm_agent_chart" {
+  description = "Chart for VictoriaMetrics Agent"
+  default     = "victoria-metrics-agent"
+}
+
+variable "vm_agent_chart_repository_url" {
+  description = "Chart Repository URL for VictoriaMetrics Agent"
+  default     = "https://victoriametrics.github.io/helm-charts/"
+}
+
+variable "vm_agent_chart_version" {
+  description = "Chart version for VictoriaMetrics Agent"
+  default     = "0.4.7"
+}
+
+variable "vm_agent_namespace" {
+  description = "Namespace for VictoriaMetrics Agent"
+  default     = "core"
+}
+
+variable "vm_agent_image_repository" {
+  description = "Image repository for VictoriaMetrics Agent server"
+  default     = "victoriametrics/vmagent"
+}
+
+variable "vm_agent_image_tag" {
+  description = "Image tag for VictoriaMetrics Agent server"
+  default     = "v1.37.4"
+}
+
+variable "vm_agent_extra_args" {
+  description = "Additional VictoriaMetrics Agent container arguments"
+  default     = {}
+}
+
+variable "vm_agent_tolerations" {
+  description = "Tolerations for VictoriaMetrics Agent server"
+  default     = []
+}
+
+variable "vm_agent_node_selector" {
+  description = "Node selector for VictoriaMetrics Agent server pods"
+  default     = {}
+}
+
+variable "vm_agent_affinity" {
+  description = "Affinity for VictoriaMetrics Agent server pods"
+  default     = {}
+}
+
+variable "vm_agent_pod_annotations" {
+  description = "Annotations for VictoriaMetrics Agent server pods"
+  default     = {}
+}
+
+variable "vm_agent_replica_count" {
+  description = "Number of replicas for VictoriaMetrics Agent server"
+  default     = 1
+}
+
+variable "vm_agent_resources" {
+  description = "Resources for VictoriaMetrics Agent server"
+  default     = {}
+}
+
+variable "vm_agent_security_context" {
+  description = "Security context for VictoriaMetrics Agent server pods defined as a map which will be serialized to JSON."
+  default     = {}
+}
