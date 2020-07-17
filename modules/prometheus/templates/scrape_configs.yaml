@@ -252,6 +252,8 @@
     - role: pod
 
   relabel_configs:
+    - action: keep_if_equal
+      source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port, __meta_kubernetes_pod_container_port_number]
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
       action: keep
       regex: true
