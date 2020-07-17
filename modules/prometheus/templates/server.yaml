@@ -296,20 +296,16 @@ server:
   livenessProbeTimeout: ${liveness_probe_timeout}
 
 serverFiles:
-  alerts:
+  alerting_rules.yml:
     groups:
       ${alerts}
-  rules:
+  recording_rules.yml:
     groups:
       ${rules}
 
   prometheus.yml:
     ${remote_write_configs}
     ${remote_read_configs}
-
-    rule_files:
-      - /etc/config/rules
-      - /etc/config/alerts
 
     scrape_configs:
       ${self_scrape_config}
