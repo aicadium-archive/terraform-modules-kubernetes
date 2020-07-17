@@ -38,6 +38,6 @@ locals {
     additional_global   = var.server_additional_global
 
     self_scrape_config = indent(4, yamlencode(local.self_scrape_config))
-    scrape_configs     = indent(4, file("${path.module}/templates/scrape_configs.yaml"))
+    scrape_configs     = indent(4, templatefile("${path.module}/templates/scrape_configs.yaml", local.scrape_config_values))
   }
 }

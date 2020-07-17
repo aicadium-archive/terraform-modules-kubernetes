@@ -31,4 +31,8 @@ locals {
       ]
     }
   ]
+
+  scrape_config_values = {
+    vm_agent_enabled = local.vm_agent_enabled
+  }
 }

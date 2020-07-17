@@ -252,8 +252,10 @@
     - role: pod
 
   relabel_configs:
+    %{ if vm_agent_enabled }
     - action: keep_if_equal
       source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port, __meta_kubernetes_pod_container_port_number]
+    %{ endif }
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
       action: keep
       regex: true
