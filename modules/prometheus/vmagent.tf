@@ -1,5 +1,5 @@
 resource "helm_release" "vm_agent" {
-  count = local.vm_alert_enabled ? 1 : 0
+  count = local.vm_agent_enabled ? 1 : 0
 
   name       = var.vm_agent_release_name
   chart      = var.vm_agent_chart
@@ -15,7 +15,7 @@ resource "helm_release" "vm_agent" {
 }
 
 locals {
-  vm_alert_enabled = var.vm_enabled && var.vm_agent_enabled
+  vm_agent_enabled = var.vm_enabled && var.vm_agent_enabled
 
   agent_values = {
     image_repository = var.vm_agent_image_repository

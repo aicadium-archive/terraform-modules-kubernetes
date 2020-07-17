@@ -12,7 +12,7 @@ locals {
     local.prometheus_server_url
   )
 
-  self_scrape_config = var.vm_enabled && var.vm_agent_enabled ? [
+  self_scrape_config = local.vm_agent_enabled ? [
     {
       job_name = "vmagent"
       static_configs = [
