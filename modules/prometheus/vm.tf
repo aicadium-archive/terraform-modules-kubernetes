@@ -43,6 +43,10 @@ data "template_file" "vm" {
     select_service_port        = var.vm_select_service_port
     select_service_type        = var.vm_select_service_type
 
+    select_ingress_enabled     = var.vm_select_ingress_enabled
+    select_ingress_annotations = jsonencode(var.vm_select_ingress_annotations)
+    select_ingress_hosts       = jsonencode(var.vm_select_ingress_hosts)
+
     select_pv_enabled      = var.vm_select_pv_enabled
     select_pv_access_modes = jsonencode(var.vm_select_pv_access_modes)
     select_pv_annotations  = jsonencode(var.vm_select_pv_annotations)
