@@ -1478,6 +1478,21 @@ variable "vm_select_service_type" {
   default     = "ClusterIP"
 }
 
+variable "vm_select_ingress_enabled" {
+  description = "Enable ingress for VictoriaMetrics Select server"
+  default     = false
+}
+
+variable "vm_select_ingress_annotations" {
+  description = "Annotations for VictoriaMetrics Select server ingress"
+  default     = {}
+}
+
+variable "vm_select_ingress_hosts" {
+  description = "Ingress hosts for VictoriaMetrics Select server"
+  default     = []
+}
+
 variable "vm_select_pv_enabled" {
   description = "Enable persistent volume on VictoriaMetrics Select server"
   default     = true

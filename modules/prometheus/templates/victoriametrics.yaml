@@ -36,7 +36,10 @@ vmselect:
     type: ${select_service_type}
 
   ingress:
-    enabled: false
+    enabled: ${select_ingress_enabled}
+    annotations: ${select_ingress_annotations}
+    hosts: ${select_ingress_hosts}
+
   statefulSet:
     enabled: ${select_pv_enabled}
   persistentVolume:
