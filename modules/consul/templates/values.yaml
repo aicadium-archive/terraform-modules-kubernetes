@@ -219,6 +219,18 @@ global:
     # Requires consul-k8s 0.15.0+.
     createFederationSecret: false
 
+  # Resource settings for lifecycle-sidecar containers.
+  # The lifecycle sidecar ensures the Consul services are always registered with
+  # their local consul clients and is used by the ingress/terminating/mesh gateways
+  # as well as with every connect-injected service.
+  lifecycleSidecarContainer:
+    resources:
+      requests:
+        memory: "25Mi"
+        cpu: "20m"
+      limits:
+        memory: "50Mi"
+        cpu: "20m"
 
 # Server, when enabled, configures a server cluster to run. This should
 # be disabled if you plan on connecting to a Consul cluster external to
@@ -306,6 +318,14 @@ server:
   # ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
   priorityClassName: ${server_priority_class}
 
+  # Extra labels to attach to the server pods.
+  # This should be a regular YAML map.
+  # Example:
+  #   extraLabels:
+  #     labelKey: "label-value"
+  #     otherLabelKey: "another-label-value"
+  extraLabels: null
+
   # Extra annotations to attach to the server pods.
   # This should be a multi-line YAML string.
   # Example:
@@ -328,6 +348,10 @@ server:
     # http_proxy: http://localhost:3128,
     # https_proxy: http://localhost:3128,
     # no_proxy: internal.domain.com
+
+  # disableFsGroupSecurityContext disables setting the fsGroup securityContext for the server statefulset,
+  # this is required when using the OpenShift platform as fsGroup is automatically set to an arbitrary gid.
+  disableFsGroupSecurityContext : false
 
 # Configuration for Consul servers when the servers are running outside of Kubernetes.
 # When running external servers, configuring these values is recommended
@@ -898,6 +922,16 @@ connectInject:
         # Recommended default: 100m
         cpu: null
 
+  # Resource settings for the Connect injected init container.
+  initContainer:
+    resources:
+      requests:
+        memory: "25Mi"
+        cpu: "50m"
+      limits:
+        memory: "150Mi"
+        cpu: "50m"
+
 # Mesh Gateways enable Consul Connect to work across Consul datacenters.
 meshGateway:
   # If mesh gateways are enabled, a Deployment will be created that runs
@@ -1018,6 +1052,16 @@ meshGateway:
       memory: "100Mi"
       cpu: "100m"
 
+  # Resource settings for the `copy-consul-bin` init container.
+  initCopyConsulContainer:
+    resources:
+      requests:
+        memory: "25Mi"
+        cpu: "50m"
+      limits:
+        memory: "150Mi"
+        cpu: "50m"
+
   # By default, we set an anti-affinity so that two gateway pods won't be
   # on the same node. NOTE: Gateways require that Consul client agents are
   # also running on the nodes alongside each gateway pod.
@@ -1105,6 +1149,16 @@ ingressGateways:
         memory: "100Mi"
         cpu: "100m"
 
+    # Resource settings for the `copy-consul-bin` init container.
+    initCopyConsulContainer:
+      resources:
+        requests:
+          memory: "25Mi"
+          cpu: "50m"
+        limits:
+          memory: "150Mi"
+          cpu: "50m"
+
     # By default, we set an anti-affinity so that two of the same gateway pods
     # won't be on the same node. NOTE: Gateways require that Consul client agents are
     # also running on the nodes alongside each gateway pod.
@@ -1188,6 +1242,16 @@ terminatingGateways:
       limits:
         memory: "100Mi"
         cpu: "100m"
+
+    # Resource settings for the `copy-consul-bin` init container.
+    initCopyConsulContainer:
+      resources:
+        requests:
+          memory: "25Mi"
+          cpu: "50m"
+        limits:
+          memory: "150Mi"
+          cpu: "50m"
 
     # By default, we set an anti-affinity so that two of the same gateway pods
     # won't be on the same node. NOTE: Gateways require that Consul client agents are
