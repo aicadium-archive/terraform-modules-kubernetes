@@ -108,7 +108,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
 | chart\_repository | Helm repository for the chart | `string` | `"https://helm.releases.hashicorp.com"` | no |
 | chart\_timeout | Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout | `number` | `1800` | no |
-| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.22.0"` | no |
+| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.24.1"` | no |
 | client\_annotations | A YAML string for client pods | `string` | `""` | no |
 | client\_enabled | Enable running Consul client agents on every Kubernetes node | `string` | `"-"` | no |
 | client\_extra\_config | Additional configuration to include for client agents | `map` | `{}` | no |
@@ -127,9 +127,9 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | connect\_inject\_tolerations | Template string for Connect Inject Tolerations | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
-| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.0"` | no |
+| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.3"` | no |
 | consul\_k8s\_image | Docker image of the consul-k8s binary to run | `string` | `"hashicorp/consul-k8s"` | no |
-| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.16.0"` | no |
+| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.18.1"` | no |
 | core\_dns\_labels | Labels for CoreDNS ConfigMap | `map` | <pre>{<br>  "addonmanager.kubernetes.io/mode": "EnsureExists",<br>  "eks.amazonaws.com/component": "coredns",<br>  "k8s-app": "kube-dns"<br>}</pre> | no |
 | core\_dns\_template | Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example | `string` | `".:53 {\n  errors\n  health\n  kubernetes cluster.local in-addr.arpa ip6.arpa {\n    pods insecure\n    upstream\n    fallthrough in-addr.arpa ip6.arpa\n  }\n  prometheus :9153\n  forward . /etc/resolv.conf\n  cache 30\n  loop\n  reload\n  loadbalance\n}\n\nconsul {\n  errors\n  cache 30\n  forward . ${consul_dns_address}\n}\n"` | no |
 | enable\_connect\_inject | Enable Connect Injector process | `string` | `"false"` | no |
@@ -198,6 +198,8 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | sync\_to\_consul | If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
 | sync\_to\_k8s | If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
 | sync\_tolerations | Template string for Sync Catalog Tolerations | `string` | `""` | no |
+| tls\_ca | Self generated CA for Consul Server TLS. Values should be PEM encoded | <pre>object({<br>    cert = string,<br>    key  = string,<br>  })</pre> | `null` | no |
+| tls\_enable\_auto\_encrypt | Enable auto encrypt. Uses the connect CA to distribute certificates to clients | `bool` | `false` | no |
 | tls\_enabled | Enable TLS for the cluster | `bool` | `false` | no |
 | tls\_https\_only | If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections. | `bool` | `true` | no |
 | tls\_server\_additional\_dns\_sans | List of additional DNS names to set as Subject Alternative Names (SANs) in the server certificate. This is useful when you need to access the Consul server(s) externally, for example, if you're using the UI. | `list` | `[]` | no |

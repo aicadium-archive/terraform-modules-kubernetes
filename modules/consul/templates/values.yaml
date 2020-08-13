@@ -104,7 +104,7 @@ global:
     # It also switches consul-k8s components to retrieve the CA
     # from the servers via the API.
     # Requires Consul 1.7.1+ and consul-k8s 0.13.0
-    enableAutoEncrypt: false
+    enableAutoEncrypt: ${tls_enable_auto_encrypt}
 
     # serverAdditionalDNSSANs is a list of additional DNS names to
     # set as Subject Alternative Names (SANs) in the server certificate.
@@ -138,8 +138,8 @@ global:
     #   kubectl create secret generic consul-ca-cert \
     #           --from-file='tls.crt=./consul-agent-ca.pem'
     caCert:
-      secretName: null
-      secretKey: null
+      secretName: ${tls_cacert_secret_name}
+      secretKey: ${tls_cacert_secret_key}
 
     # caKey is a Kubernetes secret containing the private key
     # of the CA to use for TLS communications within the Consul cluster.
@@ -154,8 +154,8 @@ global:
     # as Subject Alternative Names. In the future, we may support bringing your own server
     # certificates.
     caKey:
-      secretName: null
-      secretKey: null
+      secretName: ${tls_cakey_secret_name}
+      secretKey: ${tls_cakey_secret_key}
 
   # [Enterprise Only] enableConsulNamespaces indicates that you are running
   # Consul Enterprise v1.7+ with a valid Consul Enterprise license and would like to

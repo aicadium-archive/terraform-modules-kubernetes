@@ -52,6 +52,12 @@ locals {
     tls_server_additional_ip_sans  = jsonencode(var.tls_server_additional_ip_sans)
     tls_verify                     = var.tls_verify
     tls_https_only                 = var.tls_https_only
+    tls_enable_auto_encrypt        = jsonencode(var.tls_enable_auto_encrypt)
+
+    tls_cacert_secret_name = var.tls_ca != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    tls_cacert_secret_key  = var.tls_ca != null ? "cacert" : "null"
+    tls_cakey_secret_name  = var.tls_ca != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    tls_cakey_secret_key   = var.tls_ca != null ? "cakey" : "null"
 
     enable_sync_catalog           = jsonencode(var.enable_sync_catalog)
     sync_by_default               = var.sync_by_default
@@ -82,7 +88,7 @@ locals {
 }
 
 resource "kubernetes_secret" "secrets" {
-  count = var.gossip_encryption_key != null ? 1 : 0
+  count = var.gossip_encryption_key != null || var.tls_ca != null ? 1 : 0
 
   metadata {
     name        = var.secret_name
@@ -93,6 +99,8 @@ resource "kubernetes_secret" "secrets" {
   type = "Opaque"
 
   data = {
-    gossip = var.gossip_encryption_key
+    gossip = var.gossip_encryption_key != null ? var.gossip_encryption_key : ""
+    cacert = var.tls_ca != null ? var.tls_ca.cert : ""
+    cakey  = var.tls_ca != null ? var.tls_ca.key : ""
   }
 }
