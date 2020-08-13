@@ -50,7 +50,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.8.2"
+  default     = "1.8.3"
 }
 
 variable "consul_k8s_image" {
@@ -427,6 +427,20 @@ EOF
 variable "tls_https_only" {
   description = "If true, Consul will disable the HTTP port on both clients and servers and only accept HTTPS connections."
   default     = true
+}
+
+variable "tls_enable_auto_encrypt" {
+  description = "Enable auto encrypt. Uses the connect CA to distribute certificates to clients"
+  default     = false
+}
+
+variable "tls_ca" {
+  description = "Self generated CA for Consul Server TLS. Values should be PEM encoded"
+  type = object({
+    cert = string,
+    key  = string,
+  })
+  default = null
 }
 
 ###########################
