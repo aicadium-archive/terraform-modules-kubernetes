@@ -579,7 +579,7 @@ variable "esm_node_agent_port" {
 
 variable "consul_template_image" {
   description = "Image for Consul Template"
-  default     = "hashicorp/consul-k8s:0.18.1"
+  default     = "hashicorp/consul-template:0.25.1-light"
 }
 
 variable "esm_server_address" {

@@ -44,7 +44,7 @@ locals {
     node_agent_port = coalesce(var.esm_node_agent_port, var.tls_enabled ? 8501 : 8500)
 
     tls_enabled = var.tls_enabled
-    tls_cacert  = var.tls_ca != null ? var.tls_ca.cert : "null"
+    tls_cacert  = var.tls_ca != null ? jsonencode(var.tls_ca.cert) : "null"
 
     tls_enable_auto_encrypt = var.tls_enable_auto_encrypt
     consul_k8s_image        = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
