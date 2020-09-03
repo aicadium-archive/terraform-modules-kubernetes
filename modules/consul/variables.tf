@@ -483,7 +483,7 @@ variable "esm_image" {
 
 variable "esm_tag" {
   description = "Docker Image tag for ESM"
-  default     = "0.3.3"
+  default     = "0.4.0"
 }
 
 variable "esm_resources" {
