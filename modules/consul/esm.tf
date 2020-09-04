@@ -11,14 +11,12 @@ resource "helm_release" "consul_esm" {
   max_history = var.max_history
 
   values = [
-    data.template_file.esm_values.rendered,
+    templatefile("${path.module}/templates/esm-values.yaml", local.esm_values),
   ]
 }
 
-data "template_file" "esm_values" {
-  template = file("${path.module}/templates/esm-values.yaml")
-
-  vars = {
+locals {
+  esm_values = {
     replica = var.esm_replica
     image   = var.esm_image
     tag     = var.esm_tag
@@ -41,6 +39,18 @@ data "template_file" "esm_values" {
     node_probe_interval    = var.esm_node_probe_interval
     http_addr              = var.esm_http_addr
     ping_type              = var.esm_ping_type
+
+    use_node_agent  = var.esm_use_node_agent
+    node_agent_port = coalesce(var.esm_node_agent_port, var.tls_enabled ? 8501 : 8500)
+
+    tls_enabled = var.tls_enabled
+    tls_cacert  = var.tls_ca != null ? jsonencode(var.tls_ca.cert) : "null"
+
+    tls_enable_auto_encrypt = var.tls_enable_auto_encrypt
+    consul_k8s_image        = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+    consul_template_image   = var.consul_template_image
+    server_address          = coalesce(var.esm_server_address, "${coalesce(var.name, var.release_name)}-server.${var.chart_namespace}.svc")
+    server_port             = coalesce(8501, var.esm_server_port)
 
     init_container_set_sysctl = var.esm_init_container_set_sysctl
   }

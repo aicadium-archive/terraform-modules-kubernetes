@@ -483,7 +483,7 @@ variable "esm_image" {
 
 variable "esm_tag" {
   description = "Docker Image tag for ESM"
-  default     = "0.3.3"
+  default     = "0.4.0"
 }
 
 variable "esm_resources" {
@@ -559,21 +559,7 @@ variable "esm_ping_type" {
 
 variable "esm_env" {
   description = "Environment variables for Consul ESM"
-
-  default = [
-    {
-      name = "HOST_IP"
-      valueFrom = {
-        fieldRef = {
-          fieldPath = "status.hostIP"
-        }
-      }
-    },
-    {
-      name  = "CONSUL_HTTP_ADDR"
-      value = "$(HOST_IP):8500"
-    },
-  ]
+  default     = []
 }
 
 variable "esm_init_container_set_sysctl" {
@@ -581,6 +567,30 @@ variable "esm_init_container_set_sysctl" {
   default     = false
 }
 
+variable "esm_use_node_agent" {
+  description = "Use Consul agent Daemonset"
+  default     = true
+}
+
+variable "esm_node_agent_port" {
+  description = "Override port for Consul agent Daemonset"
+  default     = null
+}
+
+variable "consul_template_image" {
+  description = "Image for Consul Template"
+  default     = "hashicorp/consul-template:0.25.1-light"
+}
+
+variable "esm_server_address" {
+  description = "Override Consul Server address for TLS when using Auto Encrypt"
+  default     = null
+}
+
+variable "esm_server_port" {
+  description = "Override Consul Server port for TLS when using Auto Encrypt"
+  default     = null
+}
 #################################
 # Consul Exporter for Prometheus
 #################################

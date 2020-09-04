@@ -52,9 +52,31 @@ config:
   # CONSUL_HTTP_ADDR environment variable.
   httpAddr: "${http_addr}"
 
+  # If you are running Consul using the Consul Helm Chart, you can opt to configure
+  # consul-esm to use the local Consul Agent Daemonset pod
+  useNodeAgent:
+    enabled: ${use_node_agent}
+    port: ${node_agent_port}
+
   # The method to use for pinging external nodes. Defaults to "udp" but can
   # also be set to "socket" to use ICMP (which requires root privileges).
   pingType: "${ping_type}"
+
+  tls:
+    # Enable TLS for Consul
+    enabled: ${tls_enabled}
+    # CA Certificate for Consul Server
+    cacert: ${tls_cacert}
+    # SNI server name to use for server TLS certificate validation
+    serverName: null
+    # If autoEncrypt is on, this should be set to true
+    autoEncrypt:
+      enabled: ${tls_enable_auto_encrypt}
+      consulK8sImage: ${consul_k8s_image}
+      consulTemplateImage: ${consul_template_image}
+      server:
+        address: ${server_address}
+        port: 8501
 
 affinity: ${affinity}
 
