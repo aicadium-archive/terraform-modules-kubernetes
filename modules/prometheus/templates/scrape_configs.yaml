@@ -242,6 +242,8 @@
 # following annotations:
 #
 # * `prometheus.io/scrape`: Only scrape pods that have a value of `true`
+# * `prometheus.io/scheme`: If the metrics endpoint is secured then you will need
+# to set this to `https` & most likely set the `tls_config` of the scrape config.
 # * `prometheus.io/path`: If the metrics path is not `/metrics` override this.
 # * `prometheus.io/port`: Scrape the pod on the indicated port instead of the default of `9102`.
 # * `prometheus.io/param-<NAME>`: Sets the HTTP URL parameters <NAME> to the value
@@ -259,6 +261,10 @@
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
       action: keep
       regex: true
+    - source_labels: [__meta_kubernetes_service_annotation_prometheus_io_scheme]
+      action: replace
+      target_label: __scheme__
+      regex: (https?)
     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
       action: replace
       target_label: __metrics_path__
