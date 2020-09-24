@@ -1,4 +1,6 @@
 server:
+  enabled: ${enable}
+
   ## Prometheus server container name
   ##
   name: server
