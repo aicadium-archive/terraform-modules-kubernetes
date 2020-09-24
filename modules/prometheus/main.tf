@@ -313,7 +313,5 @@ locals {
     readiness_probe_timeout       = var.server_readiness_probe_timeout
     liveness_probe_initial_delay  = var.server_liveness_probe_initial_delay
     liveness_probe_timeout        = var.server_liveness_probe_timeout
-
-    vm_alert_enabled = false
   }
 }
