@@ -213,6 +213,8 @@ locals {
   }
 
   server_values = {
+    enable = var.server_enable
+
     repository  = var.server_repository
     tag         = var.server_tag
     pull_policy = var.server_pull_policy

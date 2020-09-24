@@ -997,6 +997,11 @@ variable "pushgateway_pdb_max_unavailable" {
 ################################
 # Server
 ################################
+variable "server_enable" {
+  description = "Deploy Prometheus Server"
+  default     = "true"
+}
+
 variable "server_repository" {
   description = "Docker repository for server"
   default     = "prom/prometheus"
@@ -1738,7 +1743,7 @@ variable "vm_storage_termination_grace_period_seconds" {
 #################################
 variable "vm_alert_enabled" {
   description = "Deploy VictoriaMetrics Alert"
-  default     = true
+  default     = false
 }
 
 variable "vm_alert_helm_release_max_history" {
@@ -1846,7 +1851,7 @@ variable "vm_alert_service_type" {
 #################################
 variable "vm_agent_enabled" {
   description = "Deploy VictoriaMetrics Agent"
-  default     = true
+  default     = false
 }
 
 variable "vm_agent_helm_release_max_history" {
