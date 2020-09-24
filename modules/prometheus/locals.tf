@@ -34,5 +34,8 @@ locals {
 
   scrape_config_values = {
     vm_agent_enabled = local.vm_agent_enabled
+
+    scrape_skip_apiserver_tls_verify = var.scrape_skip_apiserver_tls_verify
+    scrape_skip_nodes_tls_verify     = var.scrape_skip_nodes_tls_verify
   }
 }

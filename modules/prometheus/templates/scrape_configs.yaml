@@ -35,7 +35,7 @@
     # so this should only be disabled in a controlled environment. You can
     # disable certificate verification by uncommenting the line below.
     #
-    insecure_skip_verify: true
+    insecure_skip_verify: ${scrape_skip_apiserver_tls_verify}
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
   # Keep only the default/kubernetes service endpoints for the https port. This
@@ -66,7 +66,7 @@
     # so this should only be disabled in a controlled environment. You can
     # disable certificate verification by uncommenting the line below.
     #
-    insecure_skip_verify: true
+    insecure_skip_verify: ${scrape_skip_nodes_tls_verify}
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
   kubernetes_sd_configs:
@@ -103,7 +103,7 @@
     # so this should only be disabled in a controlled environment. You can
     # disable certificate verification by uncommenting the line below.
     #
-    insecure_skip_verify: true
+    insecure_skip_verify: ${scrape_skip_nodes_tls_verify}
   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
 
   kubernetes_sd_configs:
