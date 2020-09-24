@@ -10,7 +10,7 @@ variable "chart_name" {
 
 variable "chart_repository" {
   description = "Helm repository for the chart"
-  default     = "stable"
+  default     = "https://prometheus-community.github.io/helm-charts"
 }
 
 variable "chart_version" {
@@ -1345,6 +1345,19 @@ variable "server_additional_global" {
 variable "server_config_override" {
   description = "Overriding the Prometheus server config file in YAML"
   default     = ""
+}
+
+#################################
+# Default Scrape Settings
+#################################
+variable "scrape_skip_apiserver_tls_verify" {
+  description = "Skip verifying TLS Certificate for Kubernetes Master Server Scrape target. Warning: This is insecure"
+  default     = false
+}
+
+variable "scrape_skip_nodes_tls_verify" {
+  description = "Skip verifying TLS Certificate for Kubernetes Nodes Scrape target. Warning: This is insecure"
+  default     = false
 }
 
 #################################
