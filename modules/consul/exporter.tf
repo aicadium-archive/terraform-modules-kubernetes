@@ -16,8 +16,6 @@ resource "helm_release" "consul_exporter" {
   ]
 }
 
-# var.tls_ca != null ? var.tls_ca.cert : ""
-
 locals {
   exporter_volume = "consul-ca"
 
