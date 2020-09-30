@@ -41,7 +41,7 @@ locals {
     command = [
       "/bin/sh",
       "-ec",
-      "echo ${base64encode(var.tls_ca != null ? var.tls_ca.cert : "")} | base64 -d > /${exporter_volume}/server.pem"
+      "echo ${base64encode(var.tls_ca != null ? var.tls_ca.cert : "")} | base64 -d > /${local.exporter_volume}/server.pem"
     ]
   }
 
@@ -84,10 +84,10 @@ locals {
       "/bin/sh",
       "-ec",
       <<-EOF
-      echo "${base64encode(local.exporter_consul_template)}"  | base64 -d > /${exporter_volume}/consul_template.hcl \
+      echo "${base64encode(local.exporter_consul_template)}"  | base64 -d > /${local.exporter_volume}/consul_template.hcl \
       && consul-k8s get-consul-client-ca \
         -output-file=/${local.exporter_volume}/connect.pem \
-        ${var.tls_ca != null ? "-ca-file=/${exporter_volume}/server.pem \\" : ""}
+        ${var.tls_ca != null ? "-ca-file=/${local.exporter_volume}/server.pem \\" : ""}
         -server-addr=consul-server.${var.chart_namespace}.svc \
         -server-port=8501
       EOF
@@ -128,8 +128,8 @@ locals {
   args = compact([
     "-consul-addr=$(HOST_IP):8501",
     "-consul-ssl=true",
-    var.tls_ca != null ? "-consul-ssl-ca-cert=/${exporter_volume}/server.pem" : "",
-    "-config=/${exporter_volume}/consul_template.hcl",
+    var.tls_ca != null ? "-consul-ssl-ca-cert=/${local.exporter_volume}/server.pem" : "",
+    "-config=/${local.exporter_volume}/consul_template.hcl",
   ])
 }
 
@@ -186,7 +186,7 @@ data "template_file" "exporter_values" {
       },
       {
         name  = "CONSUL_CACERT"
-        value = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${exporter_volume}/server.pem" : "")
+        value = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")
       },
     ]))
 
