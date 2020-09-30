@@ -10,7 +10,7 @@ variable "chart_name" {
 
 variable "chart_repository" {
   description = "Helm repository for the chart"
-  default     = "stable"
+  default     = "https://prometheus-community.github.io/helm-charts"
 }
 
 variable "chart_version" {
@@ -73,6 +73,11 @@ variable "resources" {
   default     = {}
 }
 
+variable "psp_enable" {
+  description = "Enable the use of pod security policies"
+  default     = true
+}
+
 variable "extra_volumes" {
   description = "Extra volumes for the adapter"
   default     = []
@@ -91,6 +96,21 @@ variable "tolerations" {
 variable "pod_annotations" {
   description = "Pod annotations"
   default     = {}
+}
+
+variable "pdb_enable" {
+  description = "Enable pod disruption budget"
+  default     = true
+}
+
+variable "pdb_max_unavailable" {
+  description = "Max unavailable pods"
+  default     = ""
+}
+
+variable "pdb_min_available" {
+  description = "Min available pods"
+  default     = 1
 }
 
 variable "rules_default" {

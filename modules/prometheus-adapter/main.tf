@@ -31,6 +31,7 @@ data "template_file" "values" {
 
     log_level           = jsonencode(var.log_level)
     priority_class_name = jsonencode(var.priority_class_name)
+    psp_enable          = var.psp_enable
 
     prometheus_url  = var.prometheus_url
     prometheus_port = jsonencode(var.prometheus_port)
@@ -44,6 +45,10 @@ data "template_file" "values" {
 
     tolerations     = jsonencode(var.tolerations)
     pod_annotations = jsonencode(var.pod_annotations)
+
+    pdb_enable          = var.pdb_enable
+    pdb_max_unavailable = var.pdb_max_unavailable
+    pdb_min_available   = var.pdb_min_available
 
     rules_default  = jsonencode(var.rules_default)
     rules_existing = var.rules_existing != null ? jsonencode(var.rules_existing) : "null"
