@@ -25,6 +25,10 @@ rbac:
   # Specifies whether RBAC resources should be created
   create: true
 
+psp:
+  # Specifies whether PSP resources should be created
+  create: ${psp_enable}
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -125,3 +129,10 @@ tolerations: ${tolerations}
 
 # Annotations added to the pod
 podAnnotations: ${pod_annotations}
+
+podDisruptionBudget:
+  # Specifies if PodDisruptionBudget should be enabled
+  # When enabled, minAvailable or maxUnavailable should also be defined.
+  enabled: ${pdb_enable}
+  maxUnavailable: ${pdb_max_unavailable}
+  minAvailable: ${pdb_min_available}

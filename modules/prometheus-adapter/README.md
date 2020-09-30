@@ -17,26 +17,30 @@ Prometheus.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:-----:|
+| rules\_existing | ConfigMap containing existing rules | `any` | n/a | yes |
 | affinity | Affinity for the pods | `map` | `{}` | no |
 | chart\_name | Helm chart name to provision | `string` | `"prometheus-adapter"` | no |
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
-| chart\_repository | Helm repository for the chart | `string` | `"stable"` | no |
+| chart\_repository | Helm repository for the chart | `string` | `"https://prometheus-community.github.io/helm-charts"` | no |
 | chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `""` | no |
 | extra\_volume\_mounts | Extra volume mounts for the adapter container | `list` | `[]` | no |
 | extra\_volumes | Extra volumes for the adapter | `list` | `[]` | no |
 | image | Docker image for the Prometheus Adapter | `string` | `"directxman12/k8s-prometheus-adapter-amd64"` | no |
 | log\_level | Numerical log level for the adapter | `number` | `4` | no |
 | max\_history | Max History for Helm | `number` | `20` | no |
+| pdb\_enable | Enable pod disruption budget | `bool` | `true` | no |
+| pdb\_max\_unavailable | Max unavailable pods | `string` | `""` | no |
+| pdb\_min\_available | Min available pods | `number` | `1` | no |
 | pod\_annotations | Pod annotations | `map` | `{}` | no |
 | priority\_class\_name | Pod Priority Class name | `string` | `""` | no |
 | prometheus\_port | Prometheus port | `number` | `9090` | no |
 | prometheus\_url | Address for Prometheus | `string` | `"http://prometheus.default.svc"` | no |
+| psp\_enable | Enable the use of pod security policies | `bool` | `true` | no |
 | release\_name | Helm release name for Prometheus | `string` | `"prometheus-adapter"` | no |
 | replicas | Number of replicas | `number` | `1` | no |
 | resources | Resources for the pod | `map` | `{}` | no |
 | rules\_custom | Custom metrics rules | `list` | `[]` | no |
 | rules\_default | Use the default rules from the chart | `bool` | `true` | no |
-| rules\_existing | ConfigMap containing existing rules | `any` | n/a | yes |
 | rules\_external | External metrics rules | `list` | `[]` | no |
 | rules\_resource | Custom resource rules | `map` | `{}` | no |
 | service\_annotations | Service Annotations | `map` | `{}` | no |
