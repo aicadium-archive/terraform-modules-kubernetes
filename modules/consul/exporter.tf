@@ -151,7 +151,7 @@ data "template_file" "exporter_values" {
     rbac_enabled = var.exporter_rbac_enabled
     psp_emabled  = var.exporter_psp
 
-    consul_server_and_port = "consul-server.${var.chart_namespace}.svc:${var.tls_enabled ? "8501" : "8500"}"
+    consul_server_and_port = "${var.tls_enabled ? "https://" : ""}$(HOST_IP):${var.tls_enabled ? "8501" : "8500"}"
 
     service_annotations = jsonencode(var.exporter_service_annotations)
 
@@ -193,6 +193,7 @@ data "template_file" "exporter_values" {
         value = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")
       },
     ]))
+
 
     init_containers = jsonencode(concat(var.exporter_init_containers,
       var.tls_enabled && var.tls_ca != null ? [local.exporter_server_ca_init] : [],
