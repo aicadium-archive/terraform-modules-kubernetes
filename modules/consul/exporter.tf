@@ -148,7 +148,7 @@ data "template_file" "exporter_values" {
 
     options = jsonencode(merge(var.exporter_options, {
       "consul.ca-file" = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")
-    })
+    }))
 
     rbac_enabled = var.exporter_rbac_enabled
     psp_emabled  = var.exporter_psp
