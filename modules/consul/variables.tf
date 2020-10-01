@@ -611,7 +611,7 @@ variable "exporter_chart_name" {
 
 variable "exporter_chart_repository" {
   description = "Consul Exporter Chart repository"
-  default     = "ttps://prometheus-community.github.io/helm-charts"
+  default     = "https://prometheus-community.github.io/helm-charts"
 }
 
 variable "exporter_chart_version" {
