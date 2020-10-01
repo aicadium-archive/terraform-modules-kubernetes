@@ -155,7 +155,7 @@ data "template_file" "exporter_values" {
 
     service_annotations = jsonencode(var.exporter_service_annotations)
 
-    extra_volumes = jsonencode(concat(var.extra_volumes, [
+    extra_volumes = jsonencode(concat(var.exporter_extra_volumes, [
       {
         name = local.exporter_volume
         emptyDir = {
