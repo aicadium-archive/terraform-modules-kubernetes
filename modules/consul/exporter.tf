@@ -146,7 +146,9 @@ data "template_file" "exporter_values" {
     resources = jsonencode(var.exporter_resources)
     affinity  = jsonencode(var.exporter_affinity)
 
-    options = jsonencode(var.exporter_options)
+    options = jsonencode(merge(var.exporter_options, {
+      "consul.ca-file" = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")
+    })
 
     rbac_enabled = var.exporter_rbac_enabled
     psp_emabled  = var.exporter_psp
@@ -179,18 +181,6 @@ data "template_file" "exporter_values" {
             fieldPath = "status.hostIP"
           }
         }
-      },
-      {
-        name  = "CONSUL_HTTP_ADDR"
-        value = "${var.tls_enabled ? "https://" : ""}$(HOST_IP):${var.tls_enabled ? "8501" : "8500"}"
-      },
-      {
-        name  = "CONSUL_HTTP_SSL"
-        value = tostring(var.tls_enabled)
-      },
-      {
-        name  = "CONSUL_CACERT"
-        value = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")
       },
     ]))
 
