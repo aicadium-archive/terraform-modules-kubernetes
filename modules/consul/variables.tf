@@ -611,12 +611,12 @@ variable "exporter_chart_name" {
 
 variable "exporter_chart_repository" {
   description = "Consul Exporter Chart repository"
-  default     = "stable"
+  default     = "https://prometheus-community.github.io/helm-charts"
 }
 
 variable "exporter_chart_version" {
   description = "Consul Exporter Chart version"
-  default     = "0.1.4"
+  default     = "0.2.0"
 }
 
 variable "exporter_replica" {
@@ -631,7 +631,7 @@ variable "exporter_image" {
 
 variable "exporter_tag" {
   description = "Docker Image tag for Consul Exporter"
-  default     = "v0.4.0"
+  default     = "v0.7.1"
 }
 
 variable "exporter_resources" {
@@ -653,6 +653,46 @@ variable "exporter_affinity" {
 }
 
 variable "exporter_service_annotations" {
-  description = "A YAML string for describing Consul Exporter service's annotations"
-  default     = ""
+  description = "Consul Exporter service's annotations"
+  default     = {}
+}
+
+variable "exporter_rbac_enabled" {
+  description = "Create RBAC resources for Exporter"
+  default     = true
+}
+
+variable "exporter_psp" {
+  description = "Create PSP resources for Exporter"
+  default     = true
+}
+
+variable "exporter_options" {
+  description = "Arguments for Exporter. See https://github.com/prometheus/consul_exporter#flags"
+  default     = {}
+}
+
+variable "exporter_env" {
+  description = "Additional Environment Variables for Exporter"
+  default     = []
+}
+
+variable "exporter_extra_volumes" {
+  description = "Extra volumes for Exporter"
+  default     = []
+}
+
+variable "exporter_extra_volume_mounts" {
+  description = "Extra volume mounts for Exporter"
+  default     = []
+}
+
+variable "exporter_init_containers" {
+  description = "Extra Init Containers"
+  default     = []
+}
+
+variable "exporter_extra_containers" {
+  description = "Extra extra Containers"
+  default     = []
 }
