@@ -3,7 +3,7 @@
 
 data "kubernetes_service" "consul_dns" {
   metadata {
-    name      = "${helm_release.consul.name}-dns"
+    name      = "${helm_release.consul.metadata[0].name}-dns"
     namespace = var.chart_namespace
   }
 }
