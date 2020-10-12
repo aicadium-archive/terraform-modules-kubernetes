@@ -23,7 +23,7 @@ locals {
 
     datacenter = var.server_datacenter
 
-    gossip_secret = var.gossip_encryption_key != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    gossip_secret = var.gossip_encryption_key != null ? kubernetes_secret.secrets.metadata[0].name : "null"
     gossip_key    = var.gossip_encryption_key != null ? "gossip" : "null"
 
     consul_domain         = var.consul_domain
@@ -54,9 +54,9 @@ locals {
     tls_https_only                 = var.tls_https_only
     tls_enable_auto_encrypt        = jsonencode(var.tls_enable_auto_encrypt)
 
-    tls_cacert_secret_name = var.tls_ca != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    tls_cacert_secret_name = var.tls_ca != null ? kubernetes_secret.secrets.metadata[0].name : "null"
     tls_cacert_secret_key  = var.tls_ca != null ? "cacert" : "null"
-    tls_cakey_secret_name  = var.tls_ca != null ? kubernetes_secret.secrets[0].metadata[0].name : "null"
+    tls_cakey_secret_name  = var.tls_ca != null ? kubernetes_secret.secrets.metadata[0].name : "null"
     tls_cakey_secret_key   = var.tls_ca != null ? "cakey" : "null"
 
     enable_sync_catalog           = jsonencode(var.enable_sync_catalog)
@@ -88,8 +88,6 @@ locals {
 }
 
 resource "kubernetes_secret" "secrets" {
-  count = var.gossip_encryption_key != null || var.tls_ca != null ? 1 : 0
-
   metadata {
     name        = var.secret_name
     annotations = var.secret_annotation
