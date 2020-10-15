@@ -1933,3 +1933,13 @@ variable "vm_agent_security_context" {
   description = "Security context for VictoriaMetrics Agent server pods defined as a map which will be serialized to JSON."
   default     = {}
 }
+
+variable "vm_agent_extra_volumes" {
+  description = "Extra volumes for VictoriaMetrics Agent"
+  default     = []
+}
+
+variable "vm_agent_extra_volume_mounts" {
+  description = "Extra volume mounts for VictoriaMetrics Agent"
+  default     = []
+}

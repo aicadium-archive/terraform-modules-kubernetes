@@ -39,6 +39,17 @@ affinity: ${affinity}
 # otherwise .config values will be used
 configMap: ""
 
+# Extra Volumes for the pod
+extraVolumes: ${extra_volumes}
+  # - name: example
+  #   configMap:
+  #     name: example
+
+# Extra Volume Mounts for the container
+extraVolumeMounts: ${extra_volume_mounts}
+  # - name: example
+  #   mountPath: /example
+
 config:
   global:
     ## How frequently to scrape targets by default
