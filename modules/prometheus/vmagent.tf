@@ -39,5 +39,8 @@ locals {
 
     self_scrape_config = indent(4, yamlencode(local.self_scrape_config))
     scrape_configs     = indent(4, templatefile("${path.module}/templates/scrape_configs.yaml", local.scrape_config_values))
+
+    extra_volumes       = jsonencode(var.vm_agent_extra_volumes)
+    extra_volume_mounts = jsonencode(var.vm_agent_extra_volume_mounts)
   }
 }

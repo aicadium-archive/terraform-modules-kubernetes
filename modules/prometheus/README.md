@@ -3,7 +3,7 @@
 Deploys Prometheus and some supporting services on a Kubernetes cluster running in GCP.
 
 This module makes use of the
-[`stable/prometheus`](https://github.com/helm/charts/tree/master/stable/prometheus) chart.
+[`prometheus`](https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus) chart.
 
 ## Requirements
 
@@ -76,7 +76,7 @@ This module makes use of the
 | alertmanager\_volume\_binding\_mode | Alertmanager data Persistent Volume Binding Mode | `string` | `""` | no |
 | chart\_name | Helm chart name to provision | `string` | `"prometheus"` | no |
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
-| chart\_repository | Helm repository for the chart | `string` | `"stable"` | no |
+| chart\_repository | Helm repository for the chart | `string` | `"https://prometheus-community.github.io/helm-charts"` | no |
 | chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `""` | no |
 | configmap\_extra\_args | Extra arguments for ConfigMap Reload | `map` | `{}` | no |
 | configmap\_extra\_volumes | Extra volumes for ConfigMap Extra Volumes | `list` | `[]` | no |
@@ -194,13 +194,16 @@ This module makes use of the
 | pushgateway\_tag | Tag for Pushgateway Docker Image | `string` | `"v0.6.0"` | no |
 | pushgateway\_tolerations | Tolerations for Pushgateway | `list` | `[]` | no |
 | release\_name | Helm release name for Prometheus | `string` | `"prometheus"` | no |
+| scrape\_skip\_apiserver\_tls\_verify | Skip verifying TLS Certificate for Kubernetes Master Server Scrape target. Warning: This is insecure | `bool` | `false` | no |
+| scrape\_skip\_nodes\_tls\_verify | Skip verifying TLS Certificate for Kubernetes Nodes Scrape target. Warning: This is insecure | `bool` | `false` | no |
 | server\_additional\_global | YAML string for additional global configuration for Prometheus Server | `string` | `""` | no |
 | server\_affinity | Affinity for server pods | `map` | `{}` | no |
-| server\_alerts | Prometheus server alerts entries in YAML | `string` | `"## Alerts configuration\n## Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/nalerts: {}\n# groups:\n#   - name: Instances\n#     rules:\n#       - alert: InstanceDown\n#         expr: up == 0\n#         for: 5m\n#         labels:\n#           severity: page\n#         annotations:\n#           description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'\n#           summary: 'Instance {{ $labels.instance }} down'\n"` | no |
+| server\_alerts | Prometheus server alerts entries in YAML. Ref: https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/ | `string` | `"[]\n# - name: Instances\n#   rules:\n#     - alert: InstanceDown\n#       expr: up == 0\n#       for: 5m\n#       labels:\n#         severity: page\n#       annotations:\n#         description: '{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes.'\n#         summary: 'Instance {{ $labels.instance }} down'\n"` | no |
 | server\_annotations | Annotations for server pods | `map` | `{}` | no |
 | server\_base\_url | External URL which can access alertmanager | `string` | `""` | no |
 | server\_config\_override | Overriding the Prometheus server config file in YAML | `string` | `""` | no |
 | server\_data\_retention | Prometheus data retention period (i.e 360h) | `string` | `""` | no |
+| server\_enable | Deploy Prometheus Server | `string` | `"true"` | no |
 | server\_enable\_admin\_api | Enable Admin API for server | `string` | `"false"` | no |
 | server\_enable\_service\_links | EnableServiceLinks indicates whether information about services should be injected into pod's environment variables, matching the syntax of Docker links. | `bool` | `true` | no |
 | server\_evaluation\_interval | How frequently to evaluate rules | `string` | `"1m"` | no |
@@ -237,7 +240,7 @@ This module makes use of the
 | server\_replica | Number of replicas for server | `number` | `1` | no |
 | server\_repository | Docker repository for server | `string` | `"prom/prometheus"` | no |
 | server\_resources | Resources for server | `map` | `{}` | no |
-| server\_rules | Prometheus server rules entries in YAML | `string` | `"rules: {}\n"` | no |
+| server\_rules | Prometheus server rules entries in YAML | `string` | `"[]\n# - name: k8s_health\n#   rules:\n#     - record: k8s_container_oom\n#       expr: increase(kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"}[2m]) and on(pod) increase(kube_pod_container_status_restarts_total[2m])\n"` | no |
 | server\_scrape\_interval | How frequently to scrape targets by default | `string` | `"1m"` | no |
 | server\_scrape\_timeout | How long until a scrape request times out | `string` | `"10s"` | no |
 | server\_security\_context | Security context for server pods defined as a map which will be serialized to JSON.<br>  Due to limitations with Terraform 0.11 and below, integers are serialized as strings in JSON and<br>  this will not work for fields like `runAsUser`. Specify a JSON string with<br>  `server_security_context_json` instead | `map` | `{}` | no |
@@ -258,16 +261,56 @@ This module makes use of the
 | server\_tag | Tag for server Docker Image | `string` | `"v2.8.1"` | no |
 | server\_termination\_grace\_seconds | Prometheus server pod termination grace period | `string` | `"300"` | no |
 | server\_tolerations | Tolerations for server | `list` | `[]` | no |
+| vm\_agent\_affinity | Affinity for VictoriaMetrics Agent server pods | `map` | `{}` | no |
+| vm\_agent\_chart | Chart for VictoriaMetrics Agent | `string` | `"victoria-metrics-agent"` | no |
+| vm\_agent\_chart\_repository\_url | Chart Repository URL for VictoriaMetrics Agent | `string` | `"https://victoriametrics.github.io/helm-charts/"` | no |
+| vm\_agent\_chart\_version | Chart version for VictoriaMetrics Agent | `string` | `"0.4.7"` | no |
+| vm\_agent\_enabled | Deploy VictoriaMetrics Agent | `bool` | `false` | no |
+| vm\_agent\_extra\_args | Additional VictoriaMetrics Agent container arguments | `map` | `{}` | no |
+| vm\_agent\_extra\_volume\_mounts | Extra volume mounts for VictoriaMetrics Agent | `list` | `[]` | no |
+| vm\_agent\_extra\_volumes | Extra volumes for VictoriaMetrics Agent | `list` | `[]` | no |
+| vm\_agent\_helm\_release\_max\_history | The maximum number of history releases to keep track for the VM helm release | `number` | `20` | no |
+| vm\_agent\_image\_repository | Image repository for VictoriaMetrics Agent server | `string` | `"victoriametrics/vmagent"` | no |
+| vm\_agent\_image\_tag | Image tag for VictoriaMetrics Agent server | `string` | `"v1.37.4"` | no |
+| vm\_agent\_namespace | Namespace for VictoriaMetrics Agent | `string` | `"core"` | no |
+| vm\_agent\_node\_selector | Node selector for VictoriaMetrics Agent server pods | `map` | `{}` | no |
+| vm\_agent\_pod\_annotations | Annotations for VictoriaMetrics Agent server pods | `map` | `{}` | no |
+| vm\_agent\_release\_name | Helm release name for VictoriaMetrics Agent | `string` | `"victoria-metrics-agent"` | no |
+| vm\_agent\_replica\_count | Number of replicas for VictoriaMetrics Agent server | `number` | `1` | no |
+| vm\_agent\_resources | Resources for VictoriaMetrics Agent server | `map` | `{}` | no |
+| vm\_agent\_security\_context | Security context for VictoriaMetrics Agent server pods defined as a map which will be serialized to JSON. | `map` | `{}` | no |
+| vm\_agent\_tolerations | Tolerations for VictoriaMetrics Agent server | `list` | `[]` | no |
+| vm\_alert\_affinity | Affinity for VictoriaMetrics Alert server pods | `map` | `{}` | no |
+| vm\_alert\_chart | Chart for VictoriaMetrics Alert | `string` | `"victoria-metrics-alert"` | no |
+| vm\_alert\_chart\_repository\_url | Chart Repository URL for VictoriaMetrics Alert | `string` | `"https://victoriametrics.github.io/helm-charts/"` | no |
+| vm\_alert\_chart\_version | Chart version for VictoriaMetrics Alert | `string` | `"0.0.16"` | no |
+| vm\_alert\_enabled | Deploy VictoriaMetrics Alert | `bool` | `false` | no |
+| vm\_alert\_extra\_args | Additional VictoriaMetrics Alert container arguments | `map` | `{}` | no |
+| vm\_alert\_helm\_release\_max\_history | The maximum number of history releases to keep track for the VM helm release | `number` | `20` | no |
+| vm\_alert\_image\_repository | Image repository for VictoriaMetrics Alert server | `string` | `"victoriametrics/vmalert"` | no |
+| vm\_alert\_image\_tag | Image tag for VictoriaMetrics Alert server | `string` | `"v1.37.4"` | no |
+| vm\_alert\_namespace | Namespace for VictoriaMetrics Alert | `string` | `"core"` | no |
+| vm\_alert\_node\_selector | Node selector for VictoriaMetrics Alert server pods | `map` | `{}` | no |
+| vm\_alert\_pod\_annotations | Annotations for VictoriaMetrics Alert server pods | `map` | `{}` | no |
+| vm\_alert\_release\_name | Helm release name for VictoriaMetrics Alert | `string` | `"victoria-metrics-alert"` | no |
+| vm\_alert\_replica\_count | Number of replicas for VictoriaMetrics Alert server | `number` | `1` | no |
+| vm\_alert\_resources | Resources for VictoriaMetrics Alert server | `map` | `{}` | no |
+| vm\_alert\_security\_context | Security context for VictoriaMetrics Alert server pods defined as a map which will be serialized to JSON. | `map` | `{}` | no |
+| vm\_alert\_service\_annotations | Annotations for VictoriaMetrics Alert server service | `map` | `{}` | no |
+| vm\_alert\_service\_labels | Labels for VictoriaMetrics Alert server service | `map` | `{}` | no |
+| vm\_alert\_service\_port | Service port for VictoriaMetrics Alert server | `number` | `8880` | no |
+| vm\_alert\_service\_type | Type of service for VictoriaMetrics Alert server | `string` | `"ClusterIP"` | no |
+| vm\_alert\_tolerations | Tolerations for VictoriaMetrics Alert server | `list` | `[]` | no |
 | vm\_chart | Chart for VictoriaMetrics | `string` | `"victoria-metrics-cluster"` | no |
-| vm\_chart\_repository\_url | Chart Repository URL for Argo | `string` | `"https://victoriametrics.github.io/helm-charts/"` | no |
-| vm\_chart\_version | Chart version for VictoriaMetrics | `string` | `"0.4.4"` | no |
+| vm\_chart\_repository\_url | Chart Repository URL for VictoriaMetrics | `string` | `"https://victoriametrics.github.io/helm-charts/"` | no |
+| vm\_chart\_version | Chart version for VictoriaMetrics | `string` | `"0.5.15"` | no |
 | vm\_enabled | Deploy VictoriaMetrics cluster | `bool` | `false` | no |
 | vm\_helm\_release\_max\_history | The maximum number of history releases to keep track for the VM helm release | `number` | `20` | no |
 | vm\_insert\_affinity | Affinity for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_enabled | Deploy VictoriaMetrics Insert | `bool` | `true` | no |
 | vm\_insert\_extra\_args | Additional VictoriaMetrics Insert container arguments | `map` | `{}` | no |
 | vm\_insert\_image\_repository | Image repository for VictoriaMetrics Insert server | `string` | `"victoriametrics/vminsert"` | no |
-| vm\_insert\_image\_tag | Image tag for VictoriaMetrics Insert server | `string` | `"v1.37.0-cluster"` | no |
+| vm\_insert\_image\_tag | Image tag for VictoriaMetrics Insert server | `string` | `"v1.37.4-cluster"` | no |
 | vm\_insert\_node\_selector | Node selector for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_pod\_annotations | Annotations for VictoriaMetrics Insert server pods | `map` | `{}` | no |
 | vm\_insert\_priority\_class\_name | Priority Class Name for VictoriaMetrics Insert server | `string` | `""` | no |
@@ -281,12 +324,15 @@ This module makes use of the
 | vm\_insert\_tolerations | Tolerations for VictoriaMetrics Insert server | `list` | `[]` | no |
 | vm\_namespace | Namespace for VictoriaMetrics | `string` | `"core"` | no |
 | vm\_psp\_enabled | Enable PodSecurityPolicy in VictoriaMetrics | `bool` | `true` | no |
-| vm\_release\_name | Helm release name for Argo | `string` | `"victoria-metrics-cluster"` | no |
+| vm\_release\_name | Helm release name for VictoriaMetrics | `string` | `"victoria-metrics-cluster"` | no |
 | vm\_select\_affinity | Affinity for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_enabled | Deploy VictoriaMetrics Select | `bool` | `true` | no |
 | vm\_select\_extra\_args | Additional VictoriaMetrics Select container arguments | `map` | `{}` | no |
 | vm\_select\_image\_repository | Image repository for VictoriaMetrics Select server | `string` | `"victoriametrics/vmselect"` | no |
-| vm\_select\_image\_tag | Image tag for VictoriaMetrics Select server | `string` | `"v1.37.0-cluster"` | no |
+| vm\_select\_image\_tag | Image tag for VictoriaMetrics Select server | `string` | `"v1.37.4-cluster"` | no |
+| vm\_select\_ingress\_annotations | Annotations for VictoriaMetrics Select server ingress | `map` | `{}` | no |
+| vm\_select\_ingress\_enabled | Enable ingress for VictoriaMetrics Select server | `bool` | `false` | no |
+| vm\_select\_ingress\_hosts | Ingress hosts for VictoriaMetrics Select server | `list` | `[]` | no |
 | vm\_select\_node\_selector | Node selector for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_pod\_annotations | Annotations for VictoriaMetrics Select server pods | `map` | `{}` | no |
 | vm\_select\_priority\_class\_name | Priority Class Name for VictoriaMetrics Select server | `string` | `""` | no |
@@ -307,7 +353,7 @@ This module makes use of the
 | vm\_storage\_enabled | Deploy VictoriaMetrics Storage | `bool` | `true` | no |
 | vm\_storage\_extra\_args | Additional VictoriaMetrics Storage container arguments | `map` | `{}` | no |
 | vm\_storage\_image\_repository | Image repository for VictoriaMetrics Storage server | `string` | `"victoriametrics/vmstorage"` | no |
-| vm\_storage\_image\_tag | Image tag for VictoriaMetrics Storage server | `string` | `"v1.37.0-cluster"` | no |
+| vm\_storage\_image\_tag | Image tag for VictoriaMetrics Storage server | `string` | `"v1.37.4-cluster"` | no |
 | vm\_storage\_node\_selector | Node selector for VictoriaMetrics Storage server pods | `map` | `{}` | no |
 | vm\_storage\_pod\_annotations | Annotations for VictoriaMetrics Storage server pods | `map` | `{}` | no |
 | vm\_storage\_priority\_class\_name | Priority Class Name for VictoriaMetrics Storage server | `string` | `""` | no |
@@ -331,5 +377,7 @@ This module makes use of the
 
 | Name | Description |
 |------|-------------|
+| prometheus\_alerts\_api\_url | Prometheus query API URL: https://prometheus.io/docs/prometheus/latest/querying/api/#expression-queries |
 | prometheus\_query\_api\_url | Prometheus query API URL: https://prometheus.io/docs/prometheus/latest/querying/api/#expression-queries |
+| prometheus\_remote\_read\_api\_url | Prometheus Remote Read API URL: https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations |
 | prometheus\_remote\_write\_api\_url | Prometheus Remote Write API URL: https://prometheus.io/docs/prometheus/latest/storage/#remote-storage-integrations |
