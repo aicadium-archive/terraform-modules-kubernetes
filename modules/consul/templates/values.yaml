@@ -973,7 +973,7 @@ controller:
 
   # Resource settings for controller pods.
   resources:
-    ${4, indent(controller_resources)}
+    ${indent(4, controller_resources)}
     # limits:
     #   cpu: 100m
     #   memory: 30Mi
