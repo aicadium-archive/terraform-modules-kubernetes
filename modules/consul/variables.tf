@@ -205,22 +205,22 @@ variable "client_priority_class" {
 
 variable "enable_sync_catalog" {
   description = "Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html"
-  default     = "true"
+  default     = true
 }
 
 variable "sync_by_default" {
   description = "If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_to_consul" {
   description = "If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_to_k8s" {
   description = " If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_k8s_prefix" {
@@ -235,7 +235,7 @@ variable "sync_k8s_tag" {
 
 variable "sync_cluster_ip_services" {
   description = "If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_node_port_type" {
@@ -279,7 +279,7 @@ variable "sync_priority_class" {
 
 variable "enable_ui" {
   description = "Enable Consul UI"
-  default     = "false"
+  default     = false
 }
 
 variable "ui_service_type" {
@@ -304,12 +304,12 @@ variable "connect_enable" {
 
 variable "enable_connect_inject" {
   description = "Enable Connect Injector process"
-  default     = "false"
+  default     = false
 }
 
 variable "connect_inject_by_default" {
   description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
-  default     = "false"
+  default     = false
 }
 
 variable "connect_inject_namespace_selector" {
