@@ -63,6 +63,11 @@ variable "consul_k8s_tag" {
   default     = "0.19.0"
 }
 
+variable "image_envoy" {
+  description = "Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways"
+  default     = "envoyproxy/envoy-alpine:v1.14.4"
+}
+
 variable "consul_domain" {
   description = "Top level Consul domain for DNS queries"
   default     = "consul"
@@ -267,6 +272,11 @@ variable "sync_tolerations" {
   default     = ""
 }
 
+variable "sync_priority_class" {
+  description = "Priority Class Name for Consul Sync Catalog"
+  default     = ""
+}
+
 variable "enable_ui" {
   description = "Enable Consul UI"
   default     = "false"
@@ -329,6 +339,11 @@ variable "connect_inject_resources" {
       memory = "50Mi"
     }
   }
+}
+
+variable "connect_inject_priority_class" {
+  description = "Pod Priority Class for Connect Inject"
+  default     = ""
 }
 
 variable "configure_kube_dns" {

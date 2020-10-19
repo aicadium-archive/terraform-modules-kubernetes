@@ -231,7 +231,7 @@ global:
   # imageEnvoy is the name (and tag) of the Envoy Docker image used for the
   # connect-injected sidecar proxies and the mesh, terminating, and ingress gateways.
   # See https://www.consul.io/docs/connect/proxies/envoy for full compatibility matrix between Consul and Envoy.
-  imageEnvoy: "envoyproxy/envoy-alpine:v1.14.4"
+  imageEnvoy: ${image_envoy}
 
   # openshift contains configuration for running this Helm chart
   # on the Red Hat OpenShift platform.
@@ -623,7 +623,7 @@ syncCatalog:
   default: ${sync_by_default} # true will sync by default, otherwise requires annotation
 
   # Optional priorityClassName.
-  priorityClassName: ""
+  priorityClassName: "${sync_priority_class}"
 
   # toConsul and toK8S control whether syncing is enabled to Consul or K8S
   # as a destination. If both of these are disabled, the sync will do nothing.
@@ -767,7 +767,7 @@ connectInject:
   default: ${connect_inject_by_default}
 
   # Optional priorityClassName.
-  priorityClassName: ""
+  priorityClassName: "${connect_inject_priority_class}"
 
   # The Docker image for Consul to use when performing Connect injection.
   # Defaults to global.image.
@@ -990,7 +990,6 @@ controller:
 
   # Optional priorityClassName.
   priorityClassName: ""
-
 
 # Mesh Gateways enable Consul Connect to work across Consul datacenters.
 meshGateway:

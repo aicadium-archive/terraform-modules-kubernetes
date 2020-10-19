@@ -15,9 +15,10 @@ resource "helm_release" "consul" {
 
 locals {
   consul_values = {
-    name      = var.name != null ? jsonencode(var.name) : "null"
-    image     = "${var.consul_image_name}:${var.consul_image_tag}"
-    image_k8s = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+    name        = var.name != null ? jsonencode(var.name) : "null"
+    image       = "${var.consul_image_name}:${var.consul_image_tag}"
+    image_k8s   = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+    image_envoy = var.image_envoy
 
     pod_security_policy_enable = var.pod_security_policy_enable
 
@@ -71,6 +72,7 @@ locals {
     sync_affinity                 = jsonencode(var.sync_affinity)
     sync_tolerations              = jsonencode(var.sync_tolerations)
     sync_resources                = yamlencode(var.sync_resources)
+    sync_priority_class           = var.sync_priority_class
 
     enable_ui          = jsonencode(var.enable_ui)
     ui_service_type    = var.ui_service_type
@@ -84,6 +86,7 @@ locals {
     connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
     connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
     connect_inject_resources          = yamlencode(var.connect_inject_resources)
+    connect_inject_priority_class     = var.connect_inject_priority_class
   }
 }
 
