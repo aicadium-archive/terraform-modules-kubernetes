@@ -15,7 +15,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = "0.24.1"
+  default     = "0.25.0"
 }
 
 variable "chart_namespace" {
@@ -50,7 +50,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.8.3"
+  default     = "1.8.4"
 }
 
 variable "consul_k8s_image" {
@@ -60,7 +60,7 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.18.1"
+  default     = "0.19.0"
 }
 
 variable "consul_domain" {
