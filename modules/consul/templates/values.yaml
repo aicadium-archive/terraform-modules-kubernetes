@@ -965,33 +965,34 @@ connectInject:
 # Requires consul >= 1.8.4.
 # ServiceIntentions require consul 1.9 Beta or greater.
 controller:
-  enabled: false
+  enabled: ${controller_enable}
   replicas: 1
 
   # Log verbosity level. One of "debug", "info", "warn", or "error".
-  logLevel: info
+  logLevel: ${controller_log_level}
 
   # Resource settings for controller pods.
   resources:
-    limits:
-      cpu: 100m
-      memory: 30Mi
-    requests:
-      cpu: 100m
-      memory: 20Mi
+    ${4, indent(controller_resources)}
+    # limits:
+    #   cpu: 100m
+    #   memory: 30Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 20Mi
 
   # Optional YAML string to specify a nodeSelector config.
-  nodeSelector: null
+  nodeSelector: ${controller_node_selector}
 
   # Optional YAML string to specify tolerations.
-  tolerations: null
+  tolerations: ${controller_node_tolerations}
 
   # Affinity Settings
   # This should be a multi-line string matching the affinity object
-  affinity: null
+  affinity: ${controller_node_affinity}
 
   # Optional priorityClassName.
-  priorityClassName: ""
+  priorityClassName: "${controller_priority_class}"
 
 # Mesh Gateways enable Consul Connect to work across Consul datacenters.
 meshGateway:

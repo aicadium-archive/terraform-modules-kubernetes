@@ -440,6 +440,53 @@ variable "connect_inject_init_resources" {
 }
 
 ###########################
+# Consul Configuration Entries CRD Controller
+###########################
+variable "controller_enable" {
+  description = "Enable Consul Configuration Entries CRD Controller"
+  default     = false
+}
+
+variable "controller_log_level" {
+  description = "CRD Controller Log level."
+  default     = "info"
+}
+
+variable "controller_resources" {
+  description = "CRD Controller resources"
+  default = {
+    requests = {
+      cpu    = "100m"
+      memory = "20Mi"
+    }
+    limits = {
+      cpu    = "100m"
+      memory = "20Mi"
+    }
+  }
+}
+
+variable "controller_node_selector" {
+  description = "YAML string for Controller Node Selector"
+  default     = null
+}
+
+variable "controller_node_tolerations" {
+  description = "YAML string for Controller tolerations"
+  default     = null
+}
+
+variable "controller_node_affinity" {
+  description = "YAML string for Controller affinity"
+  default     = null
+}
+
+variable "controller_priority_class" {
+  description = "Priority class for Controller pods"
+  default     = ""
+}
+
+###########################
 # Consul Security
 ###########################
 variable "gossip_encryption_key" {

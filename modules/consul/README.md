@@ -108,7 +108,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
 | chart\_repository | Helm repository for the chart | `string` | `"https://helm.releases.hashicorp.com"` | no |
 | chart\_timeout | Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout | `number` | `1800` | no |
-| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.24.1"` | no |
+| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.25.0"` | no |
 | client\_annotations | A YAML string for client pods | `string` | `""` | no |
 | client\_enabled | Enable running Consul client agents on every Kubernetes node | `string` | `"-"` | no |
 | client\_extra\_config | Additional configuration to include for client agents | `map` | `{}` | no |
@@ -121,55 +121,82 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | configure\_kube\_dns | Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS | `bool` | `false` | no |
 | connect\_enable | Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later | `bool` | `false` | no |
 | connect\_inject\_affinity | Template string for Connect Inject Affinity | `string` | `""` | no |
-| connect\_inject\_by\_default | If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection. | `string` | `"false"` | no |
-| connect\_inject\_namespace\_selector | A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `string` | `""` | no |
+| connect\_inject\_allowed\_namespaces | List of allowed namespaces to inject. | `list` | <pre>[<br>  "*"<br>]</pre> | no |
+| connect\_inject\_by\_default | If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection. | `bool` | `false` | no |
+| connect\_inject\_default\_protocol | specify a convenience default protocol if most of your services are of the same protocol type. The individual annotation on any given pod will override this value.  Valid values are 'http', 'http2', 'grpc' and 'tcp'. | `any` | `null` | no |
+| connect\_inject\_denied\_namespaces | List of denied namespaces to inject. | `list` | `[]` | no |
+| connect\_inject\_init\_resources | Resource settings for the Connect injected init container. | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
+| connect\_inject\_namespace\_selector | A YAML string selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `any` | `null` | no |
+| connect\_inject\_priority\_class | Pod Priority Class for Connect Inject | `string` | `""` | no |
 | connect\_inject\_resources | Resources for connect inject pod | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
+| connect\_inject\_sidecar\_proxy\_resources | Set default resources for sidecar proxy. If null, that resource won't be set. | `map` | <pre>{<br>  "limits": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  },<br>  "requests": {<br>    "cpu": "100m",<br>    "memory": "100Mi"<br>  }<br>}</pre> | no |
 | connect\_inject\_tolerations | Template string for Connect Inject Tolerations | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
-| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.3"` | no |
+| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.4"` | no |
 | consul\_k8s\_image | Docker image of the consul-k8s binary to run | `string` | `"hashicorp/consul-k8s"` | no |
-| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.18.1"` | no |
+| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.19.0"` | no |
+| consul\_template\_image | Image for Consul Template | `string` | `"hashicorp/consul-template:0.25.1-light"` | no |
+| controller\_enable | Enable Consul Configuration Entries CRD Controller | `bool` | `false` | no |
+| controller\_log\_level | CRD Controller Log level. | `string` | `"info"` | no |
+| controller\_node\_affinity | YAML string for Controller affinity | `any` | `null` | no |
+| controller\_node\_selector | YAML string for Controller Node Selector | `any` | `null` | no |
+| controller\_node\_tolerations | YAML string for Controller tolerations | `any` | `null` | no |
+| controller\_priority\_class | Priority class for Controller pods | `string` | `""` | no |
+| controller\_resources | CRD Controller resources | `map` | <pre>{<br>  "limits": {<br>    "cpu": "100m",<br>    "memory": "20Mi"<br>  },<br>  "requests": {<br>    "cpu": "100m",<br>    "memory": "20Mi"<br>  }<br>}</pre> | no |
 | core\_dns\_labels | Labels for CoreDNS ConfigMap | `map` | <pre>{<br>  "addonmanager.kubernetes.io/mode": "EnsureExists",<br>  "eks.amazonaws.com/component": "coredns",<br>  "k8s-app": "kube-dns"<br>}</pre> | no |
 | core\_dns\_template | Template for CoreDNS `CoreFile` configuration. Use Terraform string interpolation format with the variable `consul_dns_address` for Consul DNS endpoint. See Default for an example | `string` | `".:53 {\n  errors\n  health\n  kubernetes cluster.local in-addr.arpa ip6.arpa {\n    pods insecure\n    upstream\n    fallthrough in-addr.arpa ip6.arpa\n  }\n  prometheus :9153\n  forward . /etc/resolv.conf\n  cache 30\n  loop\n  reload\n  loadbalance\n}\n\nconsul {\n  errors\n  cache 30\n  forward . ${consul_dns_address}\n}\n"` | no |
-| enable\_connect\_inject | Enable Connect Injector process | `string` | `"false"` | no |
+| enable\_connect\_inject | Enable Connect Injector process | `bool` | `false` | no |
 | enable\_esm | Enable Consul ESM deployment | `bool` | `false` | no |
 | enable\_exporter | Enable Consul Exporter deployment | `bool` | `false` | no |
-| enable\_sync\_catalog | Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html | `string` | `"true"` | no |
-| enable\_ui | Enable Consul UI | `string` | `"false"` | no |
+| enable\_sync\_catalog | Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html | `bool` | `true` | no |
+| enable\_ui | Enable Consul UI | `bool` | `false` | no |
 | esm\_affinity | Affinity for ESM | `map` | `{}` | no |
 | esm\_chart\_name | Name of the ESM Chart name | `string` | `"consul-esm"` | no |
 | esm\_chart\_repository | ESM Chart repository | `string` | `"amoy"` | no |
 | esm\_chart\_version | ESM Chart version | `string` | `""` | no |
-| esm\_env | Environment variables for Consul ESM | `list` | <pre>[<br>  {<br>    "name": "HOST_IP",<br>    "valueFrom": {<br>      "fieldRef": {<br>        "fieldPath": "status.hostIP"<br>      }<br>    }<br>  },<br>  {<br>    "name": "CONSUL_HTTP_ADDR",<br>    "value": "$(HOST_IP):8500"<br>  }<br>]</pre> | no |
+| esm\_env | Environment variables for Consul ESM | `list` | `[]` | no |
 | esm\_external\_node\_meta | The node metadata values used for the ESM to qualify a node in the catalog as an "external node". | `map` | <pre>{<br>  "external-node": "true"<br>}</pre> | no |
 | esm\_http\_addr | HTTP address of the local Consul agent | `string` | `""` | no |
 | esm\_image | Docker image for ESM | `string` | `"basisai/consul-esm"` | no |
 | esm\_init\_container\_set\_sysctl | Enable setting sysctl settings via a privileged container to allow pings | `bool` | `false` | no |
 | esm\_kv\_path | The directory in the Consul KV store to use for storing ESM runtime data. | `string` | `"consul-esm/"` | no |
 | esm\_log\_level | Log level for ESM | `string` | `"INFO"` | no |
+| esm\_node\_agent\_port | Override port for Consul agent Daemonset | `any` | `null` | no |
 | esm\_node\_probe\_interval | The interval to ping and update coordinates for external nodes that have 'external-probe' set to true. By default, ESM will attempt to ping and  update the coordinates for all nodes it is watching every 10 seconds. | `string` | `"10s"` | no |
 | esm\_node\_reconnect\_timeout | The length of time to wait before reaping an external node due to failed pings. | `string` | `"72h"` | no |
 | esm\_ping\_type | The method to use for pinging external nodes. | `string` | `"udp"` | no |
 | esm\_release\_name | Name of the ESM Chart Release | `string` | `"consul-esm"` | no |
 | esm\_replica | Number of ESM replica | `number` | `3` | no |
 | esm\_resources | Resources for ESM | `map` | <pre>{<br>  "limits": {<br>    "memory": "256Mi"<br>  },<br>  "requests": {<br>    "cpu": "200m"<br>  }<br>}</pre> | no |
+| esm\_server\_address | Override Consul Server address for TLS when using Auto Encrypt | `any` | `null` | no |
+| esm\_server\_port | Override Consul Server port for TLS when using Auto Encrypt | `any` | `null` | no |
 | esm\_service\_name | ESM service name in Consul | `string` | `"consul-esm"` | no |
 | esm\_service\_tag | Service tag for ESM | `string` | `""` | no |
-| esm\_tag | Docker Image tag for ESM | `string` | `"0.3.3"` | no |
+| esm\_tag | Docker Image tag for ESM | `string` | `"0.4.0"` | no |
 | esm\_tolerations | Toleration for ESM | `list` | `[]` | no |
+| esm\_use\_node\_agent | Use Consul agent Daemonset | `bool` | `true` | no |
 | exporter\_affinity | Affinity for Consul Exporter | `map` | `{}` | no |
 | exporter\_chart\_name | Name of the Consul Exporter Chart name | `string` | `"prometheus-consul-exporter"` | no |
-| exporter\_chart\_repository | Consul Exporter Chart repository | `string` | `"stable"` | no |
-| exporter\_chart\_version | Consul Exporter Chart version | `string` | `"0.1.4"` | no |
+| exporter\_chart\_repository | Consul Exporter Chart repository | `string` | `"https://prometheus-community.github.io/helm-charts"` | no |
+| exporter\_chart\_version | Consul Exporter Chart version | `string` | `"0.2.0"` | no |
+| exporter\_env | Additional Environment Variables for Exporter | `list` | `[]` | no |
+| exporter\_extra\_containers | Extra extra Containers | `list` | `[]` | no |
+| exporter\_extra\_volume\_mounts | Extra volume mounts for Exporter | `list` | `[]` | no |
+| exporter\_extra\_volumes | Extra volumes for Exporter | `list` | `[]` | no |
 | exporter\_image | Docker image for Consul Exporter | `string` | `"prom/consul-exporter"` | no |
+| exporter\_init\_containers | Extra Init Containers | `list` | `[]` | no |
+| exporter\_options | Arguments for Exporter. See https://github.com/prometheus/consul_exporter#flags | `map` | `{}` | no |
+| exporter\_psp | Create PSP resources for Exporter | `bool` | `true` | no |
+| exporter\_rbac\_enabled | Create RBAC resources for Exporter | `bool` | `true` | no |
 | exporter\_release\_name | Name of the Consul Exporter Chart Release | `string` | `"consul-exporter"` | no |
 | exporter\_replica | Number of Consul Exporter replicas | `number` | `1` | no |
 | exporter\_resources | Resources for Consul Exporter | `map` | <pre>{<br>  "limits": {<br>    "memory": "256Mi"<br>  },<br>  "requests": {<br>    "cpu": "200m"<br>  }<br>}</pre> | no |
-| exporter\_service\_annotations | A YAML string for describing Consul Exporter service's annotations | `string` | `""` | no |
-| exporter\_tag | Docker Image tag for Consul Exporter | `string` | `"v0.4.0"` | no |
+| exporter\_service\_annotations | Consul Exporter service's annotations | `map` | `{}` | no |
+| exporter\_tag | Docker Image tag for Consul Exporter | `string` | `"v0.7.1"` | no |
 | fullname\_override | Fullname Override of Helm resources | `string` | `""` | no |
 | gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | `null` | no |
+| image\_envoy | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.14.4"` | no |
 | max\_history | Max History for Helm | `number` | `20` | no |
 | name | Sets the prefix used for all resources in the helm chart. If not set, the prefix will be "<helm release name>-consul". | `any` | `null` | no |
 | pod\_security\_policy\_enable | Create PodSecurityPolicy Resources | `bool` | `true` | no |
@@ -189,14 +216,15 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | server\_tolerations | A YAML string that can be templated via helm specifying the tolerations for server pods | `string` | `""` | no |
 | sync\_add\_k8s\_namespace\_suffix | Appends Kubernetes namespace suffix to each service name synced to Consul, separated by a dash. | `bool` | `true` | no |
 | sync\_affinity | YAML template string for Sync Catalog affinity | `string` | `""` | no |
-| sync\_by\_default | If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default. | `string` | `"true"` | no |
-| sync\_cluster\_ip\_services | If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services. | `string` | `"true"` | no |
+| sync\_by\_default | If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default. | `bool` | `true` | no |
+| sync\_cluster\_ip\_services | If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services. | `bool` | `true` | no |
 | sync\_k8s\_prefix | A prefix to prepend to all services registered in Kubernetes from Consul. This defaults to '' where no prefix is prepended; Consul services are synced with the same name to Kubernetes. (Consul -> Kubernetes sync only) | `string` | `""` | no |
 | sync\_k8s\_tag | An optional tag that is applied to all of the Kubernetes services that are synced into Consul. If nothing is set, this defaults to 'k8s'. (Kubernetes -> Consul sync only) | `string` | `"k8s"` | no |
 | sync\_node\_port\_type | Configures the type of syncing that happens for NodePort services. The only valid options are: ExternalOnly, InternalOnly, and ExternalFirst. ExternalOnly will only use a node's ExternalIP address for the sync, otherwise the service will not be synced. InternalOnly uses the node's InternalIP address. ExternalFirst will preferentially use the node's ExternalIP address, but if it doesn't exist, it will use the node's InternalIP address instead. | `string` | `""` | no |
+| sync\_priority\_class | Priority Class Name for Consul Sync Catalog | `string` | `""` | no |
 | sync\_resources | Sync Catalog resources | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
-| sync\_to\_consul | If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
-| sync\_to\_k8s | If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync. | `string` | `"true"` | no |
+| sync\_to\_consul | If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync. | `bool` | `true` | no |
+| sync\_to\_k8s | If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync. | `bool` | `true` | no |
 | sync\_tolerations | Template string for Sync Catalog Tolerations | `string` | `""` | no |
 | tls\_ca | Self generated CA for Consul Server TLS. Values should be PEM encoded | <pre>object({<br>    cert = string,<br>    key  = string,<br>  })</pre> | `null` | no |
 | tls\_enable\_auto\_encrypt | Enable auto encrypt. Uses the connect CA to distribute certificates to clients | `bool` | `false` | no |

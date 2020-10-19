@@ -94,6 +94,14 @@ locals {
 
     connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
     connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
+
+    controller_enable           = var.controller_enable
+    controller_log_level        = var.controller_log_level
+    controller_resources        = yamlencode(var.controller_resources)
+    controller_node_selector    = var.controller_node_selector != null ? jsonencode(var.controller_node_selector) : null
+    controller_node_tolerations = var.controller_node_tolerations != null ? jsonencode(var.controller_node_tolerations) : null
+    controller_node_affinity    = var.controller_node_affinity != null ? jsonencode(var.controller_node_affinity) : null
+    controller_priority_class   = var.controller_priority_class
   }
 }
 
