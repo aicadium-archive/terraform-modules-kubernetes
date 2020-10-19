@@ -774,13 +774,13 @@ connectInject:
   imageConsul: null
 
   # Resource settings for connect inject pods.
-  resources:
-    requests:
-      memory: "50Mi"
-      cpu: "50m"
-    limits:
-      memory: "50Mi"
-      cpu: "50m"
+  resources: ${connect_inject_resources}
+    # requests:
+    #   memory: "50Mi"
+    #   cpu: "50m"
+    # limits:
+    #   memory: "50Mi"
+    #   cpu: "50m"
 
   # namespaceSelector is the selector for restricting the webhook to only
   # specific namespaces. This should be set to a multiline string.
@@ -807,7 +807,7 @@ connectInject:
   # `namespaceSelector` takes precedence over both since it is applied first.
   # `kube-system` and `kube-public` are never injected, even if included here.
   # Requires consul-k8s v0.12+
-  k8sAllowNamespaces: ["*"]
+  k8sAllowNamespaces: ${connect_inject_allowed_namespaces}
 
   # k8sDenyNamespaces is a list of k8s namespaces that should not allow Connect
   # sidecar injection. This list takes precedence over `k8sAllowNamespaces`.
@@ -820,7 +820,7 @@ connectInject:
   # Note: `namespaceSelector` takes precedence over this since it is applied first.
   # `kube-system` and `kube-public` are never injected.
   # Requires consul-k8s v0.12+.
-  k8sDenyNamespaces: []
+  k8sDenyNamespaces: ${connect_inject_denied_namespaces}
 
   # [Enterprise Only] These settings manage the connect injector's interaction with
   # Consul namespaces (requires consul-ent v1.7+ and consul-k8s v0.12+).
@@ -917,7 +917,7 @@ connectInject:
     # most of your services are of the same protocol type. The individual annotation
     # on any given pod will override this value.
     # Valid values are "http", "http2", "grpc" and "tcp".
-    defaultProtocol: null
+    defaultProtocol: ${connect_inject_default_protocol}
 
     # proxyDefaults is a raw json string that will be written as the value of
     # the "config" key of the global proxy-defaults config entry.
@@ -937,26 +937,28 @@ connectInject:
     # - consul.hashicorp.com/sidecar-proxy-memory-limit
     # - consul.hashicorp.com/sidecar-proxy-memory-request
     resources:
-      requests:
-        # Recommended default: 100Mi
-        memory: null
-        # Recommended default: 100m
-        cpu: null
-      limits:
-        # Recommended default: 100Mi
-        memory: null
-        # Recommended default: 100m
-        cpu: null
+      ${indent(6, connect_inject_sidecar_proxy_resources)}
+      # requests:
+      #   # Recommended default: 100Mi
+      #   memory: null
+      #   # Recommended default: 100m
+      #   cpu: null
+      # limits:
+      #   # Recommended default: 100Mi
+      #   memory: null
+      #   # Recommended default: 100m
+      #   cpu: null
 
   # Resource settings for the Connect injected init container.
   initContainer:
-    resources:
-      requests:
-        memory: "25Mi"
-        cpu: "50m"
-      limits:
-        memory: "150Mi"
-        cpu: "50m"
+    ${indent(4, connect_inject_init_resources)}
+    # resources:
+    #   requests:
+    #     memory: "25Mi"
+    #     cpu: "50m"
+    #   limits:
+    #     memory: "150Mi"
+    #     cpu: "50m"
 
 # [Beta feature]
 # Controller handles config entry custom resources.

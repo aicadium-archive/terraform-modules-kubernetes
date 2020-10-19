@@ -297,55 +297,6 @@ variable "ui_additional_spec" {
   default     = ""
 }
 
-variable "connect_enable" {
-  description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
-  default     = false
-}
-
-variable "enable_connect_inject" {
-  description = "Enable Connect Injector process"
-  default     = false
-}
-
-variable "connect_inject_by_default" {
-  description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
-  default     = false
-}
-
-variable "connect_inject_namespace_selector" {
-  description = "A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
-  default     = ""
-}
-
-variable "connect_inject_affinity" {
-  description = "Template string for Connect Inject Affinity"
-  default     = ""
-}
-
-variable "connect_inject_tolerations" {
-  description = "Template string for Connect Inject Tolerations"
-  default     = ""
-}
-
-variable "connect_inject_resources" {
-  description = "Resources for connect inject pod"
-  default = {
-    requests = {
-      cpu    = "50m"
-      memory = "50Mi"
-    }
-    limits = {
-      cpu    = "50m"
-      memory = "50Mi"
-    }
-  }
-}
-
-variable "connect_inject_priority_class" {
-  description = "Pod Priority Class for Connect Inject"
-  default     = ""
-}
-
 variable "configure_kube_dns" {
   description = "Configure kube-dns and OVERWRITE it to resolve .consul domains with Consul DNS"
   default     = false
@@ -390,6 +341,101 @@ variable "core_dns_labels" {
     "eks.amazonaws.com/component"     = "coredns"
     "k8s-app"                         = "kube-dns"
     "addonmanager.kubernetes.io/mode" = "EnsureExists"
+  }
+}
+
+###########################
+# Consul Connect
+###########################
+variable "connect_enable" {
+  description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
+  default     = false
+}
+
+variable "enable_connect_inject" {
+  description = "Enable Connect Injector process"
+  default     = false
+}
+
+variable "connect_inject_by_default" {
+  description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
+  default     = false
+}
+
+variable "connect_inject_namespace_selector" {
+  description = "A YAML string selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
+  default     = null
+}
+
+variable "connect_inject_allowed_namespaces" {
+  description = "List of allowed namespaces to inject. "
+  default     = ["*"]
+}
+
+variable "connect_inject_denied_namespaces" {
+  description = "List of denied namespaces to inject. "
+  default     = []
+}
+
+variable "connect_inject_affinity" {
+  description = "Template string for Connect Inject Affinity"
+  default     = ""
+}
+
+variable "connect_inject_tolerations" {
+  description = "Template string for Connect Inject Tolerations"
+  default     = ""
+}
+
+variable "connect_inject_resources" {
+  description = "Resources for connect inject pod"
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
+}
+
+variable "connect_inject_priority_class" {
+  description = "Pod Priority Class for Connect Inject"
+  default     = ""
+}
+
+variable "connect_inject_default_protocol" {
+  description = "specify a convenience default protocol if most of your services are of the same protocol type. The individual annotation on any given pod will override this value.  Valid values are 'http', 'http2', 'grpc' and 'tcp'."
+  default     = null
+}
+
+variable "connect_inject_sidecar_proxy_resources" {
+  description = "Set default resources for sidecar proxy. If null, that resource won't be set."
+  default = {
+    requests = {
+      cpu    = "100m"
+      memory = "100Mi"
+    }
+    limits = {
+      cpu    = "100m"
+      memory = "100Mi"
+    }
+  }
+}
+
+variable "connect_inject_init_resources" {
+  description = "Resource settings for the Connect injected init container."
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
   }
 }
 

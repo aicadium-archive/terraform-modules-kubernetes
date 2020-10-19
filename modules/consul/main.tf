@@ -79,14 +79,21 @@ locals {
     ui_annotations     = jsonencode(var.ui_annotations)
     ui_additional_spec = jsonencode(var.ui_additional_spec)
 
-    connect_enable                    = jsonencode(var.connect_enable)
-    enable_connect_inject             = var.enable_connect_inject
-    connect_inject_by_default         = var.connect_inject_by_default
-    connect_inject_namespace_selector = var.connect_inject_namespace_selector
-    connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
-    connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
-    connect_inject_resources          = yamlencode(var.connect_inject_resources)
-    connect_inject_priority_class     = var.connect_inject_priority_class
+    connect_enable                = jsonencode(var.connect_enable)
+    enable_connect_inject         = var.enable_connect_inject
+    connect_inject_by_default     = var.connect_inject_by_default
+    connect_inject_affinity       = jsonencode(var.connect_inject_affinity)
+    connect_inject_tolerations    = jsonencode(var.connect_inject_tolerations)
+    connect_inject_resources      = jsonencode(var.connect_inject_resources)
+    connect_inject_priority_class = var.connect_inject_priority_class
+
+    connect_inject_namespace_selector = var.connect_inject_namespace_selector != null ? var.connect_inject_namespace_selector : "null"
+    connect_inject_allowed_namespaces = jsonencode(var.connect_inject_allowed_namespaces)
+    connect_inject_denied_namespaces  = jsonencode(var.connect_inject_denied_namespaces)
+    connect_inject_default_protocol   = var.connect_inject_default_protocol != null ? var.connect_inject_default_protocol : "null"
+
+    connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
+    connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
   }
 }
 
