@@ -15,9 +15,10 @@ resource "helm_release" "consul" {
 
 locals {
   consul_values = {
-    name      = var.name != null ? jsonencode(var.name) : "null"
-    image     = "${var.consul_image_name}:${var.consul_image_tag}"
-    image_k8s = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+    name        = var.name != null ? jsonencode(var.name) : "null"
+    image       = "${var.consul_image_name}:${var.consul_image_tag}"
+    image_k8s   = "${var.consul_k8s_image}:${var.consul_k8s_tag}"
+    image_envoy = var.image_envoy
 
     pod_security_policy_enable = var.pod_security_policy_enable
 
@@ -71,19 +72,36 @@ locals {
     sync_affinity                 = jsonencode(var.sync_affinity)
     sync_tolerations              = jsonencode(var.sync_tolerations)
     sync_resources                = yamlencode(var.sync_resources)
+    sync_priority_class           = var.sync_priority_class
 
     enable_ui          = jsonencode(var.enable_ui)
     ui_service_type    = var.ui_service_type
     ui_annotations     = jsonencode(var.ui_annotations)
     ui_additional_spec = jsonencode(var.ui_additional_spec)
 
-    connect_enable                    = jsonencode(var.connect_enable)
-    enable_connect_inject             = var.enable_connect_inject
-    connect_inject_by_default         = var.connect_inject_by_default
-    connect_inject_namespace_selector = var.connect_inject_namespace_selector
-    connect_inject_affinity           = jsonencode(var.connect_inject_affinity)
-    connect_inject_tolerations        = jsonencode(var.connect_inject_tolerations)
-    connect_inject_resources          = yamlencode(var.connect_inject_resources)
+    connect_enable                = jsonencode(var.connect_enable)
+    enable_connect_inject         = var.enable_connect_inject
+    connect_inject_by_default     = var.connect_inject_by_default
+    connect_inject_affinity       = jsonencode(var.connect_inject_affinity)
+    connect_inject_tolerations    = jsonencode(var.connect_inject_tolerations)
+    connect_inject_resources      = jsonencode(var.connect_inject_resources)
+    connect_inject_priority_class = var.connect_inject_priority_class
+
+    connect_inject_namespace_selector = var.connect_inject_namespace_selector != null ? var.connect_inject_namespace_selector : "null"
+    connect_inject_allowed_namespaces = jsonencode(var.connect_inject_allowed_namespaces)
+    connect_inject_denied_namespaces  = jsonencode(var.connect_inject_denied_namespaces)
+    connect_inject_default_protocol   = var.connect_inject_default_protocol != null ? var.connect_inject_default_protocol : "null"
+
+    connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
+    connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
+
+    controller_enable           = var.controller_enable
+    controller_log_level        = var.controller_log_level
+    controller_resources        = yamlencode(var.controller_resources)
+    controller_node_selector    = var.controller_node_selector != null ? jsonencode(var.controller_node_selector) : "null"
+    controller_node_tolerations = var.controller_node_tolerations != null ? jsonencode(var.controller_node_tolerations) : "null"
+    controller_node_affinity    = var.controller_node_affinity != null ? jsonencode(var.controller_node_affinity) : "null"
+    controller_priority_class   = var.controller_priority_class
   }
 }
 

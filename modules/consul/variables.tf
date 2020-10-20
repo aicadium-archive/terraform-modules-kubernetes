@@ -15,7 +15,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = "0.24.1"
+  default     = "0.25.0"
 }
 
 variable "chart_namespace" {
@@ -50,7 +50,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.8.3"
+  default     = "1.8.4"
 }
 
 variable "consul_k8s_image" {
@@ -60,7 +60,12 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.18.1"
+  default     = "0.19.0"
+}
+
+variable "image_envoy" {
+  description = "Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways"
+  default     = "envoyproxy/envoy-alpine:v1.14.4"
 }
 
 variable "consul_domain" {
@@ -200,22 +205,22 @@ variable "client_priority_class" {
 
 variable "enable_sync_catalog" {
   description = "Enable Service catalog sync: https://www.consul.io/docs/platform/k8s/service-sync.html"
-  default     = "true"
+  default     = true
 }
 
 variable "sync_by_default" {
   description = "If true, all valid services in K8S are synced by default. If false, the service must be annotated properly to sync. In either case an annotation can override the default."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_to_consul" {
   description = "If true, will sync Kubernetes services to Consul. This can be disabled to have a one-way sync."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_to_k8s" {
   description = " If true, will sync Consul services to Kubernetes. This can be disabled to have a one-way sync."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_k8s_prefix" {
@@ -230,7 +235,7 @@ variable "sync_k8s_tag" {
 
 variable "sync_cluster_ip_services" {
   description = "If true, will sync Kubernetes ClusterIP services to Consul. This can be disabled to have the sync ignore ClusterIP-type services."
-  default     = "true"
+  default     = true
 }
 
 variable "sync_node_port_type" {
@@ -267,9 +272,14 @@ variable "sync_tolerations" {
   default     = ""
 }
 
+variable "sync_priority_class" {
+  description = "Priority Class Name for Consul Sync Catalog"
+  default     = ""
+}
+
 variable "enable_ui" {
   description = "Enable Consul UI"
-  default     = "false"
+  default     = false
 }
 
 variable "ui_service_type" {
@@ -285,50 +295,6 @@ variable "ui_annotations" {
 variable "ui_additional_spec" {
   description = "Additional Spec for the UI service"
   default     = ""
-}
-
-variable "connect_enable" {
-  description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
-  default     = false
-}
-
-variable "enable_connect_inject" {
-  description = "Enable Connect Injector process"
-  default     = "false"
-}
-
-variable "connect_inject_by_default" {
-  description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
-  default     = "false"
-}
-
-variable "connect_inject_namespace_selector" {
-  description = "A selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
-  default     = ""
-}
-
-variable "connect_inject_affinity" {
-  description = "Template string for Connect Inject Affinity"
-  default     = ""
-}
-
-variable "connect_inject_tolerations" {
-  description = "Template string for Connect Inject Tolerations"
-  default     = ""
-}
-
-variable "connect_inject_resources" {
-  description = "Resources for connect inject pod"
-  default = {
-    requests = {
-      cpu    = "50m"
-      memory = "50Mi"
-    }
-    limits = {
-      cpu    = "50m"
-      memory = "50Mi"
-    }
-  }
 }
 
 variable "configure_kube_dns" {
@@ -376,6 +342,148 @@ variable "core_dns_labels" {
     "k8s-app"                         = "kube-dns"
     "addonmanager.kubernetes.io/mode" = "EnsureExists"
   }
+}
+
+###########################
+# Consul Connect
+###########################
+variable "connect_enable" {
+  description = "Enable consul connect. When enabled, the bootstrap will configure a default CA which can be tweaked using the Consul API later"
+  default     = false
+}
+
+variable "enable_connect_inject" {
+  description = "Enable Connect Injector process"
+  default     = false
+}
+
+variable "connect_inject_by_default" {
+  description = "If true, the injector will inject the Connect sidecar into all pods by default. Otherwise, pods must specify the injection annotation to opt-in to Connect injection. If this is true, pods can use the same annotation to explicitly opt-out of injection."
+  default     = false
+}
+
+variable "connect_inject_namespace_selector" {
+  description = "A YAML string selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled."
+  default     = null
+}
+
+variable "connect_inject_allowed_namespaces" {
+  description = "List of allowed namespaces to inject. "
+  default     = ["*"]
+}
+
+variable "connect_inject_denied_namespaces" {
+  description = "List of denied namespaces to inject. "
+  default     = []
+}
+
+variable "connect_inject_affinity" {
+  description = "Template string for Connect Inject Affinity"
+  default     = ""
+}
+
+variable "connect_inject_tolerations" {
+  description = "Template string for Connect Inject Tolerations"
+  default     = ""
+}
+
+variable "connect_inject_resources" {
+  description = "Resources for connect inject pod"
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
+}
+
+variable "connect_inject_priority_class" {
+  description = "Pod Priority Class for Connect Inject"
+  default     = ""
+}
+
+variable "connect_inject_default_protocol" {
+  description = "specify a convenience default protocol if most of your services are of the same protocol type. The individual annotation on any given pod will override this value.  Valid values are 'http', 'http2', 'grpc' and 'tcp'."
+  default     = null
+}
+
+variable "connect_inject_sidecar_proxy_resources" {
+  description = "Set default resources for sidecar proxy. If null, that resource won't be set."
+  default = {
+    requests = {
+      cpu    = "100m"
+      memory = "100Mi"
+    }
+    limits = {
+      cpu    = "100m"
+      memory = "100Mi"
+    }
+  }
+}
+
+variable "connect_inject_init_resources" {
+  description = "Resource settings for the Connect injected init container."
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
+}
+
+###########################
+# Consul Configuration Entries CRD Controller
+###########################
+variable "controller_enable" {
+  description = "Enable Consul Configuration Entries CRD Controller"
+  default     = false
+}
+
+variable "controller_log_level" {
+  description = "CRD Controller Log level."
+  default     = "info"
+}
+
+variable "controller_resources" {
+  description = "CRD Controller resources"
+  default = {
+    requests = {
+      cpu    = "100m"
+      memory = "20Mi"
+    }
+    limits = {
+      cpu    = "100m"
+      memory = "20Mi"
+    }
+  }
+}
+
+variable "controller_node_selector" {
+  description = "YAML string for Controller Node Selector"
+  default     = null
+}
+
+variable "controller_node_tolerations" {
+  description = "YAML string for Controller tolerations"
+  default     = null
+}
+
+variable "controller_node_affinity" {
+  description = "YAML string for Controller affinity"
+  default     = null
+}
+
+variable "controller_priority_class" {
+  description = "Priority class for Controller pods"
+  default     = ""
 }
 
 ###########################
