@@ -1271,7 +1271,7 @@ ingressGateways:
 terminatingGateways:
   # Enable terminating gateway deployment. Requires `connectInject.enabled=true`
   # and `client.enabled=true`.
-  enabled: false
+  enabled: ${terminating_gateway_enable}
 
   # Defaults sets default values for all gateway fields. With the exception
   # of annotations, defining any of these values in the `gateways` list
@@ -1279,80 +1279,81 @@ terminatingGateways:
   # include both the default annotations and any additional ones defined
   # for a specific gateway.
   defaults:
-    # Number of replicas for each terminating gateway defined.
-    replicas: 2
+    ${indent(4, terminating_gateway_defaults)}
+    # # Number of replicas for each terminating gateway defined.
+    # replicas: 2
 
-    # extraVolumes is a list of extra volumes to mount. These will be exposed
-    # to Consul in the path `/consul/userconfig/<name>/`. The value below is
-    # an array of objects, examples are shown below.
-    #  extraVolumes:
-    #    - type: secret
-    #      name: my-secret
-    #      items:  # optional items array
-    #        - key: key
-    #          path: path  # secret will now mount to /consul/userconfig/my-secret/path
-    extraVolumes: []
+    # # extraVolumes is a list of extra volumes to mount. These will be exposed
+    # # to Consul in the path `/consul/userconfig/<name>/`. The value below is
+    # # an array of objects, examples are shown below.
+    # #  extraVolumes:
+    # #    - type: secret
+    # #      name: my-secret
+    # #      items:  # optional items array
+    # #        - key: key
+    # #          path: path  # secret will now mount to /consul/userconfig/my-secret/path
+    # extraVolumes: []
 
-    # Resource limits for all terminating gateway pods
-    resources:
-      requests:
-        memory: "100Mi"
-        cpu: "100m"
-      limits:
-        memory: "100Mi"
-        cpu: "100m"
+    # # Resource limits for all terminating gateway pods
+    # resources:
+    #   requests:
+    #     memory: "100Mi"
+    #     cpu: "100m"
+    #   limits:
+    #     memory: "100Mi"
+    #     cpu: "100m"
 
-    # Resource settings for the `copy-consul-bin` init container.
-    initCopyConsulContainer:
-      resources:
-        requests:
-          memory: "25Mi"
-          cpu: "50m"
-        limits:
-          memory: "150Mi"
-          cpu: "50m"
+    # # Resource settings for the `copy-consul-bin` init container.
+    # initCopyConsulContainer:
+    #   resources:
+    #     requests:
+    #       memory: "25Mi"
+    #       cpu: "50m"
+    #     limits:
+    #       memory: "150Mi"
+    #       cpu: "50m"
 
-    # By default, we set an anti-affinity so that two of the same gateway pods
-    # won't be on the same node. NOTE: Gateways require that Consul client agents are
-    # also running on the nodes alongside each gateway pod.
-    affinity: |
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: {{ template "consul.name" . }}
-                release: "{{ .Release.Name }}"
-                component: terminating-gateway
-            topologyKey: kubernetes.io/hostname
-    # Optional YAML string to specify tolerations.
-    tolerations: null
+    # # By default, we set an anti-affinity so that two of the same gateway pods
+    # # won't be on the same node. NOTE: Gateways require that Consul client agents are
+    # # also running on the nodes alongside each gateway pod.
+    # affinity: |
+    #   podAntiAffinity:
+    #     requiredDuringSchedulingIgnoredDuringExecution:
+    #       - labelSelector:
+    #           matchLabels:
+    #             app: {{ template "consul.name" . }}
+    #             release: "{{ .Release.Name }}"
+    #             component: terminating-gateway
+    #         topologyKey: kubernetes.io/hostname
+    # # Optional YAML string to specify tolerations.
+    # tolerations: null
 
-    # Optional YAML string to specify a nodeSelector config.
-    nodeSelector: null
+    # # Optional YAML string to specify a nodeSelector config.
+    # nodeSelector: null
 
-    # Optional priorityClassName.
-    priorityClassName: ""
+    # # Optional priorityClassName.
+    # priorityClassName: ""
 
-    # Annotations to apply to the terminating gateway deployment. Annotations defined
-    # here will be applied to all terminating gateway deployments in addition to any
-    # annotations defined for a specific gateway in `terminatingGateways.gateways`.
-    # Example:
-    #   annotations: |
-    #     "annotation-key": "annotation-value"
-    annotations: null
+    # # Annotations to apply to the terminating gateway deployment. Annotations defined
+    # # here will be applied to all terminating gateway deployments in addition to any
+    # # annotations defined for a specific gateway in `terminatingGateways.gateways`.
+    # # Example:
+    # #   annotations: |
+    # #     "annotation-key": "annotation-value"
+    # annotations: null
 
-    # [Enterprise Only] `consulNamespace` defines the Consul namespace to register
-    # the gateway into.  Requires `global.enableConsulNamespaces` to be true and
-    # Consul Enterprise v1.7+ with a valid Consul Enterprise license.
-    # Note: The Consul namespace MUST exist before the gateway is deployed.
-    consulNamespace: "default"
+    # # [Enterprise Only] `consulNamespace` defines the Consul namespace to register
+    # # the gateway into.  Requires `global.enableConsulNamespaces` to be true and
+    # # Consul Enterprise v1.7+ with a valid Consul Enterprise license.
+    # # Note: The Consul namespace MUST exist before the gateway is deployed.
+    # consulNamespace: "default"
 
   # Gateways is a list of gateway objects. The only required field for
   # each is `name`, though they can also contain any of the fields in
   # `defaults`. Values defined here override the defaults except in the
   # case of annotations where both will be applied.
   gateways:
-    - name: terminating-gateway
+    ${indent(4, terminating_gateways)}
 
 # Control whether a test Pod manifest is generated when running helm template.
 # When using helm install, the test Pod is not submitted to the cluster so this

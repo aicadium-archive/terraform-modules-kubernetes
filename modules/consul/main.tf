@@ -102,6 +102,10 @@ locals {
     controller_node_tolerations = var.controller_node_tolerations != null ? jsonencode(var.controller_node_tolerations) : "null"
     controller_node_affinity    = var.controller_node_affinity != null ? jsonencode(var.controller_node_affinity) : "null"
     controller_priority_class   = var.controller_priority_class
+
+    terminating_gateway_enable   = var.terminating_gateway_enable
+    terminating_gateway_defaults = yamlencode(var.terminating_gateway_defaults)
+    terminating_gateways         = yamlencode(var.terminating_gateways)
   }
 }
 
