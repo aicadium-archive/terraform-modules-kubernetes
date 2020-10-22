@@ -496,7 +496,14 @@ variable "terminating_gateway_enable" {
 }
 
 variable "terminating_gateway_defaults" {
-  description = "Terminating Gateway defaults. You can override any of these fields under `terminating_gateways`. Annotations are concatenated"
+  description = <<-EOF
+    Terminating Gateway defaults.
+    You can override any of these fields under `terminating_gateways`.
+    Annotations are concatenated
+
+    Note: You do not have to specify all of the fields to override them. If you omit them, they will
+    fall back to the defaults for the Helm Chart.
+  EOF
 
   default = {
     # Number of replicas for each terminating gateway defined.
