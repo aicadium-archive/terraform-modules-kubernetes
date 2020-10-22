@@ -487,7 +487,7 @@ variable "controller_priority_class" {
 }
 
 ###########################
-# Consul Connecting Terminating Gateway
+# Consul Connect Terminating Gateway
 ###########################
 variable "terminating_gateway_enable" {
   description = "Deploy Terminating Gateways"
