@@ -487,6 +487,120 @@ variable "controller_priority_class" {
 }
 
 ###########################
+# Consul Connect Terminating Gateway
+###########################
+variable "terminating_gateway_enable" {
+  description = "Deploy Terminating Gateways"
+  type        = bool
+  default     = false
+}
+
+variable "terminating_gateway_defaults" {
+  description = <<-EOF
+    Terminating Gateway defaults.
+    You can override any of these fields under `terminating_gateways`.
+    Annotations are concatenated
+
+    Note: You do not have to specify all of the fields to override them. If you omit them, they will
+    fall back to the defaults for the Helm Chart.
+  EOF
+
+  default = {
+    # Number of replicas for each terminating gateway defined.
+    replicas = 2
+
+    # extraVolumes is a list of extra volumes to mount. These will be exposed
+    # to Consul in the path `/consul/userconfig/<name>/`. The value below is
+    # an array of objects, examples are shown below.
+    #  extraVolumes:
+    #    - type: secret
+    #      name: my-secret
+    #      items:  # optional items array
+    #        - key: key
+    #          path: path  # secret will now mount to /consul/userconfig/my-secret/path
+    extraVolumes = []
+
+    # Resource limits for all terminating gateway pods
+    resources = {
+      requests = {
+        cpu    = "100Mi"
+        memory = "100Mi"
+      }
+      limits = {
+        cpu    = "100Mi"
+        memory = "100Mi"
+      }
+    }
+
+    # Resource settings for the `copy-consul-bin` init container.
+    initCopyConsulContainer = {
+      resources = {
+        requests = {
+          cpu    = "50m"
+          memory = "25Mi"
+        }
+        limits = {
+          cpu    = "50m"
+          memory = "25Mi"
+        }
+      }
+    }
+
+    # By default, we set an anti-affinity so that two of the same gateway pods
+    # won't be on the same node. NOTE: Gateways require that Consul client agents are
+    # also running on the nodes alongside each gateway pod.
+    affinity = <<-EOF
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: {{ template "consul.name" . }}
+                release: "{{ .Release.Name }}"
+                component: terminating-gateway
+            topologyKey: kubernetes.io/hostname
+      EOF
+
+    # Optional YAML string to specify tolerations.
+    tolerations = null
+
+    # Optional YAML string to specify a nodeSelector config.
+    nodeSelector = null
+
+    # Optional priorityClassName.
+    priorityClassName = ""
+
+    # Annotations to apply to the terminating gateway deployment. Annotations defined
+    # here will be applied to all terminating gateway deployments in addition to any
+    # annotations defined for a specific gateway in `terminatingGateways.gateways`.
+    # Example:
+    #   annotations: |
+    #     "annotation-key": "annotation-value"
+    annotations = null
+
+    # [Enterprise Only] `consulNamespace` defines the Consul namespace to register
+    # the gateway into.  Requires `global.enableConsulNamespaces` to be true and
+    # Consul Enterprise v1.7+ with a valid Consul Enterprise license.
+    # Note: The Consul namespace MUST exist before the gateway is deployed.
+    consulNamespace = "default"
+  }
+}
+
+variable "terminating_gateways" {
+  description = <<-EOF
+      Gateways is a list of gateway objects. The only required field for
+      each is `name`, though they can also contain any of the fields in
+      `terminating_gateway_defaults`. Values defined here override the defaults except in the
+      case of annotations where both will be applied.
+    EOF
+
+  default = [
+    {
+      name = "terminating-gateway"
+    }
+  ]
+}
+
+###########################
 # Consul Security
 ###########################
 variable "gossip_encryption_key" {
@@ -571,12 +685,12 @@ variable "esm_chart_name" {
 
 variable "esm_chart_repository" {
   description = "ESM Chart repository"
-  default     = "amoy"
+  default     = "https://basisai.github.io/charts/"
 }
 
 variable "esm_chart_version" {
   description = "ESM Chart version"
-  default     = ""
+  default     = "0.2.2"
 }
 
 variable "esm_replica" {
@@ -699,6 +813,7 @@ variable "esm_server_port" {
   description = "Override Consul Server port for TLS when using Auto Encrypt"
   default     = null
 }
+
 #################################
 # Consul Exporter for Prometheus
 #################################
