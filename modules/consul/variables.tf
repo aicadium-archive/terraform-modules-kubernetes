@@ -685,12 +685,12 @@ variable "esm_chart_name" {
 
 variable "esm_chart_repository" {
   description = "ESM Chart repository"
-  default     = "amoy"
+  default     = "https://basisai.github.io/charts/"
 }
 
 variable "esm_chart_version" {
   description = "ESM Chart version"
-  default     = ""
+  default     = "0.2.2"
 }
 
 variable "esm_replica" {
