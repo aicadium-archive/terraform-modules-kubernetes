@@ -153,8 +153,8 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | enable\_ui | Enable Consul UI | `bool` | `false` | no |
 | esm\_affinity | Affinity for ESM | `map` | `{}` | no |
 | esm\_chart\_name | Name of the ESM Chart name | `string` | `"consul-esm"` | no |
-| esm\_chart\_repository | ESM Chart repository | `string` | `"amoy"` | no |
-| esm\_chart\_version | ESM Chart version | `string` | `""` | no |
+| esm\_chart\_repository | ESM Chart repository | `string` | `"https://basisai.github.io/charts/"` | no |
+| esm\_chart\_version | ESM Chart version | `string` | `"0.2.2"` | no |
 | esm\_env | Environment variables for Consul ESM | `list` | `[]` | no |
 | esm\_external\_node\_meta | The node metadata values used for the ESM to qualify a node in the catalog as an "external node". | `map` | <pre>{<br>  "external-node": "true"<br>}</pre> | no |
 | esm\_http\_addr | HTTP address of the local Consul agent | `string` | `""` | no |
@@ -194,6 +194,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | exporter\_resources | Resources for Consul Exporter | `map` | <pre>{<br>  "limits": {<br>    "memory": "256Mi"<br>  },<br>  "requests": {<br>    "cpu": "200m"<br>  }<br>}</pre> | no |
 | exporter\_service\_annotations | Consul Exporter service's annotations | `map` | `{}` | no |
 | exporter\_tag | Docker Image tag for Consul Exporter | `string` | `"v0.7.1"` | no |
+| exporter\_tolerations | Tolerations for Consul Exporter | `list` | `[]` | no |
 | fullname\_override | Fullname Override of Helm resources | `string` | `""` | no |
 | gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | `null` | no |
 | image\_envoy | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.14.4"` | no |

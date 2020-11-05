@@ -51,6 +51,8 @@ resources: ${resources}
   #   cpu: 100m
   #   memory: 128Mi
 
+tolerations: ${tolerations}
+
 affinity: ${affinity}
 
 # Extra environment variables
