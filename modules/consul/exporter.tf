@@ -143,8 +143,9 @@ data "template_file" "exporter_values" {
     image   = var.exporter_image
     tag     = var.exporter_tag
 
-    resources = jsonencode(var.exporter_resources)
-    affinity  = jsonencode(var.exporter_affinity)
+    resources   = jsonencode(var.exporter_resources)
+    affinity    = jsonencode(var.exporter_affinity)
+    tolerations = jsonencode(var.exporter_tolerations)
 
     options = jsonencode(merge(var.exporter_options, {
       "consul.ca-file" = var.tls_enable_auto_encrypt ? "/${local.exporter_volume}/connect.pem" : (var.tls_ca != null ? "/${local.exporter_volume}/server.pem" : "")

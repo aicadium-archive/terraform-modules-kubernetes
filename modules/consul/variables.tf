@@ -875,6 +875,11 @@ variable "exporter_affinity" {
   default     = {}
 }
 
+variable "exporter_tolerations" {
+  description = "Tolerations for Consul Exporter"
+  default     = []
+}
+
 variable "exporter_service_annotations" {
   description = "Consul Exporter service's annotations"
   default     = {}
