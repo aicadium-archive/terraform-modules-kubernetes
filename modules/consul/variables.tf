@@ -439,6 +439,25 @@ variable "connect_inject_init_resources" {
   }
 }
 
+variable "lifecycle_sidecar_container_resources" {
+  description = <<-EOF
+    Resource settings for lifecycle-sidecar containers.
+    The lifecycle sidecar ensures the Consul services are always registered with
+    their local consul clients and is used by the ingress/terminating/mesh gateways
+    as well as with every connect-injected service.
+    EOF
+  default = {
+    requests = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+    limits = {
+      cpu    = "50m"
+      memory = "50Mi"
+    }
+  }
+}
+
 ###########################
 # Consul Configuration Entries CRD Controller
 ###########################

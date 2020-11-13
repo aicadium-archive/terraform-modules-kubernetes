@@ -221,12 +221,13 @@ global:
   # as well as with every connect-injected service.
   lifecycleSidecarContainer:
     resources:
-      requests:
-        memory: "25Mi"
-        cpu: "20m"
-      limits:
-        memory: "50Mi"
-        cpu: "20m"
+      ${indent(6, lifecycle_sidecar_container_resources)}
+      # requests:
+      #   memory: "25Mi"
+      #   cpu: "20m"
+      # limits:
+      #   memory: "50Mi"
+      #   cpu: "20m"
 
   # imageEnvoy is the name (and tag) of the Envoy Docker image used for the
   # connect-injected sidecar proxies and the mesh, terminating, and ingress gateways.

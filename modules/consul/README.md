@@ -198,6 +198,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | fullname\_override | Fullname Override of Helm resources | `string` | `""` | no |
 | gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | `null` | no |
 | image\_envoy | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.14.4"` | no |
+| lifecycle\_sidecar\_container\_resources | Resource settings for lifecycle-sidecar containers.<br>The lifecycle sidecar ensures the Consul services are always registered with<br>their local consul clients and is used by the ingress/terminating/mesh gateways<br>as well as with every connect-injected service. | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
 | max\_history | Max History for Helm | `number` | `20` | no |
 | name | Sets the prefix used for all resources in the helm chart. If not set, the prefix will be "<helm release name>-consul". | `any` | `null` | no |
 | pod\_security\_policy\_enable | Create PodSecurityPolicy Resources | `bool` | `true` | no |
