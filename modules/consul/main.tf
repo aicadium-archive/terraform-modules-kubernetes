@@ -94,6 +94,7 @@ locals {
 
     connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
     connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
+    lifecycle_sidecar_container_resources  = yamlencode(var.lifecycle_sidecar_container_resources)
 
     controller_enable           = var.controller_enable
     controller_log_level        = var.controller_log_level
