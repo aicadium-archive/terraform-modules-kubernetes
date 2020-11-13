@@ -448,11 +448,11 @@ variable "lifecycle_sidecar_container_resources" {
     EOF
   default = {
     requests = {
-      cpu    = "50m"
+      cpu    = "20m"
       memory = "50Mi"
     }
     limits = {
-      cpu    = "50m"
+      cpu    = "20m"
       memory = "50Mi"
     }
   }
