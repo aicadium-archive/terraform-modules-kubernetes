@@ -95,6 +95,10 @@ locals {
     connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
     connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
     lifecycle_sidecar_container_resources  = yamlencode(var.lifecycle_sidecar_container_resources)
+    envoy_extra_args                       = var.envoy_extra_args != null ? jsonencode(var.envoy_extra_args) : "null"
+
+    inject_health_check                  = var.inject_health_check
+    inject_health_check_reconcile_period = var.inject_health_check_reconcile_period
 
     controller_enable           = var.controller_enable
     controller_log_level        = var.controller_log_level
