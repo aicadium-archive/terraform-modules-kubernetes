@@ -15,7 +15,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = "0.25.0"
+  default     = "0.26.0"
 }
 
 variable "chart_namespace" {
@@ -50,7 +50,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.8.4"
+  default     = "1.8.5"
 }
 
 variable "consul_k8s_image" {
@@ -60,7 +60,7 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.19.0"
+  default     = "0.20.0"
 }
 
 variable "image_envoy" {
@@ -458,6 +458,21 @@ variable "lifecycle_sidecar_container_resources" {
   }
 }
 
+variable "envoy_extra_args" {
+  description = "Pass arguments to the injected envoy sidecar. Valid arguments to pass to envoy can be found here: https://www.envoyproxy.io/docs/envoy/latest/operations/cli"
+  default     = null
+}
+
+variable "inject_health_check" {
+  description = "Enables the Consul Health Check controller which syncs the readiness status of connect-injected pods with Consul."
+  default     = true
+}
+
+variable "inject_health_check_reconcile_period" {
+  description = "defines how often a full state reconcile is done after the initial reconcile at startup is completed."
+  default     = "1m"
+}
+
 ###########################
 # Consul Configuration Entries CRD Controller
 ###########################
@@ -476,11 +491,11 @@ variable "controller_resources" {
   default = {
     requests = {
       cpu    = "100m"
-      memory = "20Mi"
+      memory = "50Mi"
     }
     limits = {
       cpu    = "100m"
-      memory = "20Mi"
+      memory = "50Mi"
     }
   }
 }

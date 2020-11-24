@@ -767,6 +767,23 @@ connectInject:
   iamge: null
   default: ${connect_inject_by_default}
 
+  # healthChecks enables synchronization of Kubernetes health probe status with Consul.
+  # NOTE: It is highly recommended to enable TLS with this feature because it requires
+  # making calls to Consul clients across the cluster. Without TLS enabled, these calls
+  # could leak ACL tokens should the cluster network become compromised.
+  healthChecks:
+    # Enables the Consul Health Check controller which syncs the readiness status of
+    # connect-injected pods with Consul.
+    enabled: ${inject_health_check}
+    # If `healthChecks.enabled` is set to `true`, `reconcilePeriod` defines how often a full state
+    # reconcile is done after the initial reconcile at startup is completed.
+    reconcilePeriod: ${inject_health_check_reconcile_period}
+
+  # envoyExtraArgs is used to pass arguments to the injected envoy sidecar.
+  # Valid arguments to pass to envoy can be found here: https://www.envoyproxy.io/docs/envoy/latest/operations/cli
+  # e.g "--log-level debug --disable-hot-restart"
+  envoyExtraArgs: ${envoy_extra_args}
+
   # Optional priorityClassName.
   priorityClassName: "${connect_inject_priority_class}"
 
