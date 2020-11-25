@@ -20,7 +20,7 @@ No requirements.
 | ca\_injector\_affinity | Affinity for ca\_injector | `map` | `{}` | no |
 | ca\_injector\_container\_security\_context | CA Injector Container Security Context | `map` | `{}` | no |
 | ca\_injector\_deployment\_annotations | Extra annotations for ca\_injector deployment | `map` | `{}` | no |
-| ca\_injector\_enabled | Enable CA Injector. | `any` | n/a | yes |
+| ca\_injector\_enabled | Enable CA Injector. | `bool` | `true` | no |
 | ca\_injector\_extra\_args | Extra args for ca\_injector | `list` | `[]` | no |
 | ca\_injector\_image\_repository | Image repository for ca\_injector | `string` | `"quay.io/jetstack/cert-manager-cainjector"` | no |
 | ca\_injector\_image\_tag | Override the image tag to deploy by setting this variable. If no value is set, the chart's appVersion will be used. | `any` | `null` | no |

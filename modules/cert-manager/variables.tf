@@ -351,6 +351,7 @@ variable "webhook_host_network" {
 #####################################
 variable "ca_injector_enabled" {
   description = "Enable CA Injector."
+  default     = true
 }
 
 variable "ca_injector_replica_count" {
