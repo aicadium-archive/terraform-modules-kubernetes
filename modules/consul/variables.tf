@@ -15,7 +15,7 @@ variable "chart_repository" {
 
 variable "chart_version" {
   description = "Version of Chart to install. Set to empty to install the latest version"
-  default     = "0.26.0"
+  default     = "0.27.0"
 }
 
 variable "chart_namespace" {
@@ -50,7 +50,7 @@ variable "consul_image_name" {
 
 variable "consul_image_tag" {
   description = "Docker image tag of Consul to run"
-  default     = "1.8.5"
+  default     = "1.9.0"
 }
 
 variable "consul_k8s_image" {
@@ -60,12 +60,12 @@ variable "consul_k8s_image" {
 
 variable "consul_k8s_tag" {
   description = "Image tag of the consul-k8s binary to run"
-  default     = "0.20.0"
+  default     = "0.21.0"
 }
 
 variable "image_envoy" {
   description = "Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways"
-  default     = "envoyproxy/envoy-alpine:v1.14.4"
+  default     = "envoyproxy/envoy-alpine:v1.16.0"
 }
 
 variable "consul_domain" {
@@ -409,6 +409,11 @@ variable "connect_inject_priority_class" {
 variable "connect_inject_default_protocol" {
   description = "specify a convenience default protocol if most of your services are of the same protocol type. The individual annotation on any given pod will override this value.  Valid values are 'http', 'http2', 'grpc' and 'tcp'."
   default     = null
+}
+
+variable "connect_inject_log_level" {
+  description = "Log verbosity level. One of debug, info, warn, or error."
+  default     = "info"
 }
 
 variable "connect_inject_sidecar_proxy_resources" {

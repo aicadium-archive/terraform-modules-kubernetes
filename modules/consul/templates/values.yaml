@@ -45,14 +45,8 @@ global:
   imagePullSecrets: []
 
   # imageK8S is the name (and tag) of the consul-k8s Docker image that
-  # is used for functionality such as catalog sync. This can be overridden
+  # is used for functionality such as catalog sync and connect. This can be overridden
   # per component.
-  # Note: support for the catalog sync's liveness and readiness probes was added
-  # to consul-k8s 0.6.0. If using an older consul-k8s version, you may need to
-  # remove these checks to make the sync work.
-  # If using acls.manageSystemACLs then must be >= 0.10.1.
-  # If using connect inject then must be >= 0.10.1.
-  # If using Consul Enterprise namespaces, must be >= 0.12.
   imageK8S: ${image_k8s}
 
   # datacenter is the name of the datacenter that the agents should register
@@ -790,6 +784,9 @@ connectInject:
   # The Docker image for Consul to use when performing Connect injection.
   # Defaults to global.image.
   imageConsul: null
+
+  # Log verbosity level. One of "debug", "info", "warn", or "error".
+  logLevel: ${connect_inject_log_level}
 
   # Resource settings for connect inject pods.
   resources: ${connect_inject_resources}

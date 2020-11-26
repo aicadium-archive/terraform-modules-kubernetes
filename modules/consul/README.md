@@ -108,7 +108,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | chart\_namespace | Namespace to install the chart into | `string` | `"default"` | no |
 | chart\_repository | Helm repository for the chart | `string` | `"https://helm.releases.hashicorp.com"` | no |
 | chart\_timeout | Timeout to wait for the Chart to be deployed. The chart waits for all Daemonset pods to be healthy before ending. Increase this for larger clusers to avoid timeout | `number` | `1800` | no |
-| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.26.0"` | no |
+| chart\_version | Version of Chart to install. Set to empty to install the latest version | `string` | `"0.27.0"` | no |
 | client\_annotations | A YAML string for client pods | `string` | `""` | no |
 | client\_enabled | Enable running Consul client agents on every Kubernetes node | `string` | `"-"` | no |
 | client\_extra\_config | Additional configuration to include for client agents | `map` | `{}` | no |
@@ -126,6 +126,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | connect\_inject\_default\_protocol | specify a convenience default protocol if most of your services are of the same protocol type. The individual annotation on any given pod will override this value.  Valid values are 'http', 'http2', 'grpc' and 'tcp'. | `any` | `null` | no |
 | connect\_inject\_denied\_namespaces | List of denied namespaces to inject. | `list` | `[]` | no |
 | connect\_inject\_init\_resources | Resource settings for the Connect injected init container. | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
+| connect\_inject\_log\_level | Log verbosity level. One of debug, info, warn, or error. | `string` | `"info"` | no |
 | connect\_inject\_namespace\_selector | A YAML string selector for restricting injection to only matching namespaces. By default all namespaces except the system namespace will have injection enabled. | `any` | `null` | no |
 | connect\_inject\_priority\_class | Pod Priority Class for Connect Inject | `string` | `""` | no |
 | connect\_inject\_resources | Resources for connect inject pod | `map` | <pre>{<br>  "limits": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "50m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
@@ -133,9 +134,9 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | connect\_inject\_tolerations | Template string for Connect Inject Tolerations | `string` | `""` | no |
 | consul\_domain | Top level Consul domain for DNS queries | `string` | `"consul"` | no |
 | consul\_image\_name | Docker Image of Consul to run | `string` | `"consul"` | no |
-| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.8.5"` | no |
+| consul\_image\_tag | Docker image tag of Consul to run | `string` | `"1.9.0"` | no |
 | consul\_k8s\_image | Docker image of the consul-k8s binary to run | `string` | `"hashicorp/consul-k8s"` | no |
-| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.20.0"` | no |
+| consul\_k8s\_tag | Image tag of the consul-k8s binary to run | `string` | `"0.21.0"` | no |
 | consul\_template\_image | Image for Consul Template | `string` | `"hashicorp/consul-template:0.25.1-light"` | no |
 | controller\_enable | Enable Consul Configuration Entries CRD Controller | `bool` | `false` | no |
 | controller\_log\_level | CRD Controller Log level. | `string` | `"info"` | no |
@@ -198,7 +199,7 @@ You can do so by running `kubectl get configmap/coredns -n kube-system -o yaml`.
 | exporter\_tolerations | Tolerations for Consul Exporter | `list` | `[]` | no |
 | fullname\_override | Fullname Override of Helm resources | `string` | `""` | no |
 | gossip\_encryption\_key | 32 Bytes Base64 Encoded Consul Gossip Encryption Key. Set to `null` to disable | `any` | `null` | no |
-| image\_envoy | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.14.4"` | no |
+| image\_envoy | Image and tag for Envoy Docker image to use for sidecar proxies, mesh, terminating and ingress gateways | `string` | `"envoyproxy/envoy-alpine:v1.16.0"` | no |
 | inject\_health\_check | Enables the Consul Health Check controller which syncs the readiness status of connect-injected pods with Consul. | `bool` | `true` | no |
 | inject\_health\_check\_reconcile\_period | defines how often a full state reconcile is done after the initial reconcile at startup is completed. | `string` | `"1m"` | no |
 | lifecycle\_sidecar\_container\_resources | Resource settings for lifecycle-sidecar containers.<br>The lifecycle sidecar ensures the Consul services are always registered with<br>their local consul clients and is used by the ingress/terminating/mesh gateways<br>as well as with every connect-injected service. | `map` | <pre>{<br>  "limits": {<br>    "cpu": "20m",<br>    "memory": "50Mi"<br>  },<br>  "requests": {<br>    "cpu": "20m",<br>    "memory": "50Mi"<br>  }<br>}</pre> | no |
