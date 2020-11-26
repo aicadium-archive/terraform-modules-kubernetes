@@ -91,6 +91,7 @@ locals {
     connect_inject_allowed_namespaces = jsonencode(var.connect_inject_allowed_namespaces)
     connect_inject_denied_namespaces  = jsonencode(var.connect_inject_denied_namespaces)
     connect_inject_default_protocol   = var.connect_inject_default_protocol != null ? var.connect_inject_default_protocol : "null"
+    connect_inject_log_level          = var.connect_inject_log_level
 
     connect_inject_sidecar_proxy_resources = yamlencode(var.connect_inject_sidecar_proxy_resources)
     connect_inject_init_resources          = yamlencode(var.connect_inject_init_resources)
